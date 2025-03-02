@@ -23,7 +23,7 @@ import { AuthModule } from './application/auth/auth.module';
     //* TypeORM
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: './_common/database/database.sqlite',
+      database: './src/_common/database/database.sqlite',
       // autoLoadEntities: true,
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
