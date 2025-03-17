@@ -13,6 +13,8 @@ export class AuthService {
   ) { }
 
 
-
+  async createUser(body: any) {
+    const user = this.userRepository.create(body);
+    return await this.userRepository.save(user);
+  }
 }
-
