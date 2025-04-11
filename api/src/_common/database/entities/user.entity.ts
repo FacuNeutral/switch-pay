@@ -1,37 +1,45 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
 import { BankAccount } from './bank-account.entity';
 
+import { hash } from 'bcrypt';
+
 @Entity()
 export class User {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column('text', { nullable: false })
+    @Column('text')
     fullName: string;
 
-    @Column('text', { unique: true, nullable: false })
+    @Column('text', { unique: true })
     email: string;
 
-    @Column('text', { nullable: false })
+    @Column('text', { select: false })
     password: string;
 
-    @Column('text')
+    @Column('text', { unique: true, nullable: true, select: false })
     phoneNumber?: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ select: false })
     createdAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ select: false })
     updatedAt: Date;
 
     //% Transforms & Checks
 
+    private async hashPassword() {
+        this.password = await hash(this.password, 10);
+    }
+
     @BeforeInsert()
-    beforeInsertActions() { }
+    async beforeInsertActions() {
+        await this.hashPassword();
+    }
 
     @BeforeUpdate()
-    beforeUpdateActions() { }
+    async beforeUpdateActions() { }
 
     //% Relations
 

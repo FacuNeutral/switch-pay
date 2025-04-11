@@ -1,23 +1,24 @@
-import V from 'class-validator';
+
+import { IsDecimal, IsIn, IsNumber, IsOptional, IsUUID } from 'class-validator';
 import { BankTransaction, StatusType, TransactionType, CurrencyType } from '../entities/bank-transaction.entity';
 
 export class BankTransactionDto implements Pick<BankTransaction, "id" | "amount" | "currency" | "type" | "status"> {
 
-    @V.IsOptional()
-    @V.IsUUID()
+    @IsOptional()
+    @IsUUID()
     id: string;
 
-    @V.IsNumber()
-    @V.IsDecimal({ decimal_digits: '2' })
+    @IsNumber()
+    @IsDecimal({ decimal_digits: '2' })
     amount: number;
 
-    @V.IsIn(CurrencyType)
+    @IsIn(CurrencyType)
     currency: BankTransaction["currency"];
 
-    @V.IsIn(TransactionType)
+    @IsIn(TransactionType)
     type: BankTransaction["type"];
 
-    @V.IsIn(StatusType)
+    @IsIn(StatusType)
     status: BankTransaction["status"];
 
 }

@@ -14,15 +14,34 @@ export class MorganMiddleware implements NestMiddleware {
             return status;
         };
 
+        const methodColor = (method: string) => {
+            switch (method) {
+                case 'GET':
+                    return colors.green(method);
+                case 'POST':
+                    return colors.yellow(method);
+                case 'PUT':
+                    return colors.blue(method);
+                case 'PATCH':
+                    return colors.magenta(method);
+                case 'DELETE':
+                    return colors.red(method);
+                default:
+                    return method;
+            }
+        };
+
         morgan(
-            ':method :url :response-time[0] ms - :res[content-length]',
+            ':method :url :response-time[0] ms',
             {
                 stream: {
                     write: (message: string) => {
                         // Obtenemos el código de estado de la respuesta
                         const status = res.statusCode;
-                        // Usamos la función de color para aplicar el color al código de estado
-                        console.log(`${message.trim()} [ ${statusCodeColor(status)} ]`);
+                        // Obtenemos el método de la solicitud
+                        const method = req.method;
+                        // Usamos la función de color para aplicar el color al código de estado y al método
+                        console.log(`${methodColor(method)} ${message.trim()} [ ${statusCodeColor(status)} ]`);
                     },
                 },
             }
