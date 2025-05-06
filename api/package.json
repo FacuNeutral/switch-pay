@@ -1,8 +1,8 @@
 {
-  "name": "teslo-shop",
+  "name": "switch-pay_api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Facundo Alvarez - github-user @FacuNeutral",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

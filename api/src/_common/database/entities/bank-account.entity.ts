@@ -12,9 +12,6 @@ export class BankAccount {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column()
-    accountNumber: string;
-
     @Column({ type: 'text', default: "USD" })
     currency: typeof CurrencyType[number];
 
@@ -43,16 +40,9 @@ export class BankAccount {
             throw new BadRequestException(`Invalid status: ${this.status}`);
     }
 
-    generateAccountNumber() {
-        const prefix = 'ACC';
-        const timestamp = Date.now().toString().slice(-6);
-        this.accountNumber = `${prefix}-${timestamp}`;
-    }
-
     @BeforeInsert()
     beforeInsertActions() {
         this.checkStatus();
-        this.generateAccountNumber();
         this.checkCurrency();
     }
 
