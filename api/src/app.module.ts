@@ -13,13 +13,13 @@ import { AuthModule } from './application/auth/auth.module';
 
     //* Envs
     ConfigModule.forRoot(),
-
+    
     //* Devtools
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',
       port: 8000,
     }),
-
+    // 
     //* TypeORM
     TypeOrmModule.forRoot({
       type: 'sqlite',

@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BeforeInsert, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BeforeInsert, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeUpdate, OneToOne } from 'typeorm';
 import { User } from './user.entity';
-import { BankTransaction } from './bank-transaction.entity';
+import { Transaction } from './transaction.entity';
 import { BadRequestException } from '@nestjs/common';
 
 export const CurrencyType = ["USD", "EUR", "ARS"] as const;
@@ -63,12 +63,12 @@ export class BankAccount {
 
     //% Relations
 
-    @ManyToOne(() => User, (user) => user.bankAccounts)
+    @OneToOne(() => User, (user) => user.bankAccount)
     user: User;
 
-    @OneToMany(() => BankTransaction, (bankTransaction) => bankTransaction.fromAccount)
-    fromTransactions: BankTransaction[];
+    @OneToMany(() => Transaction, (transaction) => transaction.fromAccount)
+    fromTransactions: Transaction[];
 
-    @OneToMany(() => BankTransaction, (bankTransaction) => bankTransaction.toAccount)
-    toTransactions: BankTransaction[];
+    @OneToMany(() => Transaction, (transaction) => transaction.toAccount)
+    toTransactions: Transaction[];
 }
