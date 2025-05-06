@@ -1,5 +1,6 @@
 import V, { IsAlpha, IsEmail, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, IsUUID, Length } from 'class-validator';
 import { User } from '../entities/user.entity';
+import { BankAccount } from '../entities/bank-account.entity';
 
 export class UserDto implements Omit<User, "id" | "createdAt" | "updatedAt" | "bankAccounts" | "beforeInsertActions" | "beforeUpdateActions"> {
 
@@ -26,5 +27,14 @@ export class UserDto implements Omit<User, "id" | "createdAt" | "updatedAt" | "b
     @IsString()
     @IsPhoneNumber('AR')
     phoneNumber?: string;
+
+
+    tokenPassword: string;
+    alias: string;
+    firstName: string;
+    lastName: string;
+    pinCode?: number | undefined;
+    profilePhoto?: string | undefined;
+    bankAccount: BankAccount;
 }
 

@@ -1,6 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
 import { BankAccount } from './bank-account.entity';
 import { BadRequestException } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
+
 
 export const StatusType = ["pending", "completed", "rejected"] as const;
 export const TransactionType = ["deposit", "withdrawal", "transfer", "perk"] as const;
@@ -8,10 +10,10 @@ export const PaymentMethodType = ["wallet", "paypal", "mercadopago"] as const;
 export const CurrencyType = ["USD"] as const;
 
 @Entity()
-export class Transaction {
+export class BankTransaction {
 
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+    @PrimaryGeneratedColumn("increment")
+    id: number;
 
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     amount: number;
@@ -41,7 +43,15 @@ export class Transaction {
     updatedAt: Date;
 
 
-    //% Transforms & Checks
+    //% Initial Methods & Validations
+
+    generateTransactionNumber = () => {
+        const uuid = uuidv4();
+        const numericId = BigInt('0x' + uuid.replace(/-/g, '')).toString().slice(0, 12);
+        const transactionNumber = parseInt(numericId);
+        this.id = transactionNumber;
+    }
+
 
     checkStatus() {
         if (!StatusType.includes(this.status))
@@ -55,11 +65,10 @@ export class Transaction {
     }
 
     @BeforeInsert()
-    beforeInsertActions() { this.checkStatus(); }
+    beforeInsertActions() { this.generateTransactionNumber(); this.checkStatus(); }
 
     @BeforeUpdate()
     beforeUpdateActions() { this.checkStatus(); }
-
 
     //% Relations
 

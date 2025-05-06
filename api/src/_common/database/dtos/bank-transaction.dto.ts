@@ -6,7 +6,7 @@ export class BankTransactionDto implements Pick<BankTransaction, "id" | "amount"
 
     @IsOptional()
     @IsUUID()
-    id: string;
+    id: number;
 
     @IsNumber()
     @IsDecimal({ decimal_digits: '2' })

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BeforeInsert, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeUpdate, OneToOne } from 'typeorm';
 import { User } from './user.entity';
-import { Transaction } from './transaction.entity';
+import { BankTransaction } from './transaction.entity';
 import { BadRequestException } from '@nestjs/common';
 
 export const CurrencyType = ["USD", "EUR", "ARS"] as const;
@@ -30,7 +30,7 @@ export class BankAccount {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    //% Transforms & Checks
+    //% Initial Methods & Validations
 
     checkCurrency() {
         const allowedCurrencies = ["USD", "EUR", "ARS"];
@@ -66,9 +66,9 @@ export class BankAccount {
     @OneToOne(() => User, (user) => user.bankAccount)
     user: User;
 
-    @OneToMany(() => Transaction, (transaction) => transaction.fromAccount)
-    fromTransactions: Transaction[];
+    @OneToMany(() => BankTransaction, (transaction) => transaction.fromAccount)
+    fromTransactions: BankTransaction[];
 
-    @OneToMany(() => Transaction, (transaction) => transaction.toAccount)
-    toTransactions: Transaction[];
+    @OneToMany(() => BankTransaction, (transaction) => transaction.toAccount)
+    toTransactions: BankTransaction[];
 }
