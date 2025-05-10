@@ -54,8 +54,10 @@ export class BankTransaction {
 
 
     checkStatus() {
+
         if (!StatusType.includes(this.status))
             throw new BadRequestException(`Invalid status: ${this.status}`);
+        
         if (!TransactionType.includes(this.type))
             throw new BadRequestException(`Invalid type: ${this.type}`);
         if (!PaymentMethodType.includes(this.paymentMethod))

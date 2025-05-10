@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToOne } from 'typeorm';
 import { BankAccount } from './bank-account.entity';
-
+import { v4 as uuidv4 } from 'uuid';
 import { hash } from 'bcrypt';
 
 @Entity()
@@ -13,7 +13,7 @@ export class User {
     @Column('uuid', { select: false })
     tokenPassword: string;
 
-    @Column('text', { unique: true })
+    @Column('text', { unique: true, nullable: true })
     alias: string;
 
     @Column('text')
@@ -52,6 +52,7 @@ export class User {
 
     @BeforeInsert()
     async beforeInsertActions() {
+        this.tokenPassword = uuidv4();
         await this.hashPassword();
     }
 

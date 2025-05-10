@@ -1,7 +1,7 @@
 import V, { IsDecimal, IsIn, IsNumber, IsOptional, IsString, IsUUID, Matches } from 'class-validator';
 import { BankAccount } from '../entities/bank-account.entity';
 
-export class BankAccountDto implements Pick<BankAccount, "accountNumber" | "currency" | "balance" | "status"> {
+export class BankAccountDto implements Pick<BankAccount, "currency" | "balance" | "status"> {
 
     @IsOptional()
     @IsUUID()

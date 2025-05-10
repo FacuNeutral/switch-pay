@@ -1,5 +1,5 @@
 import { IsDecimal, IsIn, IsNumber, IsUUID } from 'class-validator';
-import { CurrencyType } from '../entities/transaction.entity';
+import { CurrencyType } from '../entities/bank-transaction.entity';
 
 export class DepositDto {
     @IsUUID()

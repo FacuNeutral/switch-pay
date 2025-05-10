@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BeforeInsert, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeUpdate, OneToOne } from 'typeorm';
 import { User } from './user.entity';
-import { BankTransaction } from './transaction.entity';
+import { BankTransaction } from './bank-transaction.entity';
 import { BadRequestException } from '@nestjs/common';
 
 export const CurrencyType = ["USD", "EUR", "ARS"] as const;

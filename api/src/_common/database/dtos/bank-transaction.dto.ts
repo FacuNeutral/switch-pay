@@ -1,6 +1,6 @@
 
 import { IsDecimal, IsIn, IsNumber, IsOptional, IsUUID } from 'class-validator';
-import { BankTransaction, StatusType, TransactionType, CurrencyType } from '../entities/transaction.entity';
+import { BankTransaction, StatusType, TransactionType, CurrencyType } from '../entities/bank-transaction.entity';
 
 export class BankTransactionDto implements Pick<BankTransaction, "id" | "amount" | "currency" | "type" | "status"> {
 
