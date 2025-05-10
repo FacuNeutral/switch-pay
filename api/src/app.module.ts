@@ -8,13 +8,14 @@ import { UsersModule } from './application/users/users.module';
 import { AccountsModule } from './application/accounts/accounts.module';
 import { TransactionsModule } from './application/transactions/transactions.module';
 import { AuthModule } from './application/auth/auth.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ErrorLoggingInterceptor } from './_common/config/loggers/error-logging.interceptor';
 @Module({
-  
   imports: [
 
     //* Envs
     ConfigModule.forRoot(),
-    
+
     //* Devtools
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',

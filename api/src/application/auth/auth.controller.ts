@@ -32,7 +32,7 @@ export class AuthController {
   }
 
   @Get('test')
-  // @ResponseMessage('Usuario obtenido exitosamente')
+  @ResponseMessage('User fetched successfully')
   async test() {
     return "sdsd";
     // return sendResponse(res, {

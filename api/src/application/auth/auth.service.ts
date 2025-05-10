@@ -1,13 +1,16 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/_common/database/entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
-import { JwtService } from '@nestjs/jwt';
-import { BasicCredentialDto, LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
-import { first } from 'rxjs';
+
+import { User } from 'src/_common/database/entities/user.entity';
+import { AutoLogErrors } from 'src/_common/config/loggers/error.decorator';
+import { CreateUserDto } from './dto/create-user.dto';
+import { BasicCredentialDto, LoginUserDto } from './dto/login-user.dto';
+
 @Injectable()
+@AutoLogErrors()
 export class AuthService {
 
   private readonly logger = new Logger(AuthService.name);
@@ -39,14 +42,18 @@ export class AuthService {
   }
 
   async checkCredential({ email, password }: BasicCredentialDto) {
-    const user = await this.userRepository.findOneBy({ email });
+
+    const user = await this.userRepository.findOne({
+      where: { email },
+      select: ['email', 'password'],
+    });
+
     if (!user) throw new BadRequestException("your email is invalid");
 
     const checkPassword = await bcrypt.compare(password, user.password);
     if (!checkPassword) throw new UnauthorizedException("your password is invalid");
 
-    this.logger.error("Invalid credentials");
-
+    this.logger.log("checked credentials successfully");
   }
 
   async loginUser(body: LoginUserDto) {
@@ -78,7 +85,8 @@ export class AuthService {
         throw new BadRequestException("Email already exists");
     }
 
-    throw new InternalServerErrorException("Internal Server Error");
+    throw error;
+    // throw new InternalServerErrorException("Internal Server Error");
 
   }
 }

@@ -8,6 +8,7 @@ import { ResponseInterceptor } from './_common/config/response-format/single-res
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     snapshot: true,
+    
   });
 
   //% Global Interceptors
