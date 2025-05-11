@@ -1,7 +1,9 @@
+
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { yellow, red } from 'colorette';  // Importar solo la función 'yellow' de colorette
+
 
 @Injectable()
 export class ErrorLoggingInterceptor implements NestInterceptor {

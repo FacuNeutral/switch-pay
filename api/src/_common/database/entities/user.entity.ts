@@ -28,8 +28,8 @@ export class User {
     @Column('text', { select: false })
     password: string;
 
-    @Column('decimal', { select: false, nullable: true })
-    pinCode?: number;
+    @Column('text', { select: false, nullable: true, default:"333111" })
+    pinCode?: string;
 
     // @Column('text', { unique: true, nullable: true, select: false })
     // phoneNumber?: string;

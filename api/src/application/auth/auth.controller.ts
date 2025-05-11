@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Delete, Put, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { BasicCredentialDto } from './dto/login-user.dto';
+import { BasicCredentialsDto, LoginUserDto } from './dto/login-user.dto';
 import { ResponseMessage } from 'src/_common/config/response-format/single-response/response-message.decorator';
 import { Response } from 'express';
 import sendResponse from 'src/_common/config/response-format/multiple-response/send-response.helper';
@@ -21,14 +21,19 @@ export class AuthController {
 
 
 
-  @Post('pre_login')
-  checkCredential(@Body() body: BasicCredentialDto) {
-    return this.authService.checkCredential(body);
+
+  @Post('check_credentials')
+  @ResponseMessage('your credentials are valid')
+  async checkCredentials(@Body() body: BasicCredentialsDto) {
+
+     await this.authService.checkAndGetCredentials(body);
+
   }
 
   @Post('login')
-  loginUser(@Body() body: any) {
-    console.log("body");
+  @ResponseMessage('login successfully')
+  async loginUser(@Body() body: LoginUserDto) {
+    return await this.authService.loginUser(body);
   }
 
   @Get('test')

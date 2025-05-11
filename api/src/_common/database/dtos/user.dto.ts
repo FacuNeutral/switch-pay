@@ -1,4 +1,4 @@
-import V, { IsAlpha, IsEmail, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, IsUrl, IsUUID, Length, Matches, Max, MaxLength } from 'class-validator';
+import V, { IsAlpha, IsEmail, IsNumberString, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, IsUrl, IsUUID, Length, Matches, Max, MaxLength } from 'class-validator';
 import { User } from '../entities/user.entity';
 import { BankAccount } from '../entities/bank-account.entity';
 
@@ -32,9 +32,9 @@ export class UserDto implements Omit<User, "id" | "tokenPassword" | "createdAt" 
     @Length(2, 30, { message: ({ constraints }) => `your "last name" must be between ${constraints[0]} and ${constraints[1]} characters` })
     lastName: string;
 
-    @IsString()
+    @IsNumberString()
     @Length(6, 6, { message: "your \"pin code\" must be exactly 6 characters" })
-    pinCode: number;
+    pinCode: string;
 
     @IsUrl()
     @MaxLength(100, { message: "your \"photo\" must be less than 100 characters" })

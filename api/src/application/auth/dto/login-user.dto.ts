@@ -2,4 +2,4 @@ import { PartialType, PickType } from '@nestjs/mapped-types';
 import { UserDto } from 'src/_common/database/dtos/user.dto';
 
 export class LoginUserDto extends PickType(UserDto, ['email', 'password', "pinCode"]) { }
-export class BasicCredentialDto extends PickType(UserDto, ['email', 'password']) { }
+export class BasicCredentialsDto extends PickType(UserDto, ['email', 'password']) { }

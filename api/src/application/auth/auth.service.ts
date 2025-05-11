@@ -5,9 +5,9 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { User } from 'src/_common/database/entities/user.entity';
-import { AutoLogErrors } from 'src/_common/config/loggers/error.decorator';
+import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
-import { BasicCredentialDto, LoginUserDto } from './dto/login-user.dto';
+import { BasicCredentialsDto, LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 @AutoLogErrors()
@@ -37,55 +37,51 @@ export class AuthService {
         profilePhoto: newUser.profilePhoto,
       }
       return sanitizedUser;
-    } catch (error) { this.handleException(error) }
+    } catch (error) { await this.handleException(error) }
 
   }
 
-  async checkCredential({ email, password }: BasicCredentialDto) {
+  async checkAndGetCredentials({ email, password }: BasicCredentialsDto) {
 
-    const user = await this.userRepository.findOne({
-      where: { email },
-      select: ['email', 'password'],
-    });
+    const db_user = await this.userRepository.createQueryBuilder("user")
+      .addSelect(["user.password", "user.pinCode"])
+      .where("email = :email", { email })
+      .getOne();
+    console.log(db_user);
+    if (!db_user) throw new UnauthorizedException("invalid credentials");
 
-    if (!user) throw new BadRequestException("your email is invalid");
-
-    const checkPassword = await bcrypt.compare(password, user.password);
-    if (!checkPassword) throw new UnauthorizedException("your password is invalid");
+    const checkPassword = await bcrypt.compare(password, db_user.password);
+    if (!checkPassword) throw new UnauthorizedException("invalid credentials");
 
     this.logger.log("checked credentials successfully");
+
+    return db_user;
   }
 
-  async loginUser(body: LoginUserDto) {
-    const user = await this.userRepository.findOneBy({ email: body.email });
-    if (!user) throw new BadRequestException("your email is invalid");
+  async loginUser(loginUser: LoginUserDto) {
+    const db_user = await this.checkAndGetCredentials(loginUser);
 
-    const checkPassword = await bcrypt.compare(body.password, user.password);
-    if (!checkPassword) throw new UnauthorizedException("your password is invalid");
+    if (db_user.pinCode !== loginUser.pinCode)
+      throw new UnauthorizedException("invalid credentials");
 
-    // const checkPinCode = 
-
-    this.logger.error("Invalid credentials");
-
-    const { password: removedPassword, ...result } = user;
+    const { password: removedPassword, pinCode: removedPinCode,
+      ...result } = db_user;
     const token = this.jwtPreLogin.sign(result);
-
+    this.logger.log("user logged in successfully", { ...result, token });
     return { ...result, token };
   }
 
-
   //% Errors management
-  private handleException(error: any) {
 
-    this.logger.error(error.message);
-
+  @SkipAutoLog()
+  private async handleException(error: any) {
     if (error.code === "SQLITE_CONSTRAINT") {
 
       if (error.message.includes("UNIQUE constraint failed: user.email"))
         throw new BadRequestException("Email already exists");
     }
-
-    throw error;
+    // console.log("errorhjjhjh");
+    //  throw error;
     // throw new InternalServerErrorException("Internal Server Error");
 
   }
