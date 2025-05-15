@@ -10,6 +10,7 @@ import { TransactionsModule } from './application/transactions/transactions.modu
 import { AuthModule } from './application/auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ErrorLoggingInterceptor } from './_common/config/loggers/error-logging.interceptor';
+import { SessionSerializer } from './application/auth/session.serializer';
 @Module({
   imports: [
 
@@ -38,6 +39,7 @@ import { ErrorLoggingInterceptor } from './_common/config/loggers/error-logging.
     TransactionsModule,
     AuthModule,
   ],
+  providers: [SessionSerializer],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

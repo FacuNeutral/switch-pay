@@ -1,13 +1,12 @@
 import { BadRequestException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { type Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { User } from 'src/_common/database/entities/user.entity';
 import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
-import { CreateUserDto } from './dto/create-user.dto';
-import { BasicCredentialsDto, LoginUserDto } from './dto/login-user.dto';
+import { BasicCredentialsDto, LoginUserDto } from './dto';
 
 @Injectable()
 @AutoLogErrors()
@@ -18,15 +17,13 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly jwtService: JwtService,
-    @Inject('JWT_PRELOGIN')
-    private readonly jwtPreLogin: JwtService,
+    private readonly userJwt: JwtService,
   ) { }
 
-  async createUser(body: CreateUserDto) {
+  async createUser(basicCredentials: BasicCredentialsDto) {
     try {
 
-      const newUser = this.userRepository.create(body);
+      const newUser = this.userRepository.create(basicCredentials);
       await this.userRepository.save(newUser);
 
       //* Remove sensitive properties
@@ -41,13 +38,23 @@ export class AuthService {
 
   }
 
-  async checkAndGetCredentials({ email, password }: BasicCredentialsDto) {
+  async loginUser(loginUser: BasicCredentialsDto) {
+    const db_user = await this.checkUserCredentials(loginUser);
+
+    const { password: removedPassword, pinCode: removedPinCode,
+      ...result } = db_user;
+    const token = this.userJwt.sign(result);
+    this.logger.log(`user "ID: ${db_user.id}" logged in successfully`);
+    return { ...result, token };
+  }
+
+  async checkUserCredentials({ email, password }: BasicCredentialsDto): Promise<User> {
 
     const db_user = await this.userRepository.createQueryBuilder("user")
       .addSelect(["user.password", "user.pinCode"])
       .where("email = :email", { email })
       .getOne();
-    console.log(db_user);
+
     if (!db_user) throw new UnauthorizedException("invalid credentials");
 
     const checkPassword = await bcrypt.compare(password, db_user.password);
@@ -58,30 +65,31 @@ export class AuthService {
     return db_user;
   }
 
-  async loginUser(loginUser: LoginUserDto) {
-    const db_user = await this.checkAndGetCredentials(loginUser);
+  async checkUserPinCode(id: string, pinCode: string): Promise<User> {
+    const db_user = await this.userRepository.createQueryBuilder("user")
+      .addSelect(["user.password", "user.pinCode"])
+      .where("id = :id", { id })
+      .getOne();
 
-    if (db_user.pinCode !== loginUser.pinCode)
+    if (!db_user) throw new UnauthorizedException("invalid credentials");
+
+    if (db_user.pinCode !== pinCode)
       throw new UnauthorizedException("invalid credentials");
 
-    const { password: removedPassword, pinCode: removedPinCode,
-      ...result } = db_user;
-    const token = this.jwtPreLogin.sign(result);
-    this.logger.log("user logged in successfully", { ...result, token });
-    return { ...result, token };
+    this.logger.log("pincode validated successfully");
+
+    return db_user;
   }
 
+  
   //% Errors management
-
   @SkipAutoLog()
   private async handleException(error: any) {
-    if (error.code === "SQLITE_CONSTRAINT") {
-
+    if (error.code === "SQLITE_CONSTRAINT")
       if (error.message.includes("UNIQUE constraint failed: user.email"))
         throw new BadRequestException("Email already exists");
-    }
-    // console.log("errorhjjhjh");
-    //  throw error;
+
+    throw error;
     // throw new InternalServerErrorException("Internal Server Error");
 
   }

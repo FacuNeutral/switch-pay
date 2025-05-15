@@ -2,7 +2,7 @@ import V, { IsAlpha, IsEmail, IsNumberString, IsOptional, IsPhoneNumber, IsStrin
 import { User } from '../entities/user.entity';
 import { BankAccount } from '../entities/bank-account.entity';
 
-export class UserDto implements Omit<User, "id" | "tokenPassword" | "createdAt" | "updatedAt" | "bankAccounts" | "beforeInsertActions" | "beforeUpdateActions" | "bankAccount"> {
+export class UserDto implements Pick<User, "id" | "email" | "password" | "pinCode" | "firstName" | "lastName" | "alias" | "profilePhoto"> {
 
     @IsOptional()
     @IsUUID()

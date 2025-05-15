@@ -5,30 +5,32 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { User } from 'src/_common/database/entities/user.entity';
 import envs from 'src/_common/config/envs/env-var.plugin';
+import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './strategy/local.strategy';
 
 @Module({
   imports: [
+    PassportModule.register({ session: true }),
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
-      secret:envs.JWT_ACCESS_SECRET,
-      signOptions: { expiresIn: envs.JWT_ACCESS_EXPIRES_IN },
+      secret: envs.USER_TOKEN_SECRET,
+      signOptions: { expiresIn: envs.USER_TOKEN_EXPIRATION },
     }),
   ],
   controllers: [AuthController],
   providers: [AuthService,
-    {
-      provide: 'JWT_PRELOGIN',
-      useFactory: () => {
-        return new JwtService({
-          secret: process.env.JWT_PRELOGIN_SECRET,
-          signOptions: {
-            expiresIn: process.env.JWT_PRELOGIN_EXPIRES_IN,
-          },
-        });
-      },
-    },
+    LocalStrategy, 
+    // {
+    //   provide: 'USER_TOKEN',
+    //   useFactory: () => {
+    //     return new JwtService({
+    //       secret: envs.USER_TOKEN_SECRET,
+    //       signOptions: {
+    //         expiresIn: envs.USER_TOKEN_EXPIRATION,
+    //       },
+    //     });
+    //   },
+    // },
   ],
 })
 export class AuthModule { }
-
-console.log(envs.JWT_ACCESS_EXPIRES_IN);

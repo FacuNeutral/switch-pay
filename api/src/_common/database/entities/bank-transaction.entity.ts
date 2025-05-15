@@ -45,7 +45,7 @@ export class BankTransaction {
 
     //% Initial Methods & Validations
 
-    generateTransactionNumber = () => {
+    private generateTransactionNumber = () => {
         const uuid = uuidv4();
         const numericId = BigInt('0x' + uuid.replace(/-/g, '')).toString().slice(0, 12);
         const transactionNumber = parseInt(numericId);
@@ -53,11 +53,10 @@ export class BankTransaction {
     }
 
 
-    checkStatus() {
+    private validateProps() {
 
         if (!StatusType.includes(this.status))
             throw new BadRequestException(`Invalid status: ${this.status}`);
-        
         if (!TransactionType.includes(this.type))
             throw new BadRequestException(`Invalid type: ${this.type}`);
         if (!PaymentMethodType.includes(this.paymentMethod))
@@ -67,10 +66,10 @@ export class BankTransaction {
     }
 
     @BeforeInsert()
-    beforeInsertActions() { this.generateTransactionNumber(); this.checkStatus(); }
+    private beforeInsertActions() { this.generateTransactionNumber(); this.validateProps(); }
 
     @BeforeUpdate()
-    beforeUpdateActions() { this.checkStatus(); }
+    private beforeUpdateActions() { this.validateProps(); }
 
     //% Relations
 
