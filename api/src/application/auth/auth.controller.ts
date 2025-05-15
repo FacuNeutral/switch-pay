@@ -60,7 +60,7 @@ export class AuthController {
   async testLogin() {
     return {
       email: "login",
-      password: "test",
+      password: "test pass",
     }
   }
 
