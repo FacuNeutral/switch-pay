@@ -18,10 +18,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
         //* It is provided from my user token
         const userId = req.user.id;
-        const user = await this.authService.checkUserPinCode(userId, pinCode);
-        if (!user) {
-            throw new UnauthorizedException();
-        }
-        return user;
+        // const user = await this.authService.checkUserPinCode(userId, pinCode);
+        // if (!user) {
+        //     throw new UnauthorizedException();
+        // }
+        // return user;
     }
 }

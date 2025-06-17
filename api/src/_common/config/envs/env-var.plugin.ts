@@ -4,10 +4,11 @@ import * as env from "env-var";
 const envs = {
   
     //% JWT CONFIG:
-    INITIAL_USER_TOKEN_SECRET: env.get("INITIAL_USER_TOKEN_SECRET").required().asString(),
-    INITIAL_USER_TOKEN_EXPIRATION: env.get("INITIAL_USER_TOKEN_EXPIRATION").required().asString(),
-    USER_TOKEN_SECRET: env.get("USER_TOKEN_SECRET").required().asString(),
-    USER_TOKEN_EXPIRATION: env.get("USER_TOKEN_EXPIRATION").required().asString(),
+    USER_ACCESS_TOKEN_SECRET: env.get("USER_ACCESS_TOKEN_SECRET").required().asString(),
+    USER_ACCESS_TOKEN_EXPIRATION: env.get("USER_ACCESS_TOKEN_EXPIRATION").required().asString(),
+    
+    USER_REFRESH_TOKEN_SECRET: env.get("USER_REFRESH_TOKEN_SECRET").required().asString(),
+    USER_REFRESH_TOKEN_EXPIRATION: env.get("USER_REFRESH_TOKEN_EXPIRATION").required().asString(),
 
     // //% RESEND:
     // API_KEY_RESEND: env.get("API_KEY_RESEND").required().asString(),

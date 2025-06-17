@@ -1,7 +1,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Reflector } from '@nestjs/core';
-
+import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
 
@@ -16,20 +16,21 @@ async function bootstrap() {
 
 
   //% Passport Session
-  app.use(
-    session({
-      name: 'mi_sesion',
-      secret: 'mi_clave_secreta',
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24, // 1 día
-      },
-    }),
-  );
+  // app.use(
+  //   session({
+  //     name: 'mi_sesion',
+  //     secret: 'mi_clave_secreta',
+  //     resave: false,
+  //     saveUninitialized: false,
+  //     cookie: {
+  //       maxAge: 1000 * 60 * 60 * 24, // 1 día
+  //     },
+  //   }),
+  // );
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(passport.initialize());
+  // app.use(passport.session());
+  app.use(cookieParser());
 
   //% Global Interceptors
   const reflector = app.get(Reflector);
@@ -58,4 +59,5 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
 }
+
 bootstrap();

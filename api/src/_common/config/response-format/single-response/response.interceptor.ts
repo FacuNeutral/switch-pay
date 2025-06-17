@@ -15,9 +15,9 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
     constructor(private reflector: Reflector) { }
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-        const ctx = context.switchToHttp();
-        const response = ctx.getResponse();
-        const request = ctx.getRequest();
+        // const ctx = context.switchToHttp();
+        // const response = ctx.getResponse();
+        // const request = ctx.getRequest();
 
         const message =
             this.reflector.get<string>(
