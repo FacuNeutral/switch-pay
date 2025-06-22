@@ -1,35 +1,37 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, Res, UseGuards, Req } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { ResMessage } from 'src/_common/config/response-format/single-response/response-message.decorator';
-import { Response } from 'express';
-import sendResponse from 'src/_common/config/response-format/custom-response/send-response.helper';
-import { BasicCredentialsDto } from './dto/basic-credentials.dto';
-import { RefreshTokenAuthGuard, UserAuthGuard } from './guards/jwt-auth.guard';
-import { UserId } from 'src/_common/decorators/token-user.decorator';
-import { parseDaysToMaxAge } from './helpers/parse-days-to-max-age';
-import envs from 'src/_common/config/envs/env-var.plugin';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res, UseGuards } from "@nestjs/common";
+import { Response } from "express";
 
-@Controller('auth')
+import envs from "src/_common/config/envs/env-var.plugin";
+import sendResponse from "src/_common/config/response-format/custom-response/send-response.helper";
+import { ResMessage } from "src/_common/config/response-format/single-response/response-message.decorator";
+import { UserId } from "src/_common/decorators/token-user.decorator";
+
+import { AuthService } from "./auth.service";
+import { BasicCredentialsDto, CreateUserDto, UserPinCodeDto } from "./dto/user-auth.dto";
+import { InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
+import { parseDaysToMaxAge, parseMinutesToMaxAge } from "./helpers/parse-time-to-max-age";
+
+@Controller("auth")
 export class AuthController {
 
   constructor(private readonly authService: AuthService) { }
 
-  @Post('register')
-  @ResMessage('user created successfully')
-  async createUser(@Body() body: BasicCredentialsDto) {
+  @Post("register")
+  @ResMessage("user created successfully")
+  async createUser(@Body() body: CreateUserDto) {
 
     await this.authService.createUser(body);
 
   }
 
-  @Post('login')
+  @Post("login")
   async loginUser(@Res() res: Response, @Body() body: BasicCredentialsDto) {
     const userAuthenticated = await this.authService.loginUser(body);
 
     res.cookie("refresh_token", userAuthenticated.token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: !envs.DEV_MODE,
+      sameSite: envs.DEV_MODE ? "lax" : "strict",
       maxAge: parseDaysToMaxAge(envs.USER_REFRESH_TOKEN_EXPIRATION),
     });
 
@@ -39,16 +41,16 @@ export class AuthController {
   }
 
   @UseGuards(RefreshTokenAuthGuard)
-  @Post('session')
-  @ResMessage('session started successfully')
-  async createUserSession(@Res() res: Response, @Body('pinCode') pinCode: string, @UserId() userId: string) {
+  @Post("session")
+  @ResMessage("session started successfully")
+  async createUserSession(@Res() res: Response, @Body() { pinCode }: UserPinCodeDto, @UserId() userId: string) {
     const userSession = await this.authService.createUserSession(userId, pinCode);
 
     res.cookie("access_token", userSession.token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: parseDaysToMaxAge(envs.USER_ACCESS_TOKEN_EXPIRATION),
+      secure: !envs.DEV_MODE,
+      sameSite: envs.DEV_MODE ? "lax" : "strict",
+      maxAge: parseMinutesToMaxAge(envs.USER_ACCESS_TOKEN_EXPIRATION),
     });
 
     const { token, ...userData } = userSession;
@@ -59,15 +61,9 @@ export class AuthController {
 
   //% Test Routes
 
-  @Post('check_credentials')
-  @ResMessage('your credentials are valid')
-  async checkUserCredentials(@Body() body: BasicCredentialsDto) {
-    // await this.authService.checkUserCredentials(body);
-  }
-
   @UseGuards(UserAuthGuard)
-  @Get('test_session')
-  @ResMessage('User fetched successfully')
+  @Get("test_session")
+  @ResMessage("User fetched successfully")
   async testSession() {
     return {
       email: "test",
@@ -75,9 +71,19 @@ export class AuthController {
     }
   }
 
+  @UseGuards(InitialUserAuthGuard)
+  @Get("initial_user")
+  @ResMessage("User fetched successfully")
+  async initialUser() {
+    return {
+      email: "test",
+      password: "test",
+    }
+  }
+
   @UseGuards(RefreshTokenAuthGuard)
-  @Get('test_login')
-  @ResMessage('User login successfully')
+  @Get("test_login")
+  @ResMessage("User login successfully")
   async testLogin(@Req() req: Request & { user?: any }) {
     console.log(req?.user);
     return {

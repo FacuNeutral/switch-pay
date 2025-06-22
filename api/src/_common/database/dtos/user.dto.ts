@@ -1,12 +1,12 @@
-import V, { IsAlpha, IsEmail, IsNumberString, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, IsUrl, IsUUID, Length, Matches, Max, MaxLength } from 'class-validator';
+import V, { IsAlpha, IsBoolean, IsEmail, IsNumberString, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, IsUrl, IsUUID, Length, Matches, Max, MaxLength } from 'class-validator';
 import { User } from '../entities/user.entity';
 import { BankAccount } from '../entities/bank-account.entity';
 
-export class UserDto implements Pick<User, "id" | "email" | "password" | "pinCode" | "firstName" | "lastName" | "alias" | "profilePhoto"> {
+export class UserDto implements Pick<User, "id" | "email" | "password" | "pinCode" | "firstName" | "lastName" | "alias" | "profilePhoto" | "registerStep" | "termsAndConditions"> {
 
     @IsOptional()
     @IsUUID()
-    id?: string;
+    id: string;
 
     @IsEmail()
     email: string;
@@ -40,6 +40,12 @@ export class UserDto implements Pick<User, "id" | "email" | "password" | "pinCod
     @MaxLength(100, { message: "your \"photo\" must be less than 100 characters" })
     profilePhoto: string;
 
+    @IsString()
+    @IsOptional()
+    registerStep: User["registerStep"];
+
+    @IsBoolean()
+    termsAndConditions: boolean;
 
     // @IsOptional()
     // @IsString()

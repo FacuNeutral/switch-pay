@@ -2,11 +2,15 @@ import "dotenv/config";
 import * as env from "env-var";
 
 const envs = {
-  
+
+    //% SERVER CONFIG:
+    DEV_MODE: env.get("DEV_MODE").asBool() || true,
+    PORT: env.get("PORT").asPortNumber(),
+
     //% JWT CONFIG:
     USER_ACCESS_TOKEN_SECRET: env.get("USER_ACCESS_TOKEN_SECRET").required().asString(),
     USER_ACCESS_TOKEN_EXPIRATION: env.get("USER_ACCESS_TOKEN_EXPIRATION").required().asString(),
-    
+
     USER_REFRESH_TOKEN_SECRET: env.get("USER_REFRESH_TOKEN_SECRET").required().asString(),
     USER_REFRESH_TOKEN_EXPIRATION: env.get("USER_REFRESH_TOKEN_EXPIRATION").required().asString(),
 

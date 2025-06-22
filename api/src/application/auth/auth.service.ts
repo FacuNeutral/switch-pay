@@ -1,12 +1,12 @@
-import { BadRequestException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { type Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
+import { BadRequestException, Inject, Injectable, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { type Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import * as bcrypt from "bcrypt";
 
-import { User } from 'src/_common/database/entities/user.entity';
-import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
-import { BasicCredentialsDto, LoginUserDto } from './dto';
+import { User } from "src/_common/database/entities/user.entity";
+import { AutoLogErrors, SkipAutoLog } from "src/_common/config/loggers/auto-log-errors.decorator";
+import { BasicCredentialsDto, CreateUserDto } from "./dto/user-auth.dto";
 
 @Injectable()
 @AutoLogErrors()
@@ -17,32 +17,29 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @Inject('USER_REFRESH_TOKEN')
+    @Inject("USER_REFRESH_TOKEN")
     private readonly refreshTokenService: JwtService,
-    @Inject('USER_ACCESS_TOKEN')
+    @Inject("USER_ACCESS_TOKEN")
     private readonly accessTokenService: JwtService,
   ) { }
 
-  async createUser(basicCredentials: BasicCredentialsDto) {
+  async createUser(createUserDto: CreateUserDto) {
+    if (createUserDto.termsAndConditions !== true)
+      throw new BadRequestException("You must accept the terms and conditions");
+
     try {
 
-      const newUser = this.userRepository.create(basicCredentials);
-      await this.userRepository.save(newUser);
+      const newUser = this.userRepository.create(createUserDto);
+      await this.userRepository.save(createUserDto);
 
-      //* Remove sensitive properties
-      const sanitizedUser = {
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        email: newUser.email,
-        profilePhoto: newUser.profilePhoto,
-      }
-      return sanitizedUser;
+      return this.sanitizeUser(newUser);
+
     } catch (error) { await this.handleException(error) }
 
   }
 
-  async loginUser(loginUser: BasicCredentialsDto) {
-    const db_user = await this.checkUserCredentials(loginUser);
+  async loginUser(basicCredentialsDto: BasicCredentialsDto) {
+    const db_user = await this.checkUserCredentials(basicCredentialsDto);
     const { password: removedPassword, pinCode: removedPinCode,
       ...result } = db_user;
     const token = this.refreshTokenService.sign(result);
@@ -62,6 +59,27 @@ export class AuthService {
     this.logger.log(`user "ID: ${userAuthenticated.id}" session started successfully`);
 
     return { ...result, token };
+  }
+
+  async obtainUserRegisterStep(id: string): Promise<string> {
+    const db_user = await this.userRepository.findOneBy({ id });
+    if (!db_user) throw new NotFoundException("user not found");
+
+    this.logger.log(`user "ID: ${db_user.id}" register step obtained`);
+
+    return db_user.registerStep;
+  }
+
+  private sanitizeUser(user: User) {
+    //* Remove sensitive properties
+    const sanitizedUser = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      profilePhoto: user.profilePhoto,
+    }
+
+    return sanitizedUser;
   }
 
   private async checkUserCredentials({ email, password }: BasicCredentialsDto): Promise<User> {

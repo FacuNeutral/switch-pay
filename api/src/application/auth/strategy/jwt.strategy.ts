@@ -8,9 +8,9 @@ export class RefreshTokenStrategy extends JwtStrategyFactory(
     'refresh_token',
     envs.USER_REFRESH_TOKEN_SECRET,
 ) {
-    async validate(payload: any) {
-        return payload;
-    }
+    // async validate(payload: any) {
+    //     return payload;
+    // }
 }
 
 @Injectable()
@@ -20,7 +20,7 @@ export class AccessTokenStrategy extends JwtStrategyFactory(
     envs.USER_ACCESS_TOKEN_SECRET,
 ) {
     async validate(payload: any) {
-        console.log('Access Token Payload:', payload);
+        // console.log('Access Token Payload:', payload);
         return payload;
     }
 }

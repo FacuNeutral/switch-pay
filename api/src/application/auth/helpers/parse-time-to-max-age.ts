@@ -14,3 +14,14 @@ export const parseDaysToMaxAge = (days = "123d") => {
 
     return daysCount * 24 * 60 * 60 * 1000;
 };
+
+export const parseMinutesToMaxAge = (minutes = "123m") => {
+    const regex = /^\d+m$/;
+
+    if (!regex.test(minutes))
+        throw new Error("Invalid minutes format. Use '1m', '2m', etc.");
+
+    const minutesCount = parseInt(minutes.slice(0, -1), 10);
+
+    return minutesCount * 60 * 1000;
+}

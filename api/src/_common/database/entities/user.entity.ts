@@ -45,6 +45,10 @@ export class User {
     @Column('text', { nullable: true })
     profilePhoto?: string;
 
+    //terms and conditions.
+    @Column('boolean', { select: false })
+    termsAndConditions: boolean;
+
     @CreateDateColumn({ select: false })
     createdAt: Date;
 
