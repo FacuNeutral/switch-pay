@@ -25,11 +25,15 @@ import { SessionSerializer } from './application/auth/session.serializer';
     // 
     //* TypeORM
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: './src/_common/database/database.sqlite',
-      // autoLoadEntities: true,
-      synchronize: true,
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'root',
+      database: 'switch-pay',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+      // dropSchema: true,
     }),
 
     //* App Modules

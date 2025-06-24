@@ -10,18 +10,20 @@ import { AuthService } from "./auth.service";
 import { BasicCredentialsDto, CreateUserDto, UserPinCodeDto } from "./dto/user-auth.dto";
 import { InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
 import { parseDaysToMaxAge, parseMinutesToMaxAge } from "./helpers/parse-time-to-max-age";
+import { UsersService } from "../users/users.service";
 
 @Controller("auth")
 export class AuthController {
 
-  constructor(private readonly authService: AuthService) { }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService, // Assuming you have a users service for user-related operations
+  ) { }
 
   @Post("register")
   @ResMessage("user created successfully")
   async createUser(@Body() body: CreateUserDto) {
-
-    await this.authService.createUser(body);
-
+    return await this.usersService.createUser(body);
   }
 
   @Post("login")

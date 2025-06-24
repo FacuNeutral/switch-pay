@@ -9,6 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategy/local.strategy';
 import { createJwtService } from 'src/_common/providers/jwt.provider';
 import { JwtStrategies } from './strategy/jwt.strategy';
+import { UsersModule } from '../users/users.module';
 
 
 const {
@@ -25,6 +26,7 @@ const {
     //   secret: USER_REFRESH_TOKEN_SECRET,
     //   signOptions: { expiresIn: '60d' }, // 60 days
     // }),
+    UsersModule,
     TypeOrmModule.forFeature([User]),
     JwtModule,
   ],

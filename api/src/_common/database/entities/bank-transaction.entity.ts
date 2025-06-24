@@ -27,7 +27,7 @@ export class BankTransaction {
     @Column({ type: 'text', default: "transfer" })
     type: typeof TransactionType[number];
 
-    @Column({ type: 'datetime', default: 0 })
+    @Column({ type: 'int', default: 0 })
     perkDurationInDays: number;
 
     @Column({ type: 'text', default: "wallet" })

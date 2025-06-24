@@ -7,6 +7,7 @@ import * as bcrypt from "bcrypt";
 import { User } from "src/_common/database/entities/user.entity";
 import { AutoLogErrors, SkipAutoLog } from "src/_common/config/loggers/auto-log-errors.decorator";
 import { BasicCredentialsDto, CreateUserDto } from "./dto/user-auth.dto";
+import { UserDao } from "../users/dao/user.dao";
 
 @Injectable()
 @AutoLogErrors()
@@ -17,26 +18,12 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly userDao: UserDao,
     @Inject("USER_REFRESH_TOKEN")
     private readonly refreshTokenService: JwtService,
     @Inject("USER_ACCESS_TOKEN")
     private readonly accessTokenService: JwtService,
   ) { }
-
-  async createUser(createUserDto: CreateUserDto) {
-    if (createUserDto.termsAndConditions !== true)
-      throw new BadRequestException("You must accept the terms and conditions");
-
-    try {
-
-      const newUser = this.userRepository.create(createUserDto);
-      await this.userRepository.save(createUserDto);
-
-      return this.sanitizeUser(newUser);
-
-    } catch (error) { await this.handleException(error) }
-
-  }
 
   async loginUser(basicCredentialsDto: BasicCredentialsDto) {
     const db_user = await this.checkUserCredentials(basicCredentialsDto);
@@ -62,37 +49,22 @@ export class AuthService {
   }
 
   async obtainUserRegisterStep(id: string): Promise<string> {
-    const db_user = await this.userRepository.findOneBy({ id });
-    if (!db_user) throw new NotFoundException("user not found");
+    const db_user = await this.userDao.getUserById(id);
 
     this.logger.log(`user "ID: ${db_user.id}" register step obtained`);
 
     return db_user.registerStep;
   }
 
-  private sanitizeUser(user: User) {
-    //* Remove sensitive properties
-    const sanitizedUser = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      profilePhoto: user.profilePhoto,
-    }
-
-    return sanitizedUser;
-  }
-
   private async checkUserCredentials({ email, password }: BasicCredentialsDto): Promise<User> {
 
     const db_user = await this.userRepository.createQueryBuilder("user")
-      .addSelect(["user.password", "user.pinCode"])
+      .addSelect(["user.password"])
       .where("email = :email", { email })
       .getOne();
-
     if (!db_user) throw new UnauthorizedException("invalid credentials");
 
     const checkPassword = await bcrypt.compare(password, db_user.password);
-
     if (!checkPassword) throw new UnauthorizedException("invalid credentials");
 
     this.logger.log("checked credentials successfully");
@@ -116,16 +88,4 @@ export class AuthService {
     return db_user;
   }
 
-
-  //% Errors management
-  @SkipAutoLog()
-  private async handleException(error: any) {
-    if (error.code === "SQLITE_CONSTRAINT")
-      if (error.message.includes("UNIQUE constraint failed: user.email"))
-        throw new BadRequestException("Email already exists");
-
-    throw error;
-    // throw new InternalServerErrorException("Internal Server Error");
-
-  }
 }

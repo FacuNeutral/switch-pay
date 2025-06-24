@@ -5,9 +5,11 @@ import { User } from 'src/_common/database/entities/user.entity';
 import { Repository } from 'typeorm';
 import { SetUpProfileDto } from './dto/set-up.dto';
 import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
+import { UserDao } from './dao/user.dao';
+import { CreateUserDto } from '../auth/dto/user-auth.dto';
 
-@AutoLogErrors()
 @Injectable()
+@AutoLogErrors()
 export class UsersService {
 
     private readonly logger = new Logger(UsersService.name);
@@ -15,33 +17,66 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        private readonly userDao: UserDao,
         // @Inject("USER_REFRESH_TOKEN")
         // private readonly refreshTokenService: JwtService,
         // @Inject("USER_ACCESS_TOKEN")
         // private readonly accessTokenService: JwtService,
     ) { }
 
-    async setUpProfile(id: string, setUpProfileDto: SetUpProfileDto) {
-        const db_user = await this.userRepository.findOneBy({ id });
+    async createUser(createUserDto: CreateUserDto) {
+        if (!createUserDto.termsAndConditions)
+            throw new BadRequestException("You must accept the terms and conditions");
 
-        if (!db_user) throw new BadRequestException("user not found");
-        if (db_user.registerStep === "set_pin_code")
-            throw new ConflictException("profile already set up");
+        const newUser = await this.userDao.create(createUserDto);
 
-        // Update user profile
-        db_user.alias = setUpProfileDto.alias;
-        db_user.firstName = setUpProfileDto.firstName;
-        db_user.lastName = setUpProfileDto.lastName;
-        db_user.profilePhoto = setUpProfileDto.profilePhoto;
-        db_user.registerStep = "set_pin_code";
+        return this.sanitizeUser(newUser);
+    }
 
+    async setUpProfile(userId: string, setUpProfileDto: SetUpProfileDto) {
+
+        await this.userDao.update(userId, setUpProfileDto)
+            .onAfterLoad(async (db_user, user) => {
+                if (db_user.registerStep !== "set_profile")
+                    throw new ConflictException("profile already set up");
+
+                user.registerStep = "set_pin_code";
+            })
+            .save();
+            
+        this.logger.log(`User "ID: ${userId}" profile set up successfully`);
+
+    }
+
+    async setUpPinCode(userId: string, pinCode: string) {
+
+        await this.userDao.update(userId, { pinCode })
+            .onAfterLoad(async (db_user, user) => {
+                if (db_user.registerStep !== "set_pin_code")
+                    throw new ConflictException("pin code already set up");
+
+                user.registerStep = "complete";
+            })
+            .save();
+
+        this.logger.log(`User "ID: ${userId}" pin code set up successfully`);
         try {
-            await this.userRepository.save(db_user);
-            this.logger.log(`User "ID: ${db_user.id}" profile updated successfully`);
 
         } catch (error) {
             await this.handleException(error);
         }
+    }
+
+    private sanitizeUser(user: User) {
+        //* Remove sensitive properties
+        const sanitizedUser = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            profilePhoto: user.profilePhoto,
+        }
+
+        return sanitizedUser;
     }
 
     // async createUser(createUserDto: CreateUserDto) {

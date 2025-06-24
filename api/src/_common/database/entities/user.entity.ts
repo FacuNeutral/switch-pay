@@ -14,9 +14,8 @@ export class User {
     id?: string;
 
     //* if you change this password, all user devices will be logged out
-    @Column('uuid', { select: false })
+    @Column('uuid', { select: false, default: () => `uuid_generate_v4()` })
     tokenPassword: string;
-
 
     @Column({ type: 'text', default: "set_profile" })
     registerStep: typeof RegisterStepType[number];
