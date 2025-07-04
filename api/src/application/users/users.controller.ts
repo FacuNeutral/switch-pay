@@ -11,7 +11,7 @@ export class UsersController {
 
 
     @UseGuards(RefreshTokenAuthGuard)
-    @Patch("set_up/profile")
+    @Patch("set-up/profile")
     @ResMessage("profile saved successfully")
     async setUpProfile(@Body() body: SetUpProfileDto, @UserId() userId: string) {
         await this.usersService.setUpProfile(userId, body);
@@ -19,7 +19,7 @@ export class UsersController {
     }
 
     @UseGuards(RefreshTokenAuthGuard)
-    @Patch("set_up/pin_code")
+    @Patch("set-up/pin-code")
     @ResMessage("pin code applied successfully")
     async setUpPinCode(@Body() { pinCode }: SetUpPinCodeDto, @UserId() userId: string) {
         await this.usersService.setUpPinCode(userId, pinCode);

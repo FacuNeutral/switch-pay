@@ -7,7 +7,7 @@ import { ResMessage } from "src/_common/config/response-format/single-response/r
 import { UserId } from "src/_common/decorators/token-user.decorator";
 
 import { AuthService } from "./auth.service";
-import { BasicCredentialsDto, CreateUserDto, UserPinCodeDto } from "./dto/user-auth.dto";
+import { BasicCredentialsDto, CreateUserDto, UserEmailDto, UserPinCodeDto } from "./dto/user-auth.dto";
 import { InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
 import { parseDaysToMaxAge, parseMinutesToMaxAge } from "./helpers/parse-time-to-max-age";
 import { UsersService } from "../users/users.service";
@@ -48,7 +48,7 @@ export class AuthController {
   async createUserSession(@Res() res: Response, @Body() { pinCode }: UserPinCodeDto, @UserId() userId: string) {
     const userSession = await this.authService.createUserSession(userId, pinCode);
 
-    res.cookie("access_token", userSession.token, {
+    res.cookie("access-token", userSession.token, {
       httpOnly: true,
       secure: !envs.DEV_MODE,
       sameSite: envs.DEV_MODE ? "lax" : "strict",
@@ -60,11 +60,42 @@ export class AuthController {
     sendResponse(res, "session started successfully", userData);
   }
 
+  @Post("password/forgot")
+  @ResMessage("if successful, you will receive a code to reset your password in your email")
+  async recoveryUserPassword(@Body() { email }: UserEmailDto) {
+    await this.authService.recoverUserPassword(email)
+
+      //* no error responses to avoid info leakage.
+      .catch((e) => null);
+  }
+
+  @Get("password/verify-code")
+  @ResMessage("")
+  async verifyUserPasswordCode() { }
+
+  @Post("password/reset")
+  @ResMessage("")
+  async resetUserPassword() { }
+
+  @Post("pin-code/forgot")
+  @ResMessage("if successful, you will receive a code to reset your pincode in your email")
+  async recoveryUserPinCode(@Body() { email }: UserEmailDto) {
+    await this.authService.recoverUserPinCode(email)
+
+      //* no error responses to avoid info leakage.
+      .catch((e) => null);
+  }
+
+  // @Post("recovery/reset_pincode")
+  // @ResMessage("a code has been sent to your email to reset your pincode")
+  // async recoveryUserPinCode(@Body() { email }: UserEmailDto) {
+  //   await this.authService.recoveryUserPinCode(email);
+  // }
 
   //% Test Routes
 
   @UseGuards(UserAuthGuard)
-  @Get("test_session")
+  @Get("test-session")
   @ResMessage("User fetched successfully")
   async testSession() {
     return {
@@ -74,7 +105,7 @@ export class AuthController {
   }
 
   @UseGuards(InitialUserAuthGuard)
-  @Get("initial_user")
+  @Get("initial-user")
   @ResMessage("User fetched successfully")
   async initialUser() {
     return {
@@ -84,7 +115,7 @@ export class AuthController {
   }
 
   @UseGuards(RefreshTokenAuthGuard)
-  @Get("test_login")
+  @Get("test-login")
   @ResMessage("User login successfully")
   async testLogin(@Req() req: Request & { user?: any }) {
     console.log(req?.user);

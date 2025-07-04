@@ -4,21 +4,29 @@ import { v4 as uuidv4 } from 'uuid';
 import { hash } from 'bcrypt';
 import e from 'express';
 import { BadRequestException } from '@nestjs/common';
+import { SecurityCode } from './security-code.entity';
 
-export const RegisterStepType = ["set_profile", "set_pin_code", "complete"] as const;
+export enum RegisterStep {
+    SetProfile = "set-profile",
+    SetPinCode = "set-pin-code",
+    Complete = "complete"
+}
 
 @Entity()
 export class User {
 
     @PrimaryGeneratedColumn("uuid")
-    id?: string;
+    id: string;
 
     //* if you change this password, all user devices will be logged out
     @Column('uuid', { select: false, default: () => `uuid_generate_v4()` })
     tokenPassword: string;
 
-    @Column({ type: 'text', default: "set_profile" })
-    registerStep: typeof RegisterStepType[number];
+    @Column({
+        type: 'enum', enum: RegisterStep, enumName: 'register_step', nullable: false,
+        default: RegisterStep.SetProfile
+    })
+    registerStep: RegisterStep;
 
     @Column('text', { unique: true, nullable: true })
     alias: string;
@@ -35,7 +43,7 @@ export class User {
     @Column('text', { select: false })
     password: string;
 
-    @Column('text', { select: false, nullable: true, default: "333111" })
+    @Column('text', { select: false, nullable: true })
     pinCode?: string;
 
     // @Column('text', { unique: true, nullable: true, select: false })
@@ -58,7 +66,7 @@ export class User {
     //% Initial Methods & Validations
 
     private validateProps() {
-        if (!RegisterStepType.includes(this.registerStep))
+        if (!Object.values(RegisterStep).includes(this.registerStep))
             throw new BadRequestException(`Invalid register step: ${this.registerStep}`);
     }
 
@@ -73,7 +81,9 @@ export class User {
     }
 
     @BeforeUpdate()
-    private async beforeUpdateActions() { this.validateProps(); }
+    private beforeUpdateActions() {
+        this.validateProps();
+    }
 
 
 
@@ -83,4 +93,6 @@ export class User {
     @OneToOne(() => BankAccount, (bankAccount) => bankAccount.user)
     bankAccount: BankAccount;
 
+    @OneToMany(() => SecurityCode, code => code.user, { cascade: true })
+    securityCodes: SecurityCode[];
 }

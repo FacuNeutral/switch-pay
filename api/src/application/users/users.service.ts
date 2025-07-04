@@ -1,12 +1,13 @@
 import { BadRequestException, ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/_common/database/entities/user.entity';
+import { RegisterStep, User } from 'src/_common/database/entities/user.entity';
 import { Repository } from 'typeorm';
 import { SetUpProfileDto } from './dto/set-up.dto';
 import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
 import { UserDao } from './dao/user.dao';
 import { CreateUserDto } from '../auth/dto/user-auth.dto';
+import { hash } from 'bcrypt';
 
 @Injectable()
 @AutoLogErrors()
@@ -37,29 +38,31 @@ export class UsersService {
 
         await this.userDao.update(userId, setUpProfileDto)
             .onAfterLoad(async (db_user, user) => {
-                if (db_user.registerStep !== "set_profile")
+                if (db_user.registerStep !== RegisterStep.SetProfile)
                     throw new ConflictException("profile already set up");
 
-                user.registerStep = "set_pin_code";
+                user.registerStep = RegisterStep.SetPinCode;
             })
             .save();
-            
+
         this.logger.log(`User "ID: ${userId}" profile set up successfully`);
 
     }
 
     async setUpPinCode(userId: string, pinCode: string) {
+        const hashPinCode = await hash(pinCode, 10);
 
-        await this.userDao.update(userId, { pinCode })
+        await this.userDao.update(userId, { pinCode: hashPinCode })
             .onAfterLoad(async (db_user, user) => {
-                if (db_user.registerStep !== "set_pin_code")
+                if (db_user.registerStep !== RegisterStep.SetPinCode)
                     throw new ConflictException("pin code already set up");
 
-                user.registerStep = "complete";
+                user.registerStep = RegisterStep.Complete;
             })
             .save();
 
         this.logger.log(`User "ID: ${userId}" pin code set up successfully`);
+        
         try {
 
         } catch (error) {

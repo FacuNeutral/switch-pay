@@ -8,6 +8,9 @@ import { User } from "src/_common/database/entities/user.entity";
 import { AutoLogErrors, SkipAutoLog } from "src/_common/config/loggers/auto-log-errors.decorator";
 import { BasicCredentialsDto, CreateUserDto } from "./dto/user-auth.dto";
 import { UserDao } from "../users/dao/user.dao";
+import { EmailSenderService } from "src/integrations/email/email-sender.service";
+import { SecurityCodeDao } from "./dao/security-code.dao";
+import { UserAction } from "src/_common/database/interfaces/user-action.interface";
 
 @Injectable()
 @AutoLogErrors()
@@ -19,6 +22,8 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly userDao: UserDao,
+    private readonly securityCodeDao: SecurityCodeDao,
+    private emailSender: EmailSenderService,
     @Inject("USER_REFRESH_TOKEN")
     private readonly refreshTokenService: JwtService,
     @Inject("USER_ACCESS_TOKEN")
@@ -36,8 +41,8 @@ export class AuthService {
     return { ...result, token };
   }
 
-
   async createUserSession(id: string, pinCode: string) {
+
     const userAuthenticated = await this.checkPinCode(id, pinCode);
     const { password: removedPassword, pinCode: removedPinCode,
       ...result } = userAuthenticated;
@@ -56,8 +61,21 @@ export class AuthService {
     return db_user.registerStep;
   }
 
-  private async checkUserCredentials({ email, password }: BasicCredentialsDto): Promise<User> {
+  async recoverUserPassword(userEmail: string): Promise<void> {
+    const db_user = await this.userDao.getUserByEmail(userEmail);
+    const { code } = await this.securityCodeDao.createCodeByUserId(db_user.id, UserAction.ResetPassword);
 
+    await this.emailSender.sendCodeToResetPassword(db_user.email, db_user.firstName, db_user.lastName, code);
+  };
+
+  async recoverUserPinCode(userEmail: string): Promise<void> {
+    const db_user = await this.userDao.getUserByEmail(userEmail);
+    const { code } = await this.securityCodeDao.createCodeByUserId(db_user.id, UserAction.ResetPincode);
+
+    await this.emailSender.sendCodeToResetPincode(db_user.email, db_user.firstName, db_user.lastName, code);
+  };
+
+  private async checkUserCredentials({ email, password }: BasicCredentialsDto): Promise<User> {
     const db_user = await this.userRepository.createQueryBuilder("user")
       .addSelect(["user.password"])
       .where("email = :email", { email })
@@ -78,10 +96,11 @@ export class AuthService {
       .where("id = :id", { id })
       .getOne();
 
-    if (!db_user) throw new UnauthorizedException("invalid credentials");
+    if (!db_user) throw new UnauthorizedException("user not found");
+    if (!db_user.pinCode) throw new BadRequestException("user does not have a pin code");
 
-    if (db_user.pinCode !== pinCode)
-      throw new BadRequestException("pincode is invalid");
+    const checkPinCode = await bcrypt.compare(pinCode, db_user.pinCode);
+    if (!checkPinCode) throw new UnauthorizedException("your pincode is invalid");
 
     this.logger.log("pincode validated successfully");
 

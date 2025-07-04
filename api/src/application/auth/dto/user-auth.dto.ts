@@ -10,3 +10,7 @@ export class CreateUserDto extends PickType(UserDto,
 export class UserPinCodeDto extends PickType(UserDto,
     ["pinCode"])
 { }
+
+export class UserEmailDto extends PickType(UserDto,
+    ["email"])
+{ }

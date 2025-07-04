@@ -18,6 +18,8 @@ export class UserDao {
         private readonly userRepository: Repository<User>,
     ) { }
 
+
+    //% Basic operations
     async getUserById(id: string): Promise<User> {
         try {
             const user = await this.userRepository.findOneBy({ id });
@@ -32,11 +34,18 @@ export class UserDao {
         }
     }
 
-    update(userId: string, user: Partial<UserDto>) {
-        return new UserUpdateBuilder(this.userRepository, this.handleException, {
-            ...user,
-            id: userId
-        })
+    async getUserByEmail(email: string): Promise<User> {
+        try {
+            const user = await this.userRepository.findOneBy({ email });
+            if (!user) throw new BadRequestException('user email not found');
+
+            this.logger.log(`User with email ${email} retrieved`);
+
+            return user;
+
+        } catch (error) {
+            throw await this.handleException(error);
+        }
     }
 
     async saveUpdatedUser(user: Partial<UserDto>): Promise<User> {
@@ -45,6 +54,14 @@ export class UserDao {
 
         return updatedUser;
     }
+
+    update(userId: string, user: Partial<UserDto>) {
+        return new UserUpdateBuilder(this.userRepository, this.handleException, {
+            ...user,
+            id: userId
+        })
+    }
+
 
     async create(user: CreateUserDto) {
         try {

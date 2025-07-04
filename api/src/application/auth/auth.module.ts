@@ -6,11 +6,14 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { User } from 'src/_common/database/entities/user.entity';
 import envs from 'src/_common/config/envs/env-var.plugin';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategy/local.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 import { createJwtService } from 'src/_common/providers/jwt.provider';
-import { JwtStrategies } from './strategy/jwt.strategy';
+import { JwtStrategies } from './strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
-
+import { EmailSenderService } from 'src/integrations/email/email-sender.service';
+import { EmailSenderModule } from 'src/integrations/email/email-sender.module';
+import { SecurityCode } from 'src/_common/database/entities/security-code.entity';
+import { SecurityCodeDao } from './dao/security-code.dao';
 
 const {
   USER_ACCESS_TOKEN_EXPIRATION,
@@ -26,12 +29,15 @@ const {
     //   secret: USER_REFRESH_TOKEN_SECRET,
     //   signOptions: { expiresIn: '60d' }, // 60 days
     // }),
+    EmailSenderModule,
     UsersModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, SecurityCode]),
     JwtModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService,
+  providers: [
+    AuthService,
+    SecurityCodeDao,
     // LocalStrategy,
     ...JwtStrategies,
     createJwtService(
@@ -45,5 +51,9 @@ const {
       USER_REFRESH_TOKEN_EXPIRATION,
     ),
   ],
+  exports: [
+    AuthService,
+    SecurityCodeDao,
+  ]
 })
 export class AuthModule { }

@@ -8,9 +8,9 @@ import { UsersModule } from './application/users/users.module';
 import { AccountsModule } from './application/accounts/accounts.module';
 import { TransactionsModule } from './application/transactions/transactions.module';
 import { AuthModule } from './application/auth/auth.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { ErrorLoggingInterceptor } from './_common/config/loggers/error-logging.interceptor';
 import { SessionSerializer } from './application/auth/session.serializer';
+import envs from './_common/config/envs/env-var.plugin';
+
 @Module({
   imports: [
 
@@ -19,21 +19,21 @@ import { SessionSerializer } from './application/auth/session.serializer';
 
     //* Devtools
     DevtoolsModule.register({
-      http: process.env.NODE_ENV !== 'production',
+      http: envs.DEV_MODE,
       port: 8000,
     }),
-    // 
+
     //* TypeORM
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'root',
-      database: 'switch-pay',
+      host: envs.DB_HOST,
+      port: envs.DB_PORT,
+      username: envs.DB_USERNAME,
+      password: envs.DB_PASSWORD,
+      database: envs.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
-      // dropSchema: true,
+      synchronize: envs.DEV_MODE,
+      //  dropSchema: true,
     }),
 
     //* App Modules
@@ -42,6 +42,7 @@ import { SessionSerializer } from './application/auth/session.serializer';
     AccountsModule,
     TransactionsModule,
     AuthModule,
+
   ],
   providers: [SessionSerializer],
 })
