@@ -12,6 +12,8 @@ const envs = {
     USER_ACCESS_TOKEN_EXPIRATION: env.get("USER_ACCESS_TOKEN_EXPIRATION").required().asString(),
     USER_REFRESH_TOKEN_SECRET: env.get("USER_REFRESH_TOKEN_SECRET").required().asString(),
     USER_REFRESH_TOKEN_EXPIRATION: env.get("USER_REFRESH_TOKEN_EXPIRATION").required().asString(),
+    USER_RECOVERY_TOKEN_SECRET: env.get("USER_RECOVERY_TOKEN_SECRET").required().asString(),
+    USER_RECOVERY_TOKEN_EXPIRATION: env.get("USER_RECOVERY_TOKEN_EXPIRATION").required().asString(),
 
     // //% RESEND:
     RESEND_API_KEY: env.get("RESEND_API_KEY").required().asString(),

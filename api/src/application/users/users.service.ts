@@ -7,7 +7,7 @@ import { SetUpProfileDto } from './dto/set-up.dto';
 import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
 import { UserDao } from './dao/user.dao';
 import { CreateUserDto } from '../auth/dto/user-auth.dto';
-import { hash } from 'bcrypt';
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 @AutoLogErrors()
@@ -50,7 +50,7 @@ export class UsersService {
     }
 
     async setUpPinCode(userId: string, pinCode: string) {
-        const hashPinCode = await hash(pinCode, 10);
+        const hashPinCode = await bcrypt.hash(pinCode, 10);
 
         await this.userDao.update(userId, { pinCode: hashPinCode })
             .onAfterLoad(async (db_user, user) => {
@@ -62,7 +62,7 @@ export class UsersService {
             .save();
 
         this.logger.log(`User "ID: ${userId}" pin code set up successfully`);
-        
+
         try {
 
         } catch (error) {

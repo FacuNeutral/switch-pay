@@ -7,6 +7,7 @@ import { Repository } from "typeorm";
 import { UserUpdateBuilder } from "./builders/user-update.builder";
 import { CreateUserDto } from "src/application/auth/dto/user-auth.dto";
 import { log } from "console";
+import { UpdateDaoBuilder } from "src/_common/builders/dao/update-dao.builder";
 
 @Injectable()
 export class UserDao {
@@ -56,7 +57,7 @@ export class UserDao {
     }
 
     update(userId: string, user: Partial<UserDto>) {
-        return new UserUpdateBuilder(this.userRepository, this.handleException, {
+        return new UpdateDaoBuilder<User>(this.userRepository, this.handleException, {
             ...user,
             id: userId
         })

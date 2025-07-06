@@ -1,34 +1,28 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { User } from 'src/_common/database/entities/user.entity';
 import envs from 'src/_common/config/envs/env-var.plugin';
-import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategies/local.strategy';
-import { createJwtService } from 'src/_common/providers/jwt.provider';
-import { JwtStrategies } from './strategies/jwt.strategy';
-import { UsersModule } from '../users/users.module';
-import { EmailSenderService } from 'src/integrations/email/email-sender.service';
-import { EmailSenderModule } from 'src/integrations/email/email-sender.module';
 import { SecurityCode } from 'src/_common/database/entities/security-code.entity';
+import { User } from 'src/_common/database/entities/user.entity';
+import { createJwtService } from 'src/_common/providers/jwt.provider';
+import { EmailSenderModule } from 'src/integrations/email/email-sender.module';
+import { UsersModule } from '../users/users.module';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 import { SecurityCodeDao } from './dao/security-code.dao';
+import { JwtStrategies } from './strategies/jwt.strategy';
 
 const {
   USER_ACCESS_TOKEN_EXPIRATION,
   USER_ACCESS_TOKEN_SECRET,
   USER_REFRESH_TOKEN_EXPIRATION,
-  USER_REFRESH_TOKEN_SECRET
+  USER_REFRESH_TOKEN_SECRET,
+  USER_RECOVERY_TOKEN_EXPIRATION,
+  USER_RECOVERY_TOKEN_SECRET,
 } = envs;
 
 @Module({
   imports: [
-    // PassportModule.register({ session: true }),
-    // JwtModule.register({
-    //   secret: USER_REFRESH_TOKEN_SECRET,
-    //   signOptions: { expiresIn: '60d' }, // 60 days
-    // }),
     EmailSenderModule,
     UsersModule,
     TypeOrmModule.forFeature([User, SecurityCode]),
@@ -38,7 +32,6 @@ const {
   providers: [
     AuthService,
     SecurityCodeDao,
-    // LocalStrategy,
     ...JwtStrategies,
     createJwtService(
       "USER_ACCESS_TOKEN",
@@ -49,6 +42,11 @@ const {
       "USER_REFRESH_TOKEN",
       USER_REFRESH_TOKEN_SECRET,
       USER_REFRESH_TOKEN_EXPIRATION,
+    ),
+    createJwtService(
+      "USER_RECOVERY_TOKEN",
+      USER_RECOVERY_TOKEN_SECRET,
+      USER_RECOVERY_TOKEN_EXPIRATION,
     ),
   ],
   exports: [

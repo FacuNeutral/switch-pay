@@ -11,6 +11,9 @@ export class UserPinCodeDto extends PickType(UserDto,
     ["pinCode"])
 { }
 
+export class UserPasswordDto extends PickType(UserDto,
+    ["password"])
+{ }
 export class UserEmailDto extends PickType(UserDto,
     ["email"])
 { }

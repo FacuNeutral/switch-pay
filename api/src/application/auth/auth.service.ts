@@ -3,14 +3,16 @@ import { JwtService } from "@nestjs/jwt";
 import { type Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as bcrypt from "bcrypt";
-
+import { hash } from 'bcrypt';
 import { User } from "src/_common/database/entities/user.entity";
 import { AutoLogErrors, SkipAutoLog } from "src/_common/config/loggers/auto-log-errors.decorator";
 import { BasicCredentialsDto, CreateUserDto } from "./dto/user-auth.dto";
 import { UserDao } from "../users/dao/user.dao";
 import { EmailSenderService } from "src/integrations/email/email-sender.service";
 import { SecurityCodeDao } from "./dao/security-code.dao";
-import { UserAction } from "src/_common/database/interfaces/user-action.interface";
+import { RecoveryUserData, UserAction } from "src/_common/database/interfaces/user-action.interface";
+import { parseMinutesToMs, parseTimeMinutesToMs } from "./helpers/parse-time-to-ms";
+import envs from "src/_common/config/envs/env-var.plugin";
 
 @Injectable()
 @AutoLogErrors()
@@ -28,6 +30,8 @@ export class AuthService {
     private readonly refreshTokenService: JwtService,
     @Inject("USER_ACCESS_TOKEN")
     private readonly accessTokenService: JwtService,
+    @Inject("USER_RECOVERY_TOKEN")
+    private readonly recoveryTokenService: JwtService,
   ) { }
 
   async loginUser(basicCredentialsDto: BasicCredentialsDto) {
@@ -63,14 +67,52 @@ export class AuthService {
 
   async recoverUserPassword(userEmail: string): Promise<void> {
     const db_user = await this.userDao.getUserByEmail(userEmail);
-    const { code } = await this.securityCodeDao.createCodeByUserId(db_user.id, UserAction.ResetPassword);
+    const { code } = await this.securityCodeDao.createByUserId(db_user.id, UserAction.ResetPassword);
 
     await this.emailSender.sendCodeToResetPassword(db_user.email, db_user.firstName, db_user.lastName, code);
   };
 
+  async obtainTokenForResetPassword(userEmail: string, code: string): Promise<string> {
+    const db_user = await this.userDao.getUserByEmail(userEmail);
+    const db_security_code = await this.securityCodeDao.getByUserId(db_user.id, UserAction.ResetPassword);
+    if (!db_security_code)
+      throw new NotFoundException("security code not found for this user");
+
+    const checkExpiration: boolean = new Date().getTime() - db_security_code.updatedAt.getTime() > parseTimeMinutesToMs(envs.USER_RECOVERY_TOKEN_EXPIRATION);
+    if (checkExpiration)
+      throw new BadRequestException("your code has expired, please request a new one");
+
+    const checkCode = await bcrypt.compare(code, db_security_code.code);
+    if (!checkCode) throw new UnauthorizedException("your code is invalid");
+
+    const token = this.recoveryTokenService.sign({
+      id: db_user.id,
+      codeId: db_security_code.id,
+      userAction: UserAction.ResetPassword,
+    });
+    this.logger.log(`token for user "ID: ${db_user.id}" to reset password created successfully`);
+
+    return token;
+  }
+
+  async resetUserPassword(user: RecoveryUserData, newPassword: string): Promise<void> {
+
+    const db_security_code = await this.securityCodeDao.getByUserId(user.id, user.userAction);
+    if (db_security_code.id !== user.codeId)
+      throw new UnauthorizedException("invalid security code");
+
+    const password = await bcrypt.hash(newPassword, 10);
+    await this.userDao.update(user.id, { password }).save();
+
+    await this.securityCodeDao.deleteById(db_security_code.id);
+
+    this.logger.log(`user "ID: ${user.id}" password reset successfully`);
+  }
+
+
   async recoverUserPinCode(userEmail: string): Promise<void> {
     const db_user = await this.userDao.getUserByEmail(userEmail);
-    const { code } = await this.securityCodeDao.createCodeByUserId(db_user.id, UserAction.ResetPincode);
+    const { code } = await this.securityCodeDao.createByUserId(db_user.id, UserAction.ResetPincode);
 
     await this.emailSender.sendCodeToResetPincode(db_user.email, db_user.firstName, db_user.lastName, code);
   };

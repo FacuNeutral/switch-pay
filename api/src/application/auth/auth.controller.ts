@@ -1,16 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { Response } from "express";
 
 import envs from "src/_common/config/envs/env-var.plugin";
 import sendResponse from "src/_common/config/response-format/custom-response/send-response.helper";
 import { ResMessage } from "src/_common/config/response-format/single-response/response-message.decorator";
-import { UserId } from "src/_common/decorators/token-user.decorator";
+import { CurrentUser, RecoveryUser, UserId } from "src/_common/decorators/token-user.decorator";
 
 import { AuthService } from "./auth.service";
-import { BasicCredentialsDto, CreateUserDto, UserEmailDto, UserPinCodeDto } from "./dto/user-auth.dto";
+import { BasicCredentialsDto, CreateUserDto, UserEmailDto, UserPasswordDto, UserPinCodeDto } from "./dto/user-auth.dto";
 import { InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
-import { parseDaysToMaxAge, parseMinutesToMaxAge } from "./helpers/parse-time-to-max-age";
+import { parseTimeDaysToMs, parseTimeMinutesToMs } from "./helpers/parse-time-to-ms";
 import { UsersService } from "../users/users.service";
+import { VerifyCodeDto } from "./dto/verify-code.dto";
+import { RecoveryTokenAuthGuard } from "./guards/recovery-auth.guard";
+import { User } from "src/_common/database/entities/user.entity";
+import { RecoveryUserData } from "src/_common/database/interfaces/user-action.interface";
 
 @Controller("auth")
 export class AuthController {
@@ -34,7 +38,7 @@ export class AuthController {
       httpOnly: true,
       secure: !envs.DEV_MODE,
       sameSite: envs.DEV_MODE ? "lax" : "strict",
-      maxAge: parseDaysToMaxAge(envs.USER_REFRESH_TOKEN_EXPIRATION),
+      maxAge: parseTimeDaysToMs(envs.USER_REFRESH_TOKEN_EXPIRATION),
     });
 
     const { token, ...userData } = userAuthenticated;
@@ -52,7 +56,7 @@ export class AuthController {
       httpOnly: true,
       secure: !envs.DEV_MODE,
       sameSite: envs.DEV_MODE ? "lax" : "strict",
-      maxAge: parseMinutesToMaxAge(envs.USER_ACCESS_TOKEN_EXPIRATION),
+      maxAge: parseTimeMinutesToMs(envs.USER_ACCESS_TOKEN_EXPIRATION),
     });
 
     const { token, ...userData } = userSession;
@@ -70,12 +74,26 @@ export class AuthController {
   }
 
   @Get("password/verify-code")
-  @ResMessage("")
-  async verifyUserPasswordCode() { }
+  @ResMessage("if successful, you will receive a token to reset your password")
+  async verifyUserPasswordCode(@Body() { email, code }: VerifyCodeDto) {
+    const token = await this.authService.obtainTokenForResetPassword(email, code)
 
+      //* no error responses to avoid info leakage.
+      .catch((e) => null);
+
+    return { token };
+
+  }
+  @UseGuards(RecoveryTokenAuthGuard)
   @Post("password/reset")
-  @ResMessage("")
-  async resetUserPassword() { }
+  @ResMessage("password reset successfully")
+  async resetUserPassword(@RecoveryUser() user: RecoveryUserData, @Body() { password }: UserPasswordDto) {
+
+      await this.authService.resetUserPassword(user, password)
+      .catch(() => {
+        throw new UnauthorizedException("your token is invalid or expired");
+      });
+  }
 
   @Post("pin-code/forgot")
   @ResMessage("if successful, you will receive a code to reset your pincode in your email")

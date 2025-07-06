@@ -7,7 +7,7 @@
  * @throws Error if the digits parameter is not between 2 and 10.
  * @author Facundo Alvarez | GitHub - FacuNeutral
  */
-export const createRandomCode = (digits: number = 6): string => {
+export const createRandomNumericCode = (digits: number = 6): string => {
     if (digits < 2 || digits > 10) {
         throw new Error('digits must be between 2 and 10');
     }
@@ -26,3 +26,13 @@ export const createRandomCode = (digits: number = 6): string => {
         }
     }
 };
+
+export const createRandomCode = (length: number = 6): string => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+    }
+    return result;
+}

@@ -1,4 +1,4 @@
-import { createRandomCode } from 'src/_common/utils/generators/random-code';
+import { createRandomNumericCode } from 'src/_common/utils/generators/random-code';
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { User } from './user.entity';
 import { UserAction } from '../interfaces/user-action.interface';
@@ -9,7 +9,7 @@ import { hash } from 'bcrypt';
 export class SecurityCode {
 
     @PrimaryGeneratedColumn("uuid")
-    id?: string;
+    id: string;
 
     @Column('text')
     code: string;
@@ -24,7 +24,7 @@ export class SecurityCode {
     @CreateDateColumn()
     createdAt: Date;
 
-    @UpdateDateColumn({ select: false })
+    @UpdateDateColumn()
     updatedAt: Date;
 
 
@@ -32,7 +32,7 @@ export class SecurityCode {
 
     @BeforeInsert()
     private async beforeInsertActions() {
-        this.code = await hash(createRandomCode(), 10);
+        this.code = await hash(createRandomNumericCode(), 10);
     }
 
     @BeforeUpdate()

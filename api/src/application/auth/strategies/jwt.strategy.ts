@@ -25,4 +25,16 @@ export class AccessTokenStrategy extends JwtStrategyFactory(
     }
 }
 
-export const JwtStrategies = [RefreshTokenStrategy, AccessTokenStrategy];
+@Injectable()
+export class RecoveryTokenStrategy extends JwtStrategyFactory(
+    'recovery_token_strategy',
+    'recovery_token',
+    envs.USER_RECOVERY_TOKEN_SECRET,
+    'bearer'
+) {
+    async validate(payload: any) {
+        return payload;
+    }
+}
+
+export const JwtStrategies = [RefreshTokenStrategy, AccessTokenStrategy, RecoveryTokenStrategy];

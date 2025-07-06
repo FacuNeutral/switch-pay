@@ -4,7 +4,7 @@
 * @throws {Error} If the input string is not in the correct format.
 * @return {number} The age in milliseconds.
 */
-export const parseDaysToMaxAge = (days = "123d") => {
+export const parseTimeDaysToMs = (days = "123d") => {
     const regex = /^\d+d$/;
 
     if (!regex.test(days))
@@ -15,7 +15,7 @@ export const parseDaysToMaxAge = (days = "123d") => {
     return daysCount * 24 * 60 * 60 * 1000;
 };
 
-export const parseMinutesToMaxAge = (minutes = "123m") => {
+export const parseTimeMinutesToMs = (minutes = "123m") => {
     const regex = /^\d+m$/;
 
     if (!regex.test(minutes))
@@ -24,4 +24,11 @@ export const parseMinutesToMaxAge = (minutes = "123m") => {
     const minutesCount = parseInt(minutes.slice(0, -1), 10);
 
     return minutesCount * 60 * 1000;
+}
+
+export const parseMinutesToMs = (minutes: number = 123) => {
+    if (!Number.isInteger(minutes) || minutes < 0)
+        throw new Error("Minutes must be a non-negative integer.");
+
+    return minutes * 60 * 1000;
 }

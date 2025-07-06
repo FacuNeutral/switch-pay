@@ -8,6 +8,8 @@ import { CreateUserDto } from "src/application/auth/dto/user-auth.dto";
 import { SecurityCode } from "src/_common/database/entities/security-code.entity";
 import { UserAction } from "src/_common/database/interfaces/user-action.interface";
 import { createRandomCode } from "src/_common/utils/generators/random-code";
+import { hash } from "bcrypt";
+import { UpdateDaoBuilder } from "src/_common/builders/dao/update-dao.builder";
 
 @Injectable()
 export class SecurityCodeDao {
@@ -21,10 +23,11 @@ export class SecurityCodeDao {
 
     //% Basic operations
 
-    async createCodeByUserId(userId: string, userAction: UserAction): Promise<SecurityCode> {
+    async createByUserId(userId: string, userAction: UserAction): Promise<SecurityCode> {
         try {
             let db_security_code = await this.securityCodeRepository.findOneBy({ userId, userAction });
             let securityCode: SecurityCode;
+            let code = createRandomCode();
 
             if (!db_security_code) {
                 //* Create code
@@ -35,14 +38,63 @@ export class SecurityCodeDao {
             } else {
                 //* Update code
                 db_security_code.updatedAt = new Date();
-                db_security_code.code = createRandomCode();
+                db_security_code.code = await hash(code, 10);
 
                 securityCode = await this.securityCodeRepository.save(db_security_code);
+                securityCode.code = code;
             }
 
             this.logger.log(`Security code for user ID ${userId} created successfully`);
 
             return securityCode;
+
+        } catch (error) {
+            throw await this.handleException(error);
+        }
+    }
+
+    async getByUserId(userId: string, userAction: UserAction): Promise<SecurityCode> {
+        try {
+            const securityCode = await this.securityCodeRepository.findOneBy({ userId, userAction });
+            if (!securityCode) throw new BadRequestException('Security code not found for the specified user action');
+
+            this.logger.log(`Security code for user ID ${userId} retrieved successfully`);
+
+            return securityCode;
+
+        } catch (error) {
+            throw await this.handleException(error);
+        }
+    }
+
+
+    update(id: string, securityCode?: Partial<SecurityCode>) {
+        return new UpdateDaoBuilder<SecurityCode>(this.securityCodeRepository, this.handleException, {
+            ...securityCode,
+            id
+        })
+    }
+
+    async getById(id: string): Promise<SecurityCode> {
+        try {
+            const securityCode = await this.securityCodeRepository.findOneBy({ id });
+            if (!securityCode) throw new BadRequestException('Security code not found');
+
+            this.logger.log(`Security code ID ${id} retrieved successfully`);
+
+            return securityCode;
+
+        } catch (error) {
+            throw await this.handleException(error);
+        }
+    }
+
+    async deleteById(id: string): Promise<void> {
+        try {
+            const result = await this.securityCodeRepository.delete(id);
+            if (result.affected === 0) throw new BadRequestException('Security code not found');
+
+            this.logger.log(`Security code ID ${id} deleted successfully`);
 
         } catch (error) {
             throw await this.handleException(error);
