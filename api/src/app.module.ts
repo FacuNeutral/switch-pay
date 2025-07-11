@@ -2,14 +2,18 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
-import { ProductsModule } from './application/products/products.module';
 import { MorganMiddleware } from './_common/middlewares/morgan.middleware';
 import { UsersModule } from './application/users/users.module';
-import { AccountsModule } from './application/accounts/accounts.module';
-import { TransactionsModule } from './application/transactions/transactions.module';
-import { AuthModule } from './application/auth/auth.module';
-import { SessionSerializer } from './application/auth/session.serializer';
+import { AccountsModule } from './application/bank/accounts/accounts.module';
+import { TransactionsModule } from './application/bank/transactions/transactions.module';
+import { AuthModule } from './application/security/auth/auth.module';
+import { SessionSerializer } from './application/security/auth/session.serializer';
+import { ProofsModule } from './application/security/proofs/proofs.module';
 import envs from './_common/config/envs/env-var.plugin';
+import { DaoModule } from './_common/database/dao/dao.module';
+import { RecoveryModule } from './application/security/recovery/recovery.module';
+import { RecoveryController } from './application/security/recovery/recovery.controller';
+import { RecoveryService } from './application/security/recovery/recovery.service';
 
 @Module({
   imports: [
@@ -37,14 +41,18 @@ import envs from './_common/config/envs/env-var.plugin';
     }),
 
     //* App Modules
-    ProductsModule,
+    // ProductsModule,
+    DaoModule,
     UsersModule,
-    AccountsModule,
-    TransactionsModule,
+    RecoveryModule,
+    // AccountsModule,
+    // TransactionsModule,
     AuthModule,
-
+    ProofsModule,
+    RecoveryModule,
   ],
-  providers: [SessionSerializer],
+  providers: [SessionSerializer, RecoveryService],
+  controllers: [RecoveryController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

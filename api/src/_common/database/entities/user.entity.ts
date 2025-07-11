@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToOne, DeleteDateColumn } from 'typeorm';
 import { BankAccount } from './bank-account.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { hash } from 'bcrypt';
@@ -62,6 +62,8 @@ export class User {
     @UpdateDateColumn({ select: false })
     updatedAt: Date;
 
+    @DeleteDateColumn({ nullable: true })
+    deletedAt?: Date;
 
     //% Initial Methods & Validations
 

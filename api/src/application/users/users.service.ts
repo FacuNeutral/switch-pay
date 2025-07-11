@@ -5,9 +5,9 @@ import { RegisterStep, User } from 'src/_common/database/entities/user.entity';
 import { Repository } from 'typeorm';
 import { SetUpProfileDto } from './dto/set-up.dto';
 import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
-import { UserDao } from './dao/user.dao';
-import { CreateUserDto } from '../auth/dto/user-auth.dto';
+import { CreateUserDto } from '../security/auth/dto/user-auth.dto';
 import * as bcrypt from "bcrypt";
+import { UserDao } from '../../_common/database/dao/user.dao';
 
 @Injectable()
 @AutoLogErrors()
@@ -24,6 +24,10 @@ export class UsersService {
         // @Inject("USER_ACCESS_TOKEN")
         // private readonly accessTokenService: JwtService,
     ) { }
+
+    async testService() {
+        const user = await this.userDao.find("1b7029b5-cb86-466e-8a71-584085c87b43");
+    }
 
     async createUser(createUserDto: CreateUserDto) {
         if (!createUserDto.termsAndConditions)

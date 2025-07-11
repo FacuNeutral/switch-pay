@@ -28,7 +28,7 @@ export const createRandomNumericCode = (digits: number = 6): string => {
 };
 
 export const createRandomCode = (length: number = 6): string => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let result = '';
     for (let i = 0; i < length; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length);

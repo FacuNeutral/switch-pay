@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { RefreshTokenAuthGuard } from '../auth/guards/user-auth.guard';
+import { RefreshTokenAuthGuard } from '../security/auth/guards/user-auth.guard';
 import { ResMessage } from 'src/_common/config/response-format/single-response/response-message.decorator';
 import { UserId } from 'src/_common/decorators/token-user.decorator';
 import { SetUpPinCodeDto, SetUpProfileDto } from './dto/set-up.dto';
@@ -23,6 +23,16 @@ export class UsersController {
     @ResMessage("pin code applied successfully")
     async setUpPinCode(@Body() { pinCode }: SetUpPinCodeDto, @UserId() userId: string) {
         await this.usersService.setUpPinCode(userId, pinCode);
+    }
+
+    //test endpoint
+
+    @Get("test")
+    @ResMessage("test endpoint")
+    async testEndpoint() {
+        await this.usersService.testService();
+        console.log("Test endpoint hit");
+
     }
 
 }
