@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import envs from 'src/_common/config/envs/env-var.plugin';
+import envs from '@envs';
 import { createJwtService } from 'src/_common/providers/jwt.provider';
 import { EmailSenderModule } from 'src/integrations/email/email-sender.module';
-import { DaoModule } from '../../../_common/database/dao/dao.module';
+import { MainDBModule } from '../../../_common/database/main/main-db.module';
 import { ProofsController } from './proofs.controller';
 import { ProofsService } from './proofs.service';
 
@@ -14,7 +14,7 @@ const {
 
 @Module({
   imports: [
-    DaoModule,
+    MainDBModule,
     EmailSenderModule,
     JwtModule,
   ],

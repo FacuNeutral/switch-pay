@@ -10,6 +10,24 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+
+      //% Configurations
+      "@config/*": ["src/_common/config/*"],
+      "@envs": ["src/_common/config/envs/env-var.plugin"],
+      "@middlewares/*": ["src/_common/middlewares/*"],
+      "@integrations/*": ["src/integrations/*"],
+
+      //% Database's
+      "@db/*": ["src/_common/database/main/*"],
+
+      //% App Modules
+      "@users/*": ["src/application/users/*"],
+      "@auth/*": ["src/application/security/auth/*"],
+      "@proofs/*": ["src/application/security/proofs/*"],
+      "@recoveries/*": ["src/application/security/recoveries/*"],
+      
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,

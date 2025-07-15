@@ -1,13 +1,13 @@
 import { BadRequestException, ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RegisterStep, User } from 'src/_common/database/entities/user.entity';
+
 import { Repository } from 'typeorm';
-import { SetUpProfileDto } from './dto/set-up.dto';
 import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
-import { CreateUserDto } from '../security/auth/dto/user-auth.dto';
 import * as bcrypt from "bcrypt";
-import { UserDao } from '../../_common/database/dao/user.dao';
+import { SetUpProfileDto } from './dtos/set-up.dto';
+import { RegisterStep, User } from '@db/entities/user.entity';
+import { UserDao } from '@db/dao/user.dao';
+import { CreateUserDto } from '@auth/dtos/user-auth.dto';
 
 @Injectable()
 @AutoLogErrors()

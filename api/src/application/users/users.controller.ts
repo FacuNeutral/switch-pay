@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { RefreshTokenAuthGuard } from '../security/auth/guards/user-auth.guard';
+import { RefreshTokenAuthGuard } from '@auth/guards/user-auth.guard';
 import { ResMessage } from 'src/_common/config/response-format/single-response/response-message.decorator';
 import { UserId } from 'src/_common/decorators/token-user.decorator';
-import { SetUpPinCodeDto, SetUpProfileDto } from './dto/set-up.dto';
+import { SetUpPinCodeDto, SetUpProfileDto } from './dtos/set-up.dto';
 
 @Controller('users')
 export class UsersController {

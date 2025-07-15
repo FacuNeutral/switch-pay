@@ -3,10 +3,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as Handlebars from 'handlebars';
 import { CreateEmailResponse, Resend } from 'resend';
-import envs from 'src/_common/config/envs/env-var.plugin';
+import envs from '@envs';
 import { TemplateEmail } from './interfaces/email.interface';
-import { UserAction } from 'src/_common/database/interfaces/user-action.interface';
 import { VerificationCodeData } from './interfaces/verification-code-data.interface';
+import { UserAction } from '@db/interfaces';
 
 // userAction: UserAction, firstName: string, lastName: string,
 

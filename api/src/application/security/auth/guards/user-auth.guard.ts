@@ -1,7 +1,7 @@
 
 import { AuthGuard } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserDto } from 'src/_common/database/dtos/user.dto';
+import { UserDto } from '@db/dtos/user.dto';
 import { AuthService } from '../auth.service';
 
 export class RefreshTokenAuthGuard extends AuthGuard(["REFRESH_TOKEN_STRATEGY"]) { }

@@ -4,15 +4,13 @@ import { type Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as bcrypt from "bcrypt";
 import { hash } from 'bcrypt';
-import { User } from "src/_common/database/entities/user.entity";
 import { AutoLogErrors, SkipAutoLog } from "src/_common/config/loggers/auto-log-errors.decorator";
-import { BasicCredentialsDto, CreateUserDto } from "./dto/user-auth.dto";
+import { BasicCredentialsDto, CreateUserDto } from "./dtos/user-auth.dto";
 import { EmailSenderService } from "src/integrations/email/email-sender.service";
-import { SecurityCodeDao } from "./dao/security-code.dao";
-import { RecoveryUserData, UserAction } from "src/_common/database/interfaces/user-action.interface";
+
 import { parseMinutesToMs, parseTimeMinutesToMs } from "./helpers/parse-time-to-ms";
-import envs from "src/_common/config/envs/env-var.plugin";
-import { UserDao } from "src/_common/database/dao/user.dao";
+import { UserDao } from "@db/dao/user.dao";
+import { User } from "@db/entities";
 
 @Injectable()
 @AutoLogErrors()

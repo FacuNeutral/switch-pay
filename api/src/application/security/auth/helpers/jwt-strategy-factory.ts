@@ -2,7 +2,6 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UnauthorizedException } from '@nestjs/common';
-import envs from 'src/_common/config/envs/env-var.plugin';
 import { Request } from 'express';
 
 type TokenName = "access_token" | "refresh_token";

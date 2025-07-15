@@ -1,13 +1,16 @@
 import { BadRequestException, Inject, Injectable, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+
 import * as bcrypt from "bcrypt";
-import envs from "src/_common/config/envs/env-var.plugin";
-import { AutoLogErrors } from "src/_common/config/loggers/auto-log-errors.decorator";
-import { UserAction } from "src/_common/database/interfaces/user-action.interface";
-import { EmailSenderService } from "src/integrations/email/email-sender.service";
-import { SecurityCodeDao } from "../../../_common/database/dao/security-code.dao";
-import { UserDao } from "../../../_common/database/dao/user.dao";
-import { parseTimeMinutesToMs } from "../auth/helpers/parse-time-to-ms";
+
+import envs from "@config/envs/env-var.plugin";
+import { AutoLogErrors } from "@config/loggers/auto-log-errors.decorator";
+import { UserAction } from "@db/interfaces";
+import { SecurityCodeDao } from "@db/dao/security-code.dao";
+import { UserDao } from "@db/dao/user.dao";
+
+import { EmailSenderService } from "@integrations/email/email-sender.service";
+import { parseTimeMinutesToMs } from "@auth/helpers/parse-time-to-ms";
 
 @Injectable()
 @AutoLogErrors()
@@ -41,7 +44,7 @@ export class ProofsService {
     async verifyAndGenerateToken(userEmail: string, userAction: UserAction, code: string): Promise<string> {
         const db_user = await this.userDao.getUserByEmail(userEmail);
         const db_security_code = await this.securityCodeDao.getByUserId(db_user.id, userAction);
-        
+
         if (!db_security_code)
             throw new NotFoundException("security code not found for this user");
         if (db_security_code.used)

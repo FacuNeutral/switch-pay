@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
-import { RecoveryUserData, UserAction } from "../database/interfaces/user-action.interface";
+import { RecoveryUserData, UserAction } from "@db/interfaces/security-code.interface";
 
 /**
  * Custom parameter decorator used to obtain the user extracted from a token.

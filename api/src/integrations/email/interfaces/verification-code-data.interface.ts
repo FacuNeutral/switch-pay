@@ -1,4 +1,4 @@
-import { UserAction } from "src/_common/database/interfaces/user-action.interface";
+import { UserAction } from "@db/interfaces/security-code.interface";
 
 export interface VerificationCodeData {
     userAction: UserAction;

@@ -1,14 +1,14 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { Response } from "express";
 
-import envs from "src/_common/config/envs/env-var.plugin";
+import envs from "@envs";
 import sendResponse from "src/_common/config/response-format/custom-response/send-response.helper";
 import { ResMessage } from "src/_common/config/response-format/single-response/response-message.decorator";
 import { UserId } from "src/_common/decorators/token-user.decorator";
 
 import { UsersService } from "../../users/users.service";
 import { AuthService } from "./auth.service";
-import { BasicCredentialsDto, CreateUserDto, UserPinCodeDto } from "./dto/user-auth.dto";
+import { BasicCredentialsDto, CreateUserDto, UserPinCodeDto } from "./dtos/user-auth.dto";
 import { InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
 import { parseTimeDaysToMs, parseTimeMinutesToMs } from "./helpers/parse-time-to-ms";
 

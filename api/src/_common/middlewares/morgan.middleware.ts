@@ -1,7 +1,9 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
 import * as morgan from 'morgan';
 import * as colors from 'colors';
-import { Request, Response, NextFunction } from 'express';
+
+import { Injectable, NestMiddleware } from '@nestjs/common';
+
 
 @Injectable()
 export class MorganMiddleware implements NestMiddleware {

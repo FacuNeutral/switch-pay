@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import envs from 'src/_common/config/envs/env-var.plugin';
-import JwtStrategyFactory from '../helpers/jwt-strategy-factory';
+import envs from '@envs';
+
+import JwtStrategyFactory from '@auth/helpers/jwt-strategy-factory';
 
 @Injectable()
 export class RefreshTokenStrategy extends JwtStrategyFactory(

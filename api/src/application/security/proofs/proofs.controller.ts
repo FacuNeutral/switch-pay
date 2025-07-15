@@ -1,7 +1,7 @@
 import { Body, Controller, InternalServerErrorException, Post } from '@nestjs/common';
 import { ResMessage } from 'src/_common/config/response-format/single-response/response-message.decorator';
-import { SendOttDto } from './dto/send-ott.dto';
-import { VerifyCodeDto } from './dto/verify-code.dto';
+import { SendOttDto } from './dtos/send-ott.dto';
+import { VerifyCodeDto } from './dtos/verify-code.dto';
 import { ProofsService } from './proofs.service';
 
 @Controller('proofs')
