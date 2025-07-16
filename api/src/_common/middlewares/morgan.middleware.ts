@@ -1,7 +1,9 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
 import * as morgan from 'morgan';
 import * as colors from 'colors';
-import { Request, Response, NextFunction } from 'express';
+
+import { Injectable, NestMiddleware } from '@nestjs/common';
+
 
 @Injectable()
 export class MorganMiddleware implements NestMiddleware {
@@ -34,16 +36,23 @@ export class MorganMiddleware implements NestMiddleware {
         morgan(
             ':method :url :response-time[0] ms',
             {
-                stream: {
-                    write: (message: string) => {
-                        // Obtenemos el código de estado de la respuesta
-                        const status = res.statusCode;
-                        // Obtenemos el método de la solicitud
-                        const method = req.method;
-                        // Usamos la función de color para aplicar el color al código de estado y al método
-                        console.log(`${methodColor(method)} ${message.trim()} [ ${statusCodeColor(status)} ]`);
-                    },
+            stream: {
+                write: (message: string) => {
+                //* Get the response status code
+                const status = res.statusCode;
+                //* Get the request method
+                const method = req.method;
+
+                //* Replace the method in the message with its colored version
+                const coloredMessage = message.replace(
+                    method,
+                    methodColor(method)
+                );
+
+                //* Use the color function to apply color to the status code
+                console.log(`${coloredMessage.trim()} [ ${statusCodeColor(status)} ]`);
                 },
+            },
             }
         )(req, res, next);
     }
