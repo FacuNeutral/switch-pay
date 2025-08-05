@@ -25,9 +25,6 @@ export class UsersService {
         // private readonly accessTokenService: JwtService,
     ) { }
 
-    async testService() {
-        const user = await this.userDao.find("1b7029b5-cb86-466e-8a71-584085c87b43");
-    }
 
     async createUser(createUserDto: CreateUserDto) {
         if (!createUserDto.termsAndConditions)
@@ -58,6 +55,9 @@ export class UsersService {
 
         await this.userDao.update(userId, { pinCode: hashPinCode })
             .onAfterLoad(async (db_user, user) => {
+                if (db_user.registerStep === RegisterStep.SetProfile)
+                    throw new ConflictException("first set up your profile");
+
                 if (db_user.registerStep !== RegisterStep.SetPinCode)
                     throw new ConflictException("pin code already set up");
 
@@ -66,12 +66,6 @@ export class UsersService {
             .save();
 
         this.logger.log(`User "ID: ${userId}" pin code set up successfully`);
-
-        try {
-
-        } catch (error) {
-            await this.handleException(error);
-        }
     }
 
     private sanitizeUser(user: User) {

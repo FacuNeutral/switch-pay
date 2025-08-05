@@ -2,15 +2,15 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res, Unauthorized
 import { Response } from "express";
 
 import envs from "@envs";
-import sendResponse from "src/_common/config/response-format/custom-response/send-response.helper";
-import { ResMessage } from "src/_common/config/response-format/single-response/response-message.decorator";
-import { UserId } from "src/_common/decorators/token-user.decorator";
+import sendResponse from "@config/response-format/custom-response/send-response.helper";
+import { ResMessage } from "@config/response-format/single-response/response-message.decorator";
+import { CurrentUser, TokenId, UserId } from "@decorators/token-user.decorator";
 
-import { UsersService } from "../../users/users.service";
+import { UsersService } from "@users/users.service";
 import { AuthService } from "./auth.service";
 import { BasicCredentialsDto, CreateUserDto, UserPinCodeDto } from "./dtos/user-auth.dto";
-import { InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
-import { parseTimeDaysToMs, parseTimeMinutesToMs } from "./helpers/parse-time-to-ms";
+import { AccessTokenAuthGuard, InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
+import { parseTimeDaysToMs, parseTimeMinutesToMs } from "../../../_common/utils/calcs/parse-time";
 
 @Controller("auth")
 export class AuthController {
@@ -43,6 +43,20 @@ export class AuthController {
   }
 
   @UseGuards(RefreshTokenAuthGuard)
+  @Post("logout")
+  async logoutUser(@Res() res: Response, @CurrentUser() user: { id: string, tokenId: string }) {
+    await this.authService.logoutUser(user.id, user.tokenId);
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: !envs.DEV_MODE,
+      sameSite: envs.DEV_MODE ? "lax" : "strict",
+    });
+
+    sendResponse(res, "logout successfully");
+  }
+
+  @UseGuards(RefreshTokenAuthGuard)
   @Post("session")
   @ResMessage("session started successfully")
   async createUserSession(@Res() res: Response, @Body() { pinCode }: UserPinCodeDto, @UserId() userId: string) {
@@ -60,6 +74,19 @@ export class AuthController {
     sendResponse(res, "session started successfully", userData);
   }
 
+  @UseGuards(AccessTokenAuthGuard)
+  @Post("logout-session")
+  async logoutUserSession(@Res() res: Response, @CurrentUser() user: { id: string, tokenId: string }) {
+    await this.authService.logoutUserSession(user.id, user.tokenId);
+
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: !envs.DEV_MODE,
+      sameSite: envs.DEV_MODE ? "lax" : "strict",
+    });
+
+    sendResponse(res, "session closed successfully");
+  }
 
   //% Test Routes
 

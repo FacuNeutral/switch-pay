@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, HttpException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { BaseDao } from "./base/base-dao";
+import { BaseDao } from "../bases/base-dao";
 import { User } from "@db/entities";
 import { CreateUserDto } from "@auth/dtos/user-auth.dto";
 

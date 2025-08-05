@@ -1,6 +1,6 @@
 import { BadRequestException, ConflictException, HttpException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { DeepPartial, Repository } from "typeorm";
-import { UpdateQueryBuilder } from "../query-builders/update-query-builder";
+import { UpdateQueryBuilder } from "../dao/query-builders/update-query-builder";
 
 @Injectable()
 export class GenericOperationDao<T extends { id: any }> {

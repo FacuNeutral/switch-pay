@@ -8,10 +8,11 @@ import { AutoLogErrors, SkipAutoLog } from "src/_common/config/loggers/auto-log-
 import { BasicCredentialsDto, CreateUserDto } from "./dtos/user-auth.dto";
 import { EmailSenderService } from "src/integrations/email/email-sender.service";
 
-import { parseMinutesToMs, parseTimeMinutesToMs } from "./helpers/parse-time-to-ms";
+import { parseMinutesToMs, parseTimeMinutesToMs } from "../../../_common/utils/calcs/parse-time";
 import { UserDao } from "@db/dao/user.dao";
 import { User } from "@db/entities";
-
+import { v4 as uuidv4 } from 'uuid';
+import { BlacklistService } from "src/shared/blacklist/blacklist.service";
 @Injectable()
 @AutoLogErrors()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
   constructor(
+    private blacklistService: BlacklistService,
     @Inject("USER_REFRESH_TOKEN")
     private readonly refreshTokenService: JwtService,
     @Inject("USER_ACCESS_TOKEN")
@@ -32,11 +34,21 @@ export class AuthService {
     const db_user = await this.checkUserCredentials(basicCredentialsDto);
     const { password: removedPassword, pinCode: removedPinCode,
       ...result } = db_user;
-    const token = this.refreshTokenService.sign(result);
+
+    const tokenId = uuidv4();
+    const token = this.refreshTokenService.sign({ tokenId, ...result });
 
     this.logger.log(`user "ID: ${db_user.id}" logged in successfully`);
 
     return { ...result, token };
+  }
+
+  async logoutUser(userId: string, tokenId: string) {
+    const db_user = await this.userDao.find(userId);
+
+    await this.blacklistService.revokeToken(tokenId, "refreshToken");
+
+    this.logger.log(`user "ID: ${db_user.id}" logged out successfully`);
   }
 
   async createUserSession(id: string, pinCode: string) {
@@ -49,6 +61,14 @@ export class AuthService {
     this.logger.log(`user "ID: ${userAuthenticated.id}" session started successfully`);
 
     return { ...result, token };
+  }
+
+  async logoutUserSession(userId: string, tokenId: string) {
+    const db_user = await this.userDao.find(userId);
+
+    await this.blacklistService.revokeToken(tokenId, "accessToken");
+
+    this.logger.log(`user "ID: ${db_user.id}" session ended successfully`);
   }
 
   async obtainUserRegisterStep(userId: string): Promise<string> {

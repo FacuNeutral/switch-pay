@@ -34,6 +34,10 @@ export const UserEmail = createParamDecorator<string>(
     (data: unknown, ctx: ExecutionContext) => {
         return ctx.switchToHttp().getRequest().user.email;
 
-
     });
 
+export const TokenId = createParamDecorator<string>(
+    (data: unknown, ctx: ExecutionContext) => {
+        return ctx.switchToHttp().getRequest().user.tokenId;
+    }
+);

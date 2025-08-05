@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import envs from '@envs';
 
 import JwtStrategyFactory from '@auth/helpers/jwt-strategy-factory';
+import { BlacklistService } from 'src/shared/blacklist/blacklist.service';
 
 @Injectable()
 export class RefreshTokenStrategy extends JwtStrategyFactory(
@@ -9,9 +10,16 @@ export class RefreshTokenStrategy extends JwtStrategyFactory(
     'refreshToken',
     envs.USER_REFRESH_TOKEN_SECRET,
 ) {
-    // async validate(payload: any) {
-    //     return payload;
-    // }
+    constructor(private readonly blacklistService: BlacklistService) {
+        super();
+    }
+
+    async validate(payload: any) {
+        const isTokenRevoked = await this.blacklistService.isTokenRevoked(payload.tokenId);
+        if (isTokenRevoked) throw new UnauthorizedException('token invalid');
+
+        return payload;
+    }
 }
 
 @Injectable()
@@ -20,8 +28,15 @@ export class AccessTokenStrategy extends JwtStrategyFactory(
     'accessToken',
     envs.USER_ACCESS_TOKEN_SECRET,
 ) {
+
+    constructor(private readonly blacklistService: BlacklistService) {
+        super();
+    }
+
     async validate(payload: any) {
-        // console.log('Access Token Payload:', payload);
+        const isTokenRevoked = await this.blacklistService.isTokenRevoked(payload.tokenId);
+        if (isTokenRevoked) throw new UnauthorizedException('token invalid');
+
         return payload;
     }
 }
@@ -33,7 +48,15 @@ export class RecoveryTokenStrategy extends JwtStrategyFactory(
     envs.USER_RECOVERY_TOKEN_SECRET,
     'bearer'
 ) {
+
+    constructor(private readonly blacklistService: BlacklistService) {
+        super();
+    }
+
     async validate(payload: any) {
+        const isTokenRevoked = await this.blacklistService.isTokenRevoked(payload.tokenId);
+        if (isTokenRevoked) throw new UnauthorizedException('token invalid');
+
         return payload;
     }
 }

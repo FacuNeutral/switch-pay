@@ -2,7 +2,7 @@ import { BadRequestException, ConflictException, HttpException, Injectable, Inte
 import { InjectRepository } from "@nestjs/typeorm";
 import { createRandomCode } from "src/_common/utils/generators/random-code";
 import { Repository } from "typeorm";
-import { GenericOperationDao } from "./base/base-dao";
+import { GenericOperationDao } from "../bases/base-dao";
 import { SecurityCode } from "@db/entities";
 import { UserAction } from "@db/interfaces";
 

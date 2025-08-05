@@ -30,7 +30,7 @@ export class UsersController {
     @Get("test")
     @ResMessage("test endpoint")
     async testEndpoint() {
-        await this.usersService.testService();
+      
         console.log("Test endpoint hit");
 
     }

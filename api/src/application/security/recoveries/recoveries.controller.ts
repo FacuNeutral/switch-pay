@@ -1,11 +1,10 @@
 import { Controller, InternalServerErrorException, Patch } from '@nestjs/common';
-import { Body, Injectable, Post, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, UseGuards } from '@nestjs/common';
 import { RecoveryTokenAuthGuard } from '@auth/guards/recovery-auth.guard';
 
 import { RecoveryUserData } from '@db/interfaces';
 import { UserPasswordDto, UserPinCodeDto } from '@auth/dtos/user-auth.dto';
 import { RecoveryService } from './recoveries.service';
-import { CONSTRAINT } from 'sqlite3';
 import { RecoveryUser } from 'src/_common/decorators/token-user.decorator';
 import { ResMessage } from '@config/response-format/single-response/response-message.decorator';
 

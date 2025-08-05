@@ -17,9 +17,11 @@
       "@envs": ["src/_common/config/envs/env-var.plugin"],
       "@middlewares/*": ["src/_common/middlewares/*"],
       "@integrations/*": ["src/integrations/*"],
+      "@decorators/*": ["src/_common/decorators/*"],
 
       //% Database's
       "@db/*": ["src/_common/database/main/*"],
+      "@cache/*": ["src/_common/database/cache/*"],
 
       //% App Modules
       "@users/*": ["src/application/users/*"],

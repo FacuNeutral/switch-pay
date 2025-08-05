@@ -1,9 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { CacheModule as CacheManagerModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
-import envs from '@envs';
 
+import envs from '@envs';
 import { MainDBModule } from '@db/main-db.module';
 import { MorganMiddleware } from '@middlewares/morgan.middleware';
 
@@ -14,20 +15,25 @@ import { ProofsModule } from '@proofs/proofs.module';
 import { RecoveryModule } from '@recoveries/recoveries.module';
 import { RecoveryController } from '@recoveries/recoveries.controller';
 import { RecoveryService } from '@recoveries/recoveries.service';
+import { ColdStorageModule } from './_common/database/cold-storage/cold-storage.module';
+import { CacheModule } from './_common/database/cache/cache.module';
+import { SandboxModule } from './sandbox/sandbox.module';
+import { BlacklistModule } from './shared/blacklist/blacklist.module';
+
 
 @Module({
   imports: [
 
-    //* Envs
+    //% Envs
     ConfigModule.forRoot(),
 
-    //* Devtools
+    //% Devtools
     DevtoolsModule.register({
       http: envs.DEV_MODE,
       port: 8000,
     }),
 
-    //* Postgresql (TypeORM)
+    //% Postgresql (TypeORM)
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: envs.DB_HOST,
@@ -40,7 +46,14 @@ import { RecoveryService } from '@recoveries/recoveries.service';
       //  dropSchema: true,
     }),
 
-    //* App Modules
+    //% Memory Cache
+    CacheManagerModule.register({
+      ttl: 3600,
+      max: 1000,
+      isGlobal: true,
+    }),
+
+    //% App Modules Picks
     // ProductsModule,
     MainDBModule,
     UsersModule,
@@ -50,6 +63,11 @@ import { RecoveryService } from '@recoveries/recoveries.service';
     AuthModule,
     ProofsModule,
     RecoveryModule,
+    ColdStorageModule,
+    CacheModule,
+    SandboxModule,
+    BlacklistModule,
+
   ],
   providers: [SessionSerializer, RecoveryService],
   controllers: [RecoveryController],

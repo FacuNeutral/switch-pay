@@ -10,6 +10,7 @@ import { JwtStrategies } from './strategies/jwt.strategy';
 import { MainDBModule } from '@db/main-db.module';
 import { User } from '@db/entities/user.entity';
 import envs from '@config/envs/env-var.plugin';
+import { BlacklistModule } from 'src/shared/blacklist/blacklist.module';
 
 
 const {
@@ -25,6 +26,7 @@ const {
     MainDBModule,
     TypeOrmModule.forFeature([User]),
     JwtModule,
+    BlacklistModule,
   ],
   controllers: [AuthController],
   providers: [
