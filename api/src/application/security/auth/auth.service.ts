@@ -51,12 +51,12 @@ export class AuthService {
     this.logger.log(`user "ID: ${db_user.id}" logged out successfully`);
   }
 
-  async createUserSession(id: string, pinCode: string) {
+  async createUserSession(id: string, pinCode: string, refreshTokenId: string) {
 
     const userAuthenticated = await this.checkPinCode(id, pinCode);
     const { password: removedPassword, pinCode: removedPinCode,
       ...result } = userAuthenticated;
-    const token = this.accessTokenService.sign(result);
+    const token = this.accessTokenService.sign({ ...result, tokenId: refreshTokenId });
 
     this.logger.log(`user "ID: ${userAuthenticated.id}" session started successfully`);
 

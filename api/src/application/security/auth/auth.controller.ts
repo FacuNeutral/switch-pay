@@ -11,6 +11,7 @@ import { AuthService } from "./auth.service";
 import { BasicCredentialsDto, CreateUserDto, UserPinCodeDto } from "./dtos/user-auth.dto";
 import { AccessTokenAuthGuard, InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
 import { parseTimeDaysToMs, parseTimeMinutesToMs } from "../../../_common/utils/calcs/parse-time";
+import { UserToken } from "@db/interfaces/user-token.interface";
 
 @Controller("auth")
 export class AuthController {
@@ -44,10 +45,16 @@ export class AuthController {
 
   @UseGuards(RefreshTokenAuthGuard)
   @Post("logout")
-  async logoutUser(@Res() res: Response, @CurrentUser() user: { id: string, tokenId: string }) {
+  async logoutUser(@Res() res: Response, @CurrentUser() user: UserToken) {
     await this.authService.logoutUser(user.id, user.tokenId);
 
     res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: !envs.DEV_MODE,
+      sameSite: envs.DEV_MODE ? "lax" : "strict",
+    });
+
+    res.clearCookie("accessToken", {
       httpOnly: true,
       secure: !envs.DEV_MODE,
       sameSite: envs.DEV_MODE ? "lax" : "strict",
@@ -59,8 +66,8 @@ export class AuthController {
   @UseGuards(RefreshTokenAuthGuard)
   @Post("session")
   @ResMessage("session started successfully")
-  async createUserSession(@Res() res: Response, @Body() { pinCode }: UserPinCodeDto, @UserId() userId: string) {
-    const userSession = await this.authService.createUserSession(userId, pinCode);
+  async createUserSession(@Res() res: Response, @Body() { pinCode }: UserPinCodeDto, @CurrentUser() user: UserToken) {
+    const userSession = await this.authService.createUserSession(user.id, pinCode, user.tokenId);
 
     res.cookie("accessToken", userSession.token, {
       httpOnly: true,
@@ -76,7 +83,7 @@ export class AuthController {
 
   @UseGuards(AccessTokenAuthGuard)
   @Post("logout-session")
-  async logoutUserSession(@Res() res: Response, @CurrentUser() user: { id: string, tokenId: string }) {
+  async logoutUserSession(@Res() res: Response, @CurrentUser() user: UserToken) {
     await this.authService.logoutUserSession(user.id, user.tokenId);
 
     res.clearCookie("accessToken", {

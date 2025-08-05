@@ -17,7 +17,7 @@ import { RecoveryController } from '@recoveries/recoveries.controller';
 import { RecoveryService } from '@recoveries/recoveries.service';
 import { ColdStorageModule } from './_common/database/cold-storage/cold-storage.module';
 import { CacheModule } from './_common/database/cache/cache.module';
-import { SandboxModule } from './sandbox/sandbox.module';
+import { SandboxModule } from './_sandbox/sandbox.module';
 import { BlacklistModule } from './shared/blacklist/blacklist.module';
 
 
@@ -44,6 +44,15 @@ import { BlacklistModule } from './shared/blacklist/blacklist.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: envs.DEV_MODE,
       //  dropSchema: true,
+    }),
+
+    //% SQLite (TypeORM)
+    TypeOrmModule.forRoot({
+      name: 'sqlite',
+      type: 'sqlite',
+      database: './src/_common/database/cold-storage/database.sqlite',
+      entities: [__dirname + '/**/*.sqlite.entity{.ts,.js}'],
+      synchronize: true,
     }),
 
     //% Memory Cache
