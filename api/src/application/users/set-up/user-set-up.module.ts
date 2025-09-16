@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
+import { UserSetUpService } from './user-set-up.service';
+import { UserSetUpController } from './user-set-up.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@db/entities/user.entity';
 import { MainDBModule } from '@db/main-db.module';
@@ -10,8 +10,8 @@ import { MainDBModule } from '@db/main-db.module';
     MainDBModule,
     TypeOrmModule.forFeature([User]),
   ],
-  exports: [UsersService],
-  providers: [UsersService],
-  controllers: [UsersController],
+  exports: [UserSetUpService],
+  providers: [UserSetUpService],
+  controllers: [UserSetUpController],
 })
-export class UsersModule { }
+export class UserSetUpModule { }

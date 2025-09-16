@@ -32,7 +32,7 @@ export class BaseNoValueCache {
 
             if (entity !== null) return false;
 
-            this.logger.log(`Entity ${this.entityName} with ID ${id} retrieved from cache`);
+            this.logger.verbose(`Entity ${this.entityName} with ID ${id} retrieved from cache`);
 
             return true;
         } catch (error) { throw await this.baseHandleException(error); }
@@ -46,7 +46,7 @@ export class BaseNoValueCache {
             if (existingEntity === null) throw new ConflictException(`${this.entityName} with ID ${id} already exists in cache`);
 
             await this.cacheManager.set(`${this.entityName}:${id}`, null, ttlMs);
-            this.logger.log(`${this.entityName} with ID ${id} created successfully in cache`);
+            this.logger.verbose(`${this.entityName} with ID ${id} created successfully in cache`);
 
             return { id, ttl: ttlMs || null };
         } catch (error) {
@@ -62,7 +62,7 @@ export class BaseNoValueCache {
 
             await this.cacheManager.set(`${this.entityName}:${id}`, entity, ttlMs);
 
-            this.logger.log(`${this.entityName} with ID ${id} TTL updated to ${ttlMs} milliseconds`);
+            this.logger.verbose(`${this.entityName} with ID ${id} TTL updated to ${ttlMs} milliseconds`);
 
             return { id, ttlMs };
         } catch (error) {
@@ -76,7 +76,7 @@ export class BaseNoValueCache {
             if (!entity) throw new NotFoundException(`${this.entityName} with ID ${id} not found in cache`);
 
             await this.cacheManager.del(`${this.entityName}:${id}`);
-            this.logger.log(`${this.entityName} with ID ${id} removed successfully from cache`);
+            this.logger.verbose(`${this.entityName} with ID ${id} removed successfully from cache`);
 
             return { id };
 

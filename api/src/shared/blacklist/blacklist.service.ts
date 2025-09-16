@@ -1,6 +1,6 @@
 import envs from '@config/envs/env-var.plugin';
 import { Injectable, Logger } from '@nestjs/common';
-import { BlacklistCacheRepository } from 'src/_common/database/cache/repositories/blacklist-cache.repository';
+import { BlacklistDao } from '@cache/dao/blacklist.dao';
 import { parseTimeDaysToMs, parseTimeMinutesToMs } from 'src/_common/utils/calcs/parse-time';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class BlacklistService {
     private readonly logger = new Logger(BlacklistService.name);
 
     constructor(
-        private readonly blacklistRepository: BlacklistCacheRepository,
+        private readonly blacklistRepository: BlacklistDao,
     ) { }
 
     async isTokenRevoked(tokenId: string) { return await this.blacklistRepository.exists(tokenId) }

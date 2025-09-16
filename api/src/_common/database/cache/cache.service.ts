@@ -1,7 +1,7 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-
+import { Logger } from "@config/loggers";
 export interface SessionData {
     userId: string;
     device: string;
@@ -14,7 +14,7 @@ export interface SessionData {
 export class CacheService {
 
     constructor(@Inject(CACHE_MANAGER) protected cacheManager: Cache) {
- 
+
     }
 
 
@@ -22,7 +22,7 @@ export class CacheService {
     //     const session = await this.cacheManager.get<SessionData>(sessionId);
     //     if (!session) throw new NotFoundException(`Session ${sessionId} not found in cache`);
 
-    //     this.logger.log(`Session ${sessionId} retrieved from cache`);
+    //     this.logger.verbose(`Session ${sessionId} retrieved from cache`);
 
     //     return session;
     // }
@@ -33,7 +33,7 @@ export class CacheService {
     //     const saved = await this.cacheManager.set(sessionId, data, ttlSeconds);
 
 
-    //     this.logger.log(`Session ${sessionId} saved with TTL of ${ttlSeconds} seconds`);
+    //     this.logger.verbose(`Session ${sessionId} saved with TTL of ${ttlSeconds} seconds`);
     //     return saved;
     // }
 
@@ -44,7 +44,7 @@ export class CacheService {
     //     const updatedSession = { ...session, ...data };
     //     await this.cacheManager.set(sessionId, updatedSession);
 
-    //     this.logger.log(`Session ${sessionId} updated in cache`);
+    //     this.logger.verbose(`Session ${sessionId} updated in cache`);
 
     //     return updatedSession;
     // }
@@ -52,7 +52,7 @@ export class CacheService {
     // async deleteSession(sessionId: string) {
     //     const deleted = await this.cacheManager.del(sessionId);
 
-    //     this.logger.log(`Session ${deleted} deleted from cache`);
+    //     this.logger.verbose(`Session ${deleted} deleted from cache`);
 
     //     return deleted;
     // }

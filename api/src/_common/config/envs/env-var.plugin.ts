@@ -19,6 +19,10 @@ const envs = {
     RESEND_API_KEY: env.get("RESEND_API_KEY").required().asString(),
     RESEND_DOMAIN_EMAIL: env.get("RESEND_DOMAIN_EMAIL").required().asString(),
 
+    //% TELEMETRY:
+    TELEMETRY_API_KEY: env.get("TELEMETRY_API_KEY").required().asString(),
+    TELEMETRY_URL: env.get("TELEMETRY_URL").required().asString(),
+
     //% DB:
     DB_HOST: env.get("DB_HOST").required().asString(),
     DB_PORT: env.get("DB_PORT").required().asPortNumber(),

@@ -1,6 +1,7 @@
-import { Logger } from '@nestjs/common';
+
 import { yellow, red } from 'colorette';
 import 'reflect-metadata';
+import { Logger } from '../winston/logger.service';
 
 /**
  * English: The `SkipAutoLog` decorator is a method decorator that marks a method to skip automatic error logging.
@@ -16,7 +17,6 @@ export function SkipAutoLog(): MethodDecorator {
   };
 }
 
-
 /**
  * English: The `AutoLogErrors` decorator is a class decorator that automatically wraps all methods of a class
  * (except the constructor and methods marked with `SkipAutoLog`) with error logging functionality. If an error
@@ -31,23 +31,23 @@ export function SkipAutoLog(): MethodDecorator {
  */
 export function AutoLogErrors(): ClassDecorator {
   return function (target: any) {
-    const logger = new Logger(target.name);
     const methodNames = Object.getOwnPropertyNames(target.prototype);
-
     methodNames.forEach((methodName) => {
       const originalMethod = target.prototype[methodName];
 
       if (typeof originalMethod !== 'function' || methodName === 'constructor') return;
 
-      // Verifica si el método tiene la metadata para omitir el log
+      // Check if the method is marked with SkipAutoLog
       const shouldSkip = Reflect.getMetadata('skipAutoLog', target.prototype, methodName);
       if (shouldSkip) return;
-
       target.prototype[methodName] = async function (...args: any[]) {
         try {
           return await originalMethod.apply(this, args);
         } catch (error) {
-          logger.error(`${yellow(`[${methodName}]`)} ${red(error.message)}`);
+          this.logger.error(error, undefined, {
+            contextMethod: methodName
+          })
+          // `${yellow(`[${methodName}]`)} ${red(error.message)}`);
           throw error;
         }
       };

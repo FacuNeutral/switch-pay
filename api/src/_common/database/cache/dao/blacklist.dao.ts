@@ -6,7 +6,7 @@ import envs from '@config/envs/env-var.plugin';
 import { parseTimeMinutesToMs, parseTimeDaysToMs } from 'src/_common/utils/calcs/parse-time';
 
 @Injectable()
-export class BlacklistCacheRepository extends BaseNoValueCache {
+export class BlacklistDao extends BaseNoValueCache {
 
     constructor(@Inject(CACHE_MANAGER) protected cacheManager: Cache) {
         super('blacklist', cacheManager);

@@ -8,7 +8,6 @@ import envs from '@envs';
 import { MainDBModule } from '@db/main-db.module';
 import { MorganMiddleware } from '@middlewares/morgan.middleware';
 
-import { UsersModule } from '@users/users.module';
 import { AuthModule } from '@auth/auth.module';
 import { SessionSerializer } from '@auth/session.serializer';
 import { ProofsModule } from '@proofs/proofs.module';
@@ -19,6 +18,11 @@ import { ColdStorageModule } from './_common/database/cold-storage/cold-storage.
 import { CacheModule } from './_common/database/cache/cache.module';
 import { SandboxModule } from './_sandbox/sandbox.module';
 import { BlacklistModule } from './shared/blacklist/blacklist.module';
+import { UserManagerModule } from './shared/user-manager/user-manager.module';
+import { UserSessionsModule } from './application/users/sessions/user-sessions.module';
+import { UserSetUpModule } from '@users/user-set-up.module';
+import { RequestContextMiddleware } from '@middlewares/request-context.middleware';
+import { LoggerModule } from '@config/winston/logger.module';
 
 
 @Module({
@@ -41,7 +45,7 @@ import { BlacklistModule } from './shared/blacklist/blacklist.module';
       username: envs.DB_USERNAME,
       password: envs.DB_PASSWORD,
       database: envs.DB_NAME,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/_common/database/main/entities/*{.ts,.js}'],
       synchronize: envs.DEV_MODE,
       //  dropSchema: true,
     }),
@@ -64,8 +68,8 @@ import { BlacklistModule } from './shared/blacklist/blacklist.module';
 
     //% App Modules Picks
     // ProductsModule,
+    LoggerModule,
     MainDBModule,
-    UsersModule,
     RecoveryModule,
     // AccountsModule,
     // TransactionsModule,
@@ -76,7 +80,10 @@ import { BlacklistModule } from './shared/blacklist/blacklist.module';
     CacheModule,
     SandboxModule,
     BlacklistModule,
-
+    UserManagerModule,
+    UserSessionsModule,
+    UserSetUpModule,
+    
   ],
   providers: [SessionSerializer, RecoveryService],
   controllers: [RecoveryController],
@@ -84,5 +91,6 @@ import { BlacklistModule } from './shared/blacklist/blacklist.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(MorganMiddleware).forRoutes('*path');
+    consumer.apply(RequestContextMiddleware).forRoutes('*');
   }
 }

@@ -1,6 +1,7 @@
-import { ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { Cache } from "cache-manager";
 
+import Logger from "@logger";
 @Injectable()
 export class BaseMemoryCache<T> {
 
@@ -26,7 +27,7 @@ export class BaseMemoryCache<T> {
             if (!entity) throw new NotFoundException(`${this.entityName} with ID ${id} not found in cache`);
 
 
-            this.logger.log(`Entity ${this.entityName} with ID ${id} retrieved from cache`);
+            this.logger.verbose(`Entity ${this.entityName} with ID ${id} retrieved from cache`);
             return entity;
         } catch (error) { throw await this.baseHandleException(error); }
     }
@@ -37,7 +38,7 @@ export class BaseMemoryCache<T> {
             if (existingEntity) throw new ConflictException(`${this.entityName} with ID ${id} already exists in cache`);
 
             await this.cacheManager.set(`${this.entityName}:${id}`, entity, ttlSeconds);
-            this.logger.log(`${this.entityName} with ID ${id} created successfully in cache`);
+            this.logger.verbose(`${this.entityName} with ID ${id} created successfully in cache`);
 
             return entity;
         } catch (error) {
@@ -53,7 +54,7 @@ export class BaseMemoryCache<T> {
 
         await this.cacheManager.set(id, updatedEntity);
 
-        this.logger.log(`${this.entityName} with ID ${id} updated successfully in cache`);
+        this.logger.verbose(`${this.entityName} with ID ${id} updated successfully in cache`);
 
         return updatedEntity;
     }

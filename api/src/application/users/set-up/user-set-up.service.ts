@@ -1,7 +1,8 @@
-import { BadRequestException, ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
+import { Logger } from "@config/loggers";
 import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
 import * as bcrypt from "bcrypt";
 import { SetUpProfileDto } from './dtos/set-up.dto';
@@ -11,18 +12,14 @@ import { CreateUserDto } from '@auth/dtos/user-auth.dto';
 
 @Injectable()
 @AutoLogErrors()
-export class UsersService {
+export class UserSetUpService {
 
-    private readonly logger = new Logger(UsersService.name);
+    private readonly logger = new Logger(UserSetUpService.name);
 
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
         private readonly userDao: UserDao,
-        // @Inject("USER_REFRESH_TOKEN")
-        // private readonly refreshTokenService: JwtService,
-        // @Inject("USER_ACCESS_TOKEN")
-        // private readonly accessTokenService: JwtService,
     ) { }
 
 

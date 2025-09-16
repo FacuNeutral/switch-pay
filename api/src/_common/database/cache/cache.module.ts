@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { BlacklistCacheRepository } from './repositories/blacklist-cache.repository';
+import { BlacklistDao } from './dao/blacklist.dao';
 
 @Module({
-  providers: [BlacklistCacheRepository],
-  exports: [BlacklistCacheRepository],
+  providers: [BlacklistDao],
+  exports: [BlacklistDao],
 })
 export class CacheModule { }

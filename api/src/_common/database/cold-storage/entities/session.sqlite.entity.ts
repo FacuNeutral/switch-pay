@@ -1,17 +1,14 @@
 import { BadRequestException } from '@nestjs/common';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, BeforeInsert, BeforeUpdate, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, BeforeInsert, BeforeUpdate, UpdateDateColumn, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'sessions', database: "sqlite" })
-export class Session {
+@Entity({ name: 'sessions'})
+export class SessionSqlite {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
     @Column('text')
     userId: string;
-
-    @Column('text')
-    tokenId: string;
 
     @Column('text')
     device: string;

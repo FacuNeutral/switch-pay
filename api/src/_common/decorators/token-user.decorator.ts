@@ -37,8 +37,8 @@ export const UserEmail = createParamDecorator<string>(
 
     });
 
-export const TokenId = createParamDecorator<string>(
+export const SessionId = createParamDecorator<string>(
     (data: unknown, ctx: ExecutionContext) => {
-        return ctx.switchToHttp().getRequest().user.tokenId;
+        return ctx.switchToHttp().getRequest().user.sessionId;
     }
 );

@@ -2,7 +2,7 @@ import { BadRequestException, ConflictException, HttpException, Injectable, Inte
 import { InjectRepository } from "@nestjs/typeorm";
 import { createRandomCode } from "src/_common/utils/generators/random-code";
 import { Repository } from "typeorm";
-import { GenericOperationDao } from "../bases/base-dao";
+import { GenericOperationDao } from "../../../config/typeorm/base-dao";
 import { SecurityCode } from "@db/entities";
 import { UserAction } from "@db/interfaces";
 
@@ -40,7 +40,7 @@ export class SecurityCodeDao extends GenericOperationDao<SecurityCode> {
             //* Return code without hashing
             securityCode.code = code;
 
-            this.logger.log(`Security code for user ID ${userId} created successfully`);
+            this.logger.verbose(`Security code for user ID ${userId} created successfully`);
 
             return securityCode;
 
@@ -54,7 +54,7 @@ export class SecurityCodeDao extends GenericOperationDao<SecurityCode> {
             const securityCode = await this.securityCodeRepository.findOneBy({ userId, userAction });
             if (!securityCode) throw new BadRequestException('Security code not found for the specified user action');
 
-            this.logger.log(`Security code for user ID ${userId} retrieved successfully`);
+            this.logger.verbose(`Security code for user ID ${userId} retrieved successfully`);
 
             return securityCode;
 
