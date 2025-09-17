@@ -1,20 +1,20 @@
 import 'winston-daily-rotate-file';
 
-import { createLogger, format, transports } from 'winston';
+import { createLogger, format } from 'winston';
 
 import { Logtail } from '@logtail/node';
 import { LogtailTransport } from '@logtail/winston';
 
-import { ignoreNestLogs, metadataFormat, printFormattedLog } from './helpers/log-format';
-import { LogData, LoggerConfig } from './interfaces/logger.interface';
 import envs from '../envs/env-var.plugin';
+import { fileTransport } from './helpers/file-transport';
+import { ignoreNestLogs, printFormattedLog } from './helpers/log-format';
+import { LogData, LogFileName, LoggerConfig } from './interfaces/logger.interface';
 
 
-// Client for send logs to Telemetry
+// Client for send logs to Telemetry_
 const logtail = new Logtail(envs.TELEMETRY_API_KEY, {
     endpoint: envs.TELEMETRY_URL,
 });
-
 
 export const winstonConfig = {
     loggerInfo: createLogger({
@@ -30,17 +30,8 @@ export const winstonConfig = {
             })
         ),
         transports: [
-            new transports.DailyRotateFile({
-                filename: 'log/all/all-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
-
-            new transports.DailyRotateFile({
-                filename: 'log/info/info-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
+            fileTransport(LogFileName.ALL),
+            fileTransport(LogFileName.INFO),
             new LogtailTransport(logtail),
         ],
     }),
@@ -57,17 +48,8 @@ export const winstonConfig = {
             })
         ),
         transports: [
-            new transports.DailyRotateFile({
-                filename: 'log/all/all-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
-
-            new transports.DailyRotateFile({
-                filename: 'log/verbose/verbose-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
+            fileTransport(LogFileName.ALL),
+            fileTransport(LogFileName.VERBOSE),
         ],
     }),
 
@@ -79,22 +61,12 @@ export const winstonConfig = {
             format.printf((log: LogData) => {
                 printFormattedLog(log);
 
-                console.log("metadata log", log.metadata);
                 return JSON.stringify(log);
             })
         ),
         transports: [
-            new transports.DailyRotateFile({
-                filename: 'log/all/all-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
-
-            new transports.DailyRotateFile({
-                filename: 'log/error/error-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
+            fileTransport(LogFileName.ALL),
+            fileTransport(LogFileName.ERROR),
             new LogtailTransport(logtail),
         ],
     }),
@@ -103,35 +75,17 @@ export const winstonConfig = {
         level: 'warn',
         format: format.combine(
             format.timestamp(),
-            // Formato personalizado para unir meta con el log
+            ignoreNestLogs(),
             format.printf((log: LoggerConfig) => {
-                // Print log on console
                 printFormattedLog(log);
 
-                // Prepare log for transport
-                const metadata = metadataFormat(log.metadata);
-                const headers = log.headers || {};
-                const message = log.message || 'No message';
-
-                return JSON.stringify({
-                    message,
-                    ...metadata,
-                    ...headers
-                });
+                return JSON.stringify(log);
             })
         ),
         transports: [
-            new transports.DailyRotateFile({
-                filename: 'log/all/all-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
-
-            new transports.DailyRotateFile({
-                filename: 'log/warn/warn-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
+            fileTransport(LogFileName.ALL),
+            fileTransport(LogFileName.WARN),
+            new LogtailTransport(logtail),
         ],
     }),
 
@@ -139,35 +93,16 @@ export const winstonConfig = {
         level: 'debug',
         format: format.combine(
             format.timestamp(),
-            // Formato personalizado para unir meta con el log
+            ignoreNestLogs(),
             format.printf((log: LoggerConfig) => {
-                // Print log on console
                 printFormattedLog(log);
 
-                // Prepare log for transport
-                const metadata = metadataFormat(log.metadata);
-                const headers = log.headers || {};
-                const message = log.message || 'No message';
-
-                return JSON.stringify({
-                    message,
-                    ...metadata,
-                    ...headers
-                });
+                return JSON.stringify(log);
             })
         ),
         transports: [
-            new transports.DailyRotateFile({
-                filename: 'log/all/all-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            }),
-
-            new transports.DailyRotateFile({
-                filename: 'log/debug/debug-%DATE%.log',
-                datePattern: 'YYYY-MM-DD',
-                maxFiles: '7d',
-            })
+            fileTransport(LogFileName.ALL),
+            fileTransport(LogFileName.DEBUG),
         ],
     }),
 };

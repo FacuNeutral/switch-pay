@@ -1,7 +1,6 @@
 import { RequestMethod } from '@nestjs/common';
 import { TransformableInfo } from 'logform';
 import { agent } from 'supertest';
-import { Logger } from 'winston';
 
 export interface LoggerConfig extends TransformableInfo {
     timestamp: string;
@@ -44,4 +43,20 @@ export interface LoggerInstances {
     loggerAll: Logger;
 }
 
-export default Logger;
+
+export enum LogFileName {
+    ALL = 'log/all/all-%DATE%.log',
+    INFO = 'log/info/info-%DATE%.log',
+    VERBOSE = 'log/verbose/verbose-%DATE%.log',
+    ERROR = 'log/error/error-%DATE%.log',
+    WARN = 'log/warn/warn-%DATE%.log',
+    DEBUG = 'log/debug/debug-%DATE%.log',
+}
+
+export enum LogDatePattern {
+    DEFAULT = 'YYYY-MM-DD',
+}
+
+export enum LogMaxFiles {
+    DEFAULT = '7d',
+}
