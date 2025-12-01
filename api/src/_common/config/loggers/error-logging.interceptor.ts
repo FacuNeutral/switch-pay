@@ -1,5 +1,6 @@
 
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { Logger } from "@config/loggers";
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { yellow, red } from 'colorette';  // Importar solo la función 'yellow' de colorette

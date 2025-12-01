@@ -2,28 +2,28 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res, Unauthorized
 import { Response } from "express";
 
 import envs from "@envs";
-import sendResponse from "src/_common/config/response-format/custom-response/send-response.helper";
-import { ResMessage } from "src/_common/config/response-format/single-response/response-message.decorator";
-import { UserId } from "src/_common/decorators/token-user.decorator";
-
-import { UsersService } from "../../users/users.service";
+import sendResponse from "@config/response-format/custom-response/send-response.helper";
+import { ResMessage } from "@config/response-format/single-response/response-message.decorator";
+import { CurrentUser, SessionId, UserId } from "@decorators/token-user.decorator";
 import { AuthService } from "./auth.service";
 import { BasicCredentialsDto, CreateUserDto, UserPinCodeDto } from "./dtos/user-auth.dto";
-import { InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
-import { parseTimeDaysToMs, parseTimeMinutesToMs } from "./helpers/parse-time-to-ms";
+import { AccessTokenAuthGuard, InitialUserAuthGuard, RefreshTokenAuthGuard, UserAuthGuard } from "./guards/user-auth.guard";
+import { parseTimeDaysToMs, parseTimeMinutesToMs } from "../../../_common/utils/calcs/parse-time";
+import { UserToken } from "@db/interfaces/user-token.interface";
+import { UserManagerService } from "src/shared/user-manager/user-manager.service";
 
 @Controller("auth")
 export class AuthController {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly usersService: UsersService,
+    private readonly usersManagerService: UserManagerService,
   ) { }
 
   @Post("register")
   @ResMessage("user created successfully")
   async createUser(@Body() body: CreateUserDto) {
-    return await this.usersService.createUser(body);
+    return await this.usersManagerService.createUser(body);
   }
 
   @Post("login")
@@ -43,10 +43,30 @@ export class AuthController {
   }
 
   @UseGuards(RefreshTokenAuthGuard)
+  @Post("logout")
+  async logoutUser(@Res() res: Response, @CurrentUser() user: UserToken) {
+    await this.authService.logoutUser(user.id, user.sessionId);
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: !envs.DEV_MODE,
+      sameSite: envs.DEV_MODE ? "lax" : "strict",
+    });
+
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: !envs.DEV_MODE,
+      sameSite: envs.DEV_MODE ? "lax" : "strict",
+    });
+
+    sendResponse(res, "logout successfully");
+  }
+
+  @UseGuards(RefreshTokenAuthGuard)
   @Post("session")
   @ResMessage("session started successfully")
-  async createUserSession(@Res() res: Response, @Body() { pinCode }: UserPinCodeDto, @UserId() userId: string) {
-    const userSession = await this.authService.createUserSession(userId, pinCode);
+  async createUserSession(@Res() res: Response, @Body() { pinCode }: UserPinCodeDto, @CurrentUser() user: UserToken) {
+    const userSession = await this.authService.createUserSession(user.id, user.sessionId, pinCode);
 
     res.cookie("accessToken", userSession.token, {
       httpOnly: true,
@@ -60,16 +80,30 @@ export class AuthController {
     sendResponse(res, "session started successfully", userData);
   }
 
+  // @UseGuards(AccessTokenAuthGuard)
+  // @Post("logout-session")
+  // async logoutUserSession(@Res() res: Response, @CurrentUser() user: UserToken) {
+  //   await this.authService.logoutUserSession(user.id, user.sessionId);
+
+  //   res.clearCookie("accessToken", {
+  //     httpOnly: true,
+  //     secure: !envs.DEV_MODE,
+  //     sameSite: envs.DEV_MODE ? "lax" : "strict",
+  //   });
+
+  //   sendResponse(res, "session closed successfully");
+  // }
 
   //% Test Routes
 
   @UseGuards(UserAuthGuard)
   @Get("test-session")
   @ResMessage("User fetched successfully")
-  async testSession() {
+  async testSession(@CurrentUser() user) {
+    await this.authService.test();
     return {
-      email: "test",
-      password: "test",
+      email: "login",
+      password: "test pass",
     }
   }
 
@@ -87,7 +121,7 @@ export class AuthController {
   @Get("test-login")
   @ResMessage("User login successfully")
   async testLogin(@Req() req: Request & { user?: any }) {
-    console.log(req?.user);
+    await this.authService.test();
     return {
       email: "login",
       password: "test pass",

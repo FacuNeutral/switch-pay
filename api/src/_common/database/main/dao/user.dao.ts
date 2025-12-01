@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, HttpException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { BaseDao } from "./base/base-dao";
+import { BaseDao } from "../../../config/typeorm/base-dao";
 import { User } from "@db/entities";
 import { CreateUserDto } from "@auth/dtos/user-auth.dto";
 
@@ -16,9 +16,9 @@ export class UserDao extends BaseDao<User> {
     async getUserByEmail(email: string): Promise<User> {
         try {
             const user = await this.userRepository.findOneBy({ email });
-            if (!user) throw new BadRequestException('user email not found');
+            if (!user) throw new BadRequestException("user email not found");
 
-            this.logger.log(`User with email ${email} retrieved`);
+            this.logger.verbose(`user retrieved`);
 
             return user;
 
@@ -37,7 +37,7 @@ export class UserDao extends BaseDao<User> {
             const newUser = this.userRepository.create(user);
             await this.userRepository.save(newUser);
 
-            this.logger.log(`User ID ${newUser.id} created successfully`);
+            this.logger.verbose(`User ID ${newUser.id} created successfully`);
 
             return newUser;
 
@@ -55,7 +55,7 @@ export class UserDao extends BaseDao<User> {
             throw new ConflictException("invalid User ID format");
 
         if (error instanceof HttpException) throw error;
-        this.delete
+
         this.logger.error(`Internal error: ${error.message}`);
         throw new InternalServerErrorException("an unexpected error occurred while processing the request");
 

@@ -1,7 +1,8 @@
-import { BadRequestException, ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
+import { Logger } from "@config/loggers";
 import { AutoLogErrors, SkipAutoLog } from 'src/_common/config/loggers/auto-log-errors.decorator';
 import * as bcrypt from "bcrypt";
 import { SetUpProfileDto } from './dtos/set-up.dto';
@@ -11,23 +12,16 @@ import { CreateUserDto } from '@auth/dtos/user-auth.dto';
 
 @Injectable()
 @AutoLogErrors()
-export class UsersService {
+export class UserSetUpService {
 
-    private readonly logger = new Logger(UsersService.name);
+    private readonly logger = new Logger(UserSetUpService.name);
 
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
         private readonly userDao: UserDao,
-        // @Inject("USER_REFRESH_TOKEN")
-        // private readonly refreshTokenService: JwtService,
-        // @Inject("USER_ACCESS_TOKEN")
-        // private readonly accessTokenService: JwtService,
     ) { }
 
-    async testService() {
-        const user = await this.userDao.find("1b7029b5-cb86-466e-8a71-584085c87b43");
-    }
 
     async createUser(createUserDto: CreateUserDto) {
         if (!createUserDto.termsAndConditions)
@@ -58,6 +52,9 @@ export class UsersService {
 
         await this.userDao.update(userId, { pinCode: hashPinCode })
             .onAfterLoad(async (db_user, user) => {
+                if (db_user.registerStep === RegisterStep.SetProfile)
+                    throw new ConflictException("first set up your profile");
+
                 if (db_user.registerStep !== RegisterStep.SetPinCode)
                     throw new ConflictException("pin code already set up");
 
@@ -66,12 +63,6 @@ export class UsersService {
             .save();
 
         this.logger.log(`User "ID: ${userId}" pin code set up successfully`);
-
-        try {
-
-        } catch (error) {
-            await this.handleException(error);
-        }
     }
 
     private sanitizeUser(user: User) {

@@ -17,12 +17,15 @@
       "@envs": ["src/_common/config/envs/env-var.plugin"],
       "@middlewares/*": ["src/_common/middlewares/*"],
       "@integrations/*": ["src/integrations/*"],
+      "@decorators/*": ["src/_common/decorators/*"],
+      "@logger": ["src/_common/config/winston/logger.service"],
 
       //% Database's
       "@db/*": ["src/_common/database/main/*"],
+      "@cache/*": ["src/_common/database/cache/*"],
 
       //% App Modules
-      "@users/*": ["src/application/users/*"],
+      "@users/*": ["src/application/users/set-up/*"],
       "@auth/*": ["src/application/security/auth/*"],
       "@proofs/*": ["src/application/security/proofs/*"],
       "@recoveries/*": ["src/application/security/recoveries/*"],

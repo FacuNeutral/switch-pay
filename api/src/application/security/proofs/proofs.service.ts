@@ -10,7 +10,7 @@ import { SecurityCodeDao } from "@db/dao/security-code.dao";
 import { UserDao } from "@db/dao/user.dao";
 
 import { EmailSenderService } from "@integrations/email/email-sender.service";
-import { parseTimeMinutesToMs } from "@auth/helpers/parse-time-to-ms";
+import { parseTimeMinutesToMs } from "src/_common/utils/calcs/parse-time";
 
 @Injectable()
 @AutoLogErrors()
