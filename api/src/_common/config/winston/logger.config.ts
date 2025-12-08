@@ -2,19 +2,10 @@ import 'winston-daily-rotate-file';
 
 import { createLogger, format } from 'winston';
 
-import { Logtail } from '@logtail/node';
-import { LogtailTransport } from '@logtail/winston';
-
-import envs from '../envs/env-var.plugin';
-import { fileTransport } from './helpers/file-transport';
+import { fileTransport } from './helpers/flie-transport';
 import { ignoreNestLogs, printFormattedLog } from './helpers/log-format';
 import { LogData, LogFileName, LoggerConfig } from './interfaces/logger.interface';
-
-
-// Client for send logs to Telemetry_
-const logtail = new Logtail(envs.TELEMETRY_API_KEY, {
-    endpoint: envs.TELEMETRY_URL,
-});
+import { telemetryTransport } from './logtail.config';
 
 export const winstonConfig = {
     loggerInfo: createLogger({
@@ -32,7 +23,7 @@ export const winstonConfig = {
         transports: [
             fileTransport(LogFileName.ALL),
             fileTransport(LogFileName.INFO),
-            new LogtailTransport(logtail),
+            ...telemetryTransport(),
         ],
     }),
 
@@ -67,7 +58,7 @@ export const winstonConfig = {
         transports: [
             fileTransport(LogFileName.ALL),
             fileTransport(LogFileName.ERROR),
-            new LogtailTransport(logtail),
+            ...telemetryTransport(),
         ],
     }),
 
@@ -85,7 +76,7 @@ export const winstonConfig = {
         transports: [
             fileTransport(LogFileName.ALL),
             fileTransport(LogFileName.WARN),
-            new LogtailTransport(logtail),
+            ...telemetryTransport(),
         ],
     }),
 
