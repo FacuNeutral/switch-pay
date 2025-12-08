@@ -5,6 +5,7 @@ const envs = {
 
     //% SERVER CONFIG:
     DEV_MODE: env.get("DEV_MODE").asBool() || true,
+    PROD_MODE: env.get("PROD_MODE").asBool() || false,
     PORT: env.get("PORT").asPortNumber(),
 
     //% JWT CONFIG:
