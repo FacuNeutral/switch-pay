@@ -1,0 +1,157 @@
+/* ==========================================
+   Debug Tools — Design Tokens
+   MCP.directory-inspired dark aesthetic
+   ========================================== */
+
+@theme inline {
+   /* --- Debug Surfaces --- */
+   --color-debug-surface: #FAFAFA;
+   --color-debug-surface-dark: #09090B;
+   --color-debug-surface-raised: #FFFFFF;
+   --color-debug-surface-raised-dark: #18181B;
+   --color-debug-surface-overlay: #F0F0F0;
+   --color-debug-surface-overlay-dark: #0F0F11;
+   --color-debug-surface-card-dark: #141416;
+
+   /* --- Debug Borders --- */
+   --color-debug-border: #E5E5E5;
+   --color-debug-border-dark: #27272A;
+   --color-debug-border-active: #A1A1AA;
+   --color-debug-border-active-dark: #3F3F46;
+   --color-debug-border-hover-dark: #4ADE80;
+
+   /* --- Debug Text --- */
+   --color-debug-text: #18181B;
+   --color-debug-text-dark: #FAFAFA;
+   --color-debug-text-muted: #71717A;
+   --color-debug-text-muted-dark: #71717A;
+   --color-debug-text-subtle-dark: #52525B;
+
+   /* --- Debug Primary (active states, toggles, indicators) --- */
+   --color-debug-primary: #10B981;
+   --color-debug-primary-hover: #059669;
+   --color-debug-primary-foreground: #FFFFFF;
+   --color-debug-primary-glow: #10B98125;
+
+   /* --- Debug Accent (highlights, decorative) --- */
+   --color-debug-accent: #8B5CF6;
+   --color-debug-accent-hover: #7C3AED;
+   --color-debug-accent-foreground: #FFFFFF;
+   --color-debug-accent-glow: #8B5CF625;
+
+   /* --- Debug Viewport Indicators --- */
+   --color-debug-viewport-mobile: #F59E0B;
+   --color-debug-viewport-tablet: #8B5CF6;
+   --color-debug-viewport-desktop: #10B981;
+
+   /* --- Debug Z-Index --- */
+   --z-debug: 9000;
+   --z-debug-overlay: 9100;
+   --z-debug-panel: 9200;
+   --z-debug-trigger: 9300;
+
+   /* --- Debug Radius --- */
+   --radius-debug-panel: 0.75rem;
+   --radius-debug-button: 0.5rem;
+   --radius-debug-tab: 0.375rem;
+   --radius-debug-chip: 9999px;
+
+   /* --- Debug Typography --- */
+   --font-debug: 'Quicksand', sans-serif;
+}
+
+/* ==========================================
+   Debug Keyframes & Animations
+   ========================================== */
+@keyframes debug-brand {
+   0%, 100% {
+      color: var(--color-debug-primary);
+   }
+   50% {
+      color: var(--color-debug-primary-hover);
+   }
+}
+
+.animate-debug-brand {
+   animation: debug-brand 3s ease-in-out infinite;
+}
+
+@keyframes debug-letter-in {
+   0% {
+      opacity: 0;
+      transform: translateY(-8px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+.animate-debug-letter-in {
+   opacity: 0;
+   animation: debug-letter-in 0.35s ease-out forwards;
+}
+
+@keyframes debug-glow-pulse {
+   0%, 100% {
+      box-shadow: 0 0 0 0 var(--color-debug-primary-glow);
+   }
+   50% {
+      box-shadow: 0 0 16px 2px var(--color-debug-primary-glow);
+   }
+}
+
+.animate-debug-glow-pulse {
+   animation: debug-glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* ==========================================
+   Debug Utilities
+   ========================================== */
+@utility scrollbar-debug {
+   scrollbar-width: thin;
+   scrollbar-color: var(--color-debug-border-active) var(--color-debug-surface-overlay);
+
+   &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+   }
+
+   &::-webkit-scrollbar-track {
+      background: var(--color-debug-surface-overlay);
+      border-radius: 4px;
+   }
+
+   &::-webkit-scrollbar-thumb {
+      background: var(--color-debug-border-active);
+      border-radius: 4px;
+   }
+
+   &::-webkit-scrollbar-thumb:hover {
+      background: var(--color-debug-text-muted);
+   }
+
+   &::-webkit-scrollbar-corner {
+      background: var(--color-debug-surface-overlay);
+   }
+
+   &:is(.dark *), &.dark {
+      scrollbar-color: var(--color-debug-border-active-dark) var(--color-debug-surface-overlay-dark);
+
+      &::-webkit-scrollbar-track {
+         background: var(--color-debug-surface-overlay-dark);
+      }
+
+      &::-webkit-scrollbar-thumb {
+         background: var(--color-debug-border-active-dark);
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+         background: var(--color-debug-text-muted-dark);
+      }
+
+      &::-webkit-scrollbar-corner {
+         background: var(--color-debug-surface-overlay-dark);
+      }
+   }
+}

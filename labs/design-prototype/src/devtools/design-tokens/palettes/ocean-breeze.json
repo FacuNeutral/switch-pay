@@ -1,0 +1,37 @@
+{
+  "id": "ocean-breeze",
+  "name": "Ocean Breeze",
+  "description": "A calm, refreshing palette inspired by coastal landscapes. Cool blues, soft teals, and sandy neutrals create a serene, approachable interface that feels natural and open.",
+  "orientation": "Calm, Fresh, Natural",
+  "author": "System",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "tokens": {
+    "--color-neutral-off": "#94A3B8",
+    "--color-neutral": "#F0F9FF",
+    "--color-neutral-off-dark": "#475569",
+    "--color-neutral-surface-dark": "#1E293B",
+    "--color-neutral-dark": "#0F172A",
+    "--color-primary": "#0EA5E9",
+    "--color-primary-off": "#38BDF8",
+    "--color-primary-hover": "#0284C7",
+    "--color-primary-foreground": "#FFFFFF",
+    "--color-accent": "#14B8A6",
+    "--color-accent-off": "#2DD4BF",
+    "--color-accent-hover": "#0D9488",
+    "--color-accent-foreground": "#FFFFFF",
+    "--color-secondary": "#6366F1",
+    "--color-secondary-off": "#818CF8",
+    "--color-secondary-hover": "#4F46E5",
+    "--color-secondary-foreground": "#FFFFFF",
+    "--color-tertiary": "#F97316",
+    "--color-tertiary-off": "#FB923C",
+    "--color-tertiary-hover": "#EA580C"
+  },
+  "referenceTokens": {
+    "--tone": "fresh, calming, nature-inspired",
+    "--contrast-level": "medium",
+    "--surface-hierarchy": "light sky blue base, white cards; deep navy in dark",
+    "--intended-usage": "Travel, wellness, productivity, personal blogs, portfolio sites",
+    "--text-approach": "Slate tones for text, blue accents for links, warm orange for CTAs"
+  }
+}

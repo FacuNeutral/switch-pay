@@ -1,0 +1,23 @@
+{
+  "id": "not-found",
+  "title": "Not Found (404)",
+  "route": "*",
+  "layout": "standalone",
+  "description": "Página 404 standalone para rutas inexistentes. Muestra un mensaje de error centrado con enlace para volver al home.",
+  "params": [],
+  "queryParams": [],
+  "sections": [
+    {
+      "name": "Error Message",
+      "component": "inline",
+      "path": null,
+      "description": "Bloque centrado con heading 404, mensaje descriptivo y enlace de retorno al home."
+    }
+  ],
+  "stores": [],
+  "processes": [
+    "Lee location.pathname via useLocation.",
+    "Loguea un error 404 en consola con la ruta intentada al montar.",
+    "Renderiza UI estática con título, mensaje y enlace a /."
+  ]
+}

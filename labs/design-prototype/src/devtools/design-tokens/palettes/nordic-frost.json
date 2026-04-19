@@ -1,0 +1,38 @@
+{
+  "id": "nordic-frost",
+  "name": "Nordic Frost",
+  "description": "A minimal, clean palette inspired by Scandinavian design. Muted cool tones, generous white space, and functional simplicity. Ideal for products that value clarity, efficiency and understated elegance.",
+  "orientation": "Minimal, Scandinavian, Functional",
+  "author": "System",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "tokens": {
+    "--color-neutral-off": "#9CA3AF",
+    "--color-neutral": "#FAFBFC",
+    "--color-neutral-off-dark": "#6B7280",
+    "--color-neutral-surface-dark": "#1F2937",
+    "--color-neutral-dark": "#111827",
+    "--color-primary": "#3B82F6",
+    "--color-primary-off": "#60A5FA",
+    "--color-primary-hover": "#2563EB",
+    "--color-primary-foreground": "#FFFFFF",
+    "--color-accent": "#A78BFA",
+    "--color-accent-off": "#C4B5FD",
+    "--color-accent-hover": "#8B5CF6",
+    "--color-accent-foreground": "#FFFFFF",
+    "--color-secondary": "#64748B",
+    "--color-secondary-off": "#94A3B8",
+    "--color-secondary-hover": "#475569",
+    "--color-secondary-foreground": "#FFFFFF",
+    "--color-tertiary": "#F472B6",
+    "--color-tertiary-off": "#F9A8D4",
+    "--color-tertiary-hover": "#EC4899"
+  },
+  "referenceTokens": {
+    "--tone": "quiet, clean, restrained",
+    "--contrast-level": "medium-low",
+    "--surface-hierarchy": "near-white base, subtle gray borders, minimal shadow",
+    "--intended-usage": "SaaS, note-taking, productivity, design tools, corporate sites",
+    "--text-approach": "Gray-800 for headings, gray-600 for body, blue for links and actions",
+    "--spacing-approach": "Generous whitespace, balanced padding, clean grid alignment"
+  }
+}

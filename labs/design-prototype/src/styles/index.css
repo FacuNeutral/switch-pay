@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@import "./constants.css";
+@import "./debug.css";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ==========================================
+   Keyframes
+   ========================================== */
+@keyframes accordion-down {
+   from {
+      height: 0;
+   }
+
+   to {
+      height: var(--radix-accordion-content-height);
+   }
+}
+
+@keyframes accordion-up {
+   from {
+      height: var(--radix-accordion-content-height);
+   }
+
+   to {
+      height: 0;
+   }
+}
+
+/* ==========================================
+   Base Layer
+   ========================================== */
+@layer base {
+   * {
+      @apply border-neutral dark:border-neutral-surface-dark;
+   }
+
+   body {
+      @apply bg-neutral dark:bg-neutral-dark text-neutral-dark dark:text-neutral font-primary;
+   }
+}
+
+/* ==========================================
+   Custom Utilities
+   ========================================== */
+@utility scrollbar-hide {
+   -ms-overflow-style: none;
+   scrollbar-width: none;
+
+   &::-webkit-scrollbar {
+      display: none;
+   }
+}

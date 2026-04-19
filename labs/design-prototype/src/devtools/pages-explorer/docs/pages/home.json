@@ -1,0 +1,30 @@
+{
+  "id": "home",
+  "title": "Home",
+  "route": "/",
+  "layout": "MainLayout",
+  "description": "Página principal con chips de categoría para filtrar y un grid responsivo de video cards. Muestra skeletons durante la carga de categoría.",
+  "params": [],
+  "queryParams": [],
+  "sections": [
+    {
+      "name": "Category Chips",
+      "component": "CategoryChips",
+      "path": "@/components/core/CategoryChips",
+      "description": "Barra horizontal de chips seleccionables que representan categorías de videos. Filtra el grid al seleccionar una."
+    },
+    {
+      "name": "Video Grid",
+      "component": "VideoGrid",
+      "path": "@/application/videos/components/VideoGrid",
+      "description": "Grid responsivo (1-4 columnas) de VideoCard con skeletons de carga animados via stagger."
+    }
+  ],
+  "stores": ["useVideosStore"],
+  "processes": [
+    "Lee categories, activeCategory, filteredVideos e isLoadingCategory desde useVideosStore.",
+    "Pasa setActiveCategory como callback a CategoryChips.",
+    "CategoryChips dispara setActiveCategory que actualiza filteredVideos en el store.",
+    "VideoGrid renderiza skeletons si isLoadingCategory es true, o las cards filtradas si es false."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "neon-synthwave",
+  "name": "Neon Synthwave",
+  "description": "A vibrant, retro-futuristic palette inspired by 80s synthwave aesthetics. Hot pinks, electric purples, and cyan neons on deep dark backgrounds create an energetic, bold visual identity.",
+  "orientation": "Bold, Retro-futuristic, Vibrant",
+  "author": "System",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "tokens": {
+    "--color-neutral-off": "#B8B8D0",
+    "--color-neutral": "#EDE8F5",
+    "--color-neutral-off-dark": "#6B6490",
+    "--color-neutral-surface-dark": "#1A0E3E",
+    "--color-neutral-dark": "#0D0628",
+    "--color-primary": "#FF2D95",
+    "--color-primary-off": "#FF5CB0",
+    "--color-primary-hover": "#E0187D",
+    "--color-primary-foreground": "#FFFFFF",
+    "--color-accent": "#00F0FF",
+    "--color-accent-off": "#33F4FF",
+    "--color-accent-hover": "#00C8D9",
+    "--color-accent-foreground": "#0D0628",
+    "--color-secondary": "#B14EFF",
+    "--color-secondary-off": "#C77BFF",
+    "--color-secondary-hover": "#9A30E6",
+    "--color-secondary-foreground": "#FFFFFF",
+    "--color-tertiary": "#FFE500",
+    "--color-tertiary-off": "#FFEB33",
+    "--color-tertiary-hover": "#E6CE00"
+  },
+  "referenceTokens": {
+    "--tone": "electric, playful, high-energy",
+    "--contrast-level": "very high",
+    "--surface-hierarchy": "deep purple/navy base, slightly lighter surface, neon accents pop",
+    "--intended-usage": "Gaming, creative portfolios, music, entertainment, retro-themed landing pages",
+    "--text-approach": "White or cyan for body, neon pink for highlights, yellow for warnings",
+    "--glow-effects": "Apply subtle glow/shadow with primary and accent colors on CTAs and active states"
+  }
+}

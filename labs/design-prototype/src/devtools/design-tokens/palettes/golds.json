@@ -1,0 +1,37 @@
+{
+  "id": "golds",
+  "name": "Golds",
+  "description": "An opulent, warm palette inspired by luxury brands and premium experiences. Rich golds, deep ambers, and warm neutrals convey elegance, trust, and sophistication.",
+  "orientation": "Luxury, Warm, Premium",
+  "author": "System",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "tokens": {
+    "--color-neutral-off": "#9CA3AF",
+    "--color-neutral": "#F5F0EB",
+    "--color-neutral-off-dark": "#6B5E50",
+    "--color-neutral-surface-dark": "#2A2318",
+    "--color-neutral-dark": "#1A150E",
+    "--color-primary": "#D4A843",
+    "--color-primary-off": "#E8C76A",
+    "--color-primary-hover": "#B8922E",
+    "--color-primary-foreground": "#1A150E",
+    "--color-accent": "#C77B30",
+    "--color-accent-off": "#D4944A",
+    "--color-accent-hover": "#A66520",
+    "--color-accent-foreground": "#FFFFFF",
+    "--color-secondary": "#8B6914",
+    "--color-secondary-off": "#A67D28",
+    "--color-secondary-hover": "#725610",
+    "--color-secondary-foreground": "#FFFFFF",
+    "--color-tertiary": "#E8B04A",
+    "--color-tertiary-off": "#F0C46C",
+    "--color-tertiary-hover": "#C89A36"
+  },
+  "referenceTokens": {
+    "--tone": "warm, luxurious, high-end",
+    "--contrast-level": "medium-high",
+    "--surface-hierarchy": "cream tones in light, deep browns in dark",
+    "--intended-usage": "Luxury brands, jewelry, finance, premium SaaS dashboards",
+    "--text-approach": "Dark brown text on cream, gold accents for CTAs and highlights"
+  }
+}

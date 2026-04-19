@@ -1,0 +1,37 @@
+{
+  "id": "deep-dark",
+  "name": "Deep Dark",
+  "description": "A sleek, modern dark theme with deep blacks and subtle gray surfaces. Perfect for developer tools, dashboards, and night-mode interfaces. Minimizes eye strain with high-contrast text on dark backgrounds.",
+  "orientation": "Dark, Minimal, Professional",
+  "author": "System",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "tokens": {
+    "--color-neutral-off": "#9CA3AF",
+    "--color-neutral": "#F3F4F6",
+    "--color-neutral-off-dark": "#6B7280",
+    "--color-neutral-surface-dark": "#111827",
+    "--color-neutral-dark": "#030712",
+    "--color-primary": "#10B981",
+    "--color-primary-off": "#34D399",
+    "--color-primary-hover": "#059669",
+    "--color-primary-foreground": "#FFFFFF",
+    "--color-accent": "#8B5CF6",
+    "--color-accent-off": "#A78BFA",
+    "--color-accent-hover": "#7C3AED",
+    "--color-accent-foreground": "#FFFFFF",
+    "--color-secondary": "#06B6D4",
+    "--color-secondary-off": "#22D3EE",
+    "--color-secondary-hover": "#0891B2",
+    "--color-secondary-foreground": "#FFFFFF",
+    "--color-tertiary": "#F59E0B",
+    "--color-tertiary-off": "#FBBF24",
+    "--color-tertiary-hover": "#D97706"
+  },
+  "referenceTokens": {
+    "--tone": "dark, serious, professional",
+    "--contrast-level": "high",
+    "--surface-hierarchy": "3-level dark: base (#030712), surface (#111827), raised (#1F2937). Light base uses #F3F4F6",
+    "--intended-usage": "Developer tools, admin panels, dark-mode-first apps",
+    "--text-approach": "Light text on dark, avoid pure white, use gray-100 for body"
+  }
+}

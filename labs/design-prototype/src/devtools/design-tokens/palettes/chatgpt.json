@@ -1,0 +1,38 @@
+{
+  "id": "chatgpt",
+  "name": "ChatGPT",
+  "description": "Inspired by OpenAI's ChatGPT interface. Clean, professional design with a teal/green primary accent on neutral grays. Focuses on readability and a calm, trustworthy feel for conversational interfaces.",
+  "orientation": "Clean, Conversational, Trustworthy",
+  "author": "System",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "tokens": {
+    "--color-neutral-off": "#A0A0B4",
+    "--color-neutral": "#F7F7F8",
+    "--color-neutral-off-dark": "#565869",
+    "--color-neutral-surface-dark": "#2F2F2F",
+    "--color-neutral-dark": "#212121",
+    "--color-primary": "#10A37F",
+    "--color-primary-off": "#1A7F64",
+    "--color-primary-hover": "#0D8A6B",
+    "--color-primary-foreground": "#FFFFFF",
+    "--color-accent": "#AB68FF",
+    "--color-accent-off": "#BA83FF",
+    "--color-accent-hover": "#9747FF",
+    "--color-accent-foreground": "#FFFFFF",
+    "--color-secondary": "#19C37D",
+    "--color-secondary-off": "#2DD497",
+    "--color-secondary-hover": "#12A268",
+    "--color-secondary-foreground": "#052E16",
+    "--color-tertiary": "#F5A623",
+    "--color-tertiary-off": "#F7B84D",
+    "--color-tertiary-hover": "#D4901A"
+  },
+  "referenceTokens": {
+    "--tone": "clean, focused, minimal distraction",
+    "--contrast-level": "medium",
+    "--surface-hierarchy": "light gray base, white cards in light; dark gray base in dark",
+    "--intended-usage": "Chat apps, AI interfaces, SaaS tools, documentation sites",
+    "--text-approach": "High readability, generous line height, mono for code, sans-serif for body",
+    "--interaction-pattern": "Subtle hover states, smooth transitions, non-intrusive"
+  }
+}

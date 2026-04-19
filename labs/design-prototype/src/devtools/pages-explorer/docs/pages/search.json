@@ -1,0 +1,26 @@
+{
+  "id": "search",
+  "title": "Search",
+  "route": "/search",
+  "layout": "MainLayout",
+  "description": "Página de resultados de búsqueda. Lee el query param q, ejecuta la búsqueda en el store y muestra resultados en formato lista o un estado vacío.",
+  "params": [],
+  "queryParams": [
+    { "name": "q", "type": "string", "example": "music", "description": "Término de búsqueda ingresado por el usuario" }
+  ],
+  "sections": [
+    {
+      "name": "Search Results",
+      "component": "SearchResults",
+      "path": "@/application/videos/components/SearchResults",
+      "description": "Lista vertical de VideoCard en layout lista con heading de búsqueda. Muestra estado vacío si no hay resultados."
+    }
+  ],
+  "stores": ["useVideosStore"],
+  "processes": [
+    "Lee el query param q desde useSearchParams.",
+    "Ejecuta executeSearch(query) al montar y cuando cambia el query.",
+    "Lee searchResults desde useVideosStore.",
+    "Pasa query y results a SearchResults para renderizar la lista o el estado vacío."
+  ]
+}

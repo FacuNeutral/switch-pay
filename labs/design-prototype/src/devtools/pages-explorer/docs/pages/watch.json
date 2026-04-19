@@ -1,0 +1,45 @@
+{
+  "id": "watch",
+  "title": "Watch",
+  "route": "/watch/:id",
+  "layout": "MainLayout",
+  "description": "Página de reproducción de video. Muestra el player, acciones (like, suscribirse), descripción y videos relacionados en sidebar.",
+  "params": [
+    { "name": "id", "type": "string", "example": "video-1", "description": "ID del video a reproducir" }
+  ],
+  "queryParams": [],
+  "sections": [
+    {
+      "name": "Video Player",
+      "component": "VideoPlayer",
+      "path": "@/application/videos/components/VideoPlayer",
+      "description": "Reproductor con thumbnail en aspect-video, botón de play superpuesto y barra de progreso estática."
+    },
+    {
+      "name": "Video Actions",
+      "component": "VideoActions",
+      "path": "@/application/videos/components/VideoActions",
+      "description": "Info del canal (avatar, nombre, suscriptores), botón suscribirse, likes/dislikes, compartir y más opciones."
+    },
+    {
+      "name": "Video Description",
+      "component": "VideoDescription",
+      "path": "@/application/videos/components/VideoDescription",
+      "description": "Metadata del video (vistas, fecha) y texto de descripción completa."
+    },
+    {
+      "name": "Related Videos",
+      "component": "RelatedVideos",
+      "path": "@/application/videos/components/RelatedVideos",
+      "description": "Sidebar lateral (w-96 en desktop) con lista de VideoCard en layout lista."
+    }
+  ],
+  "stores": ["useVideosStore"],
+  "processes": [
+    "Extrae :id de la URL via useParams.",
+    "Ejecuta setCurrentVideo(id) al montar y cuando cambia el ID.",
+    "Si no encuentra el video, muestra estado de error.",
+    "Renderiza player, acciones y descripción en columna principal con animación fadeUp.",
+    "Videos relacionados se cargan automáticamente desde el store."
+  ]
+}
