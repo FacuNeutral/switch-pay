@@ -1,0 +1,18 @@
+{
+  "name": "EventCard",
+  "family": "card",
+  "keywords": ["event", "ticket", "date", "venue", "conference", "meetup"],
+  "useCases": ["event listing", "calendar preview", "ticket purchase"],
+  "businessDomains": ["content", "marketing"],
+  "structure": {
+    "hasImage": true,
+    "hasPrice": true,
+    "hasCTA": true,
+    "isListable": true
+  },
+  "interaction": {
+    "clickable": true,
+    "hoverable": true
+  },
+  "complexity": "medium"
+}

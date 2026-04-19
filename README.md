@@ -8,10 +8,10 @@ Este proyecto forma parte de las mentorías personalizadas brindadas por mi, Fac
 
 ## Tecnologías Principales
 
+- AI-assisted + Software Engineering (Agents, Skills, Hooks, Rules, etc.)
 - NestJS  
-- NextJS  
+- ReactJS
 - TypeScript
-- Figma
 - Excalidraw
 
 ---
@@ -22,6 +22,3 @@ Este proyecto tiene fines **educativos** y está orientado a la creación de sol
 **Queda prohibida su reproducción total o parcial, así como su uso comercial sin autorización expresa del autor.**
 
 Para consultas sobre uso o licenciamiento, contactarse previamente.
-
-**Autor**: [Facundo Alvarez](https://www.linkedin.com/in/facundo-alvarez-full-stack/)  
-© Facundo Alvarez

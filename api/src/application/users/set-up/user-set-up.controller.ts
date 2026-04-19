@@ -30,7 +30,6 @@ export class UserSetUpController {
     @Get("test")
     @ResMessage("test endpoint")
     async testEndpoint() {
-
         console.log("Test endpoint hit");
 
     }

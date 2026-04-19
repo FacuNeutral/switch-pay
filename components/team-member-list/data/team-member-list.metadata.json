@@ -1,0 +1,84 @@
+{
+  "identity": {
+    "name": "TeamMemberList",
+    "description": "Lista de miembros de equipo con avatar, nombre, rol y estado online. Soporta click para ver perfil.",
+    "family": "list",
+    "version": "1.0.0"
+  },
+  "usage": {
+    "purpose": "Mostrar un listado de miembros de equipo con información básica y estado.",
+    "useCases": ["team overview page", "project sidebar", "about us section"],
+    "notUseCases": ["user settings", "permissions management", "contact form"]
+  },
+  "business": {
+    "domains": ["saas", "social", "dashboard"],
+    "scenarios": ["SaaS team management view", "project collaborators sidebar", "company about page"],
+    "priority": "secondary"
+  },
+  "businessData": [
+    { "name": "memberId", "type": "string", "required": true, "description": "ID del miembro", "domain": "saas" },
+    { "name": "name", "type": "string", "required": true, "description": "Nombre completo", "domain": "social" },
+    { "name": "role", "type": "string", "required": true, "description": "Cargo o rol", "domain": "saas" },
+    { "name": "avatarUrl", "type": "string", "required": false, "description": "URL del avatar", "domain": "social" },
+    { "name": "online", "type": "boolean", "required": false, "description": "Estado online", "domain": "social" }
+  ],
+  "composition": {
+    "isListable": true,
+    "compatibleWith": ["TeamOverview", "ProjectSidebar"],
+    "requires": []
+  },
+  "props": [
+    { "name": "members", "type": "TeamMember[]", "required": true, "description": "Lista de miembros" },
+    { "name": "onSelect", "type": "(memberId: string) => void", "required": false, "description": "Callback al seleccionar" }
+  ],
+  "state": [
+    { "name": "hoveredId", "type": "string | null", "initial": "null", "description": "ID del miembro con hover activo" }
+  ],
+  "modifiers": [
+    { "dataId": "member-hovered", "description": "Fondo sutil en hover", "appliesWhen": "hoveredId === memberId" },
+    { "dataId": "member-online", "description": "Indicador verde de online", "appliesWhen": "online === true" }
+  ],
+  "interactions": [
+    { "event": "onMouseEnter (item)", "handler": "setHoveredId(memberId)", "description": "Hover sobre miembro" },
+    { "event": "onMouseLeave (item)", "handler": "setHoveredId(null)", "description": "Sale del hover" },
+    { "event": "onClick (item)", "handler": "onSelect(memberId)", "description": "Selecciona miembro" }
+  ],
+  "stateToUI": [
+    { "state": "hoveredId", "modifier": "member-hovered", "description": "Hover destaca el row" }
+  ],
+  "variants": [
+    { "name": "grid", "description": "Avatares en grid en vez de lista", "props": {} },
+    { "name": "compact", "description": "Solo avatar y nombre, sin rol", "props": {} }
+  ],
+  "rules": [
+    "must display name and role for each member",
+    "must show online indicator when member is online",
+    "must show initials fallback when avatarUrl is missing"
+  ],
+  "conditions": [
+    { "if": "members.length === 0", "then": "show empty state" },
+    { "if": "avatarUrl is empty", "then": "render initials circle" }
+  ],
+  "tokens": {
+    "spacing": "space-3",
+    "avatarSize": "w-10 h-10",
+    "onlineIndicator": "bg-emerald-500",
+    "fontName": "text-sm font-medium",
+    "fontRole": "text-xs"
+  },
+  "package": {
+    "name": "@small-organism/team-member-list",
+    "version": "1.0.0",
+    "path": "components/team-member-list"
+  },
+  "externalDependencies": [],
+  "organism": {
+    "type": "small-organism",
+    "restrictions": {
+      "noGlobalState": true,
+      "noNestedOrganisms": true,
+      "localStateOnly": true
+    }
+  },
+  "complexity": "low"
+}

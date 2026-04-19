@@ -1,0 +1,81 @@
+{
+  "identity": {
+    "name": "RatingInput",
+    "description": "Input de rating con estrellas clickeables y hover preview. Permite seleccionar un valor de 1 a maxStars. Muestra label textual del rating.",
+    "family": "input",
+    "version": "1.0.0"
+  },
+  "usage": {
+    "purpose": "Capturar una valoración numérica del usuario mediante interacción con estrellas.",
+    "useCases": ["product review form", "post-purchase feedback", "app store rating"],
+    "notUseCases": ["display-only rating", "range slider", "numeric input"]
+  },
+  "business": {
+    "domains": ["ecommerce", "social", "content"],
+    "scenarios": ["product review submission", "customer satisfaction survey", "content quality rating"],
+    "priority": "secondary"
+  },
+  "businessData": [
+    { "name": "rating", "type": "number", "required": true, "description": "Valor seleccionado 1-5", "domain": "ecommerce" }
+  ],
+  "composition": {
+    "isListable": false,
+    "compatibleWith": ["ReviewForm", "FeedbackSection"],
+    "requires": []
+  },
+  "props": [
+    { "name": "value", "type": "number", "required": true, "description": "Rating actual (0 = sin selección)" },
+    { "name": "onChange", "type": "(rating: number) => void", "required": true, "description": "Callback al cambiar" },
+    { "name": "maxStars", "type": "number", "required": false, "default": "5", "description": "Número máximo de estrellas" },
+    { "name": "disabled", "type": "boolean", "required": false, "default": "false", "description": "Desactiva interacción" }
+  ],
+  "state": [
+    { "name": "hoverValue", "type": "number", "initial": "0", "description": "Estrella bajo el cursor" }
+  ],
+  "modifiers": [
+    { "dataId": "star-active", "description": "Estrella llena (amarilla)", "appliesWhen": "index <= current value or hover" },
+    { "dataId": "star-inactive", "description": "Estrella vacía (gris)", "appliesWhen": "index > current value and hover" }
+  ],
+  "interactions": [
+    { "event": "onMouseEnter (star)", "handler": "setHoverValue(index)", "description": "Preview de rating" },
+    { "event": "onMouseLeave", "handler": "setHoverValue(0)", "description": "Reset preview" },
+    { "event": "onClick (star)", "handler": "onChange(index)", "description": "Selecciona rating" }
+  ],
+  "stateToUI": [
+    { "state": "hoverValue > 0", "modifier": "star-active", "description": "Preview visual al hacer hover" }
+  ],
+  "variants": [
+    { "name": "small", "description": "Estrellas pequeñas para inline usage", "props": {} },
+    { "name": "withLabel", "description": "Muestra texto descriptivo del rating", "props": {} }
+  ],
+  "rules": [
+    "must highlight stars up to current selection or hover",
+    "must show text label for current rating",
+    "must not allow interaction when disabled"
+  ],
+  "conditions": [
+    { "if": "disabled === true", "then": "remove hover and click handlers" },
+    { "if": "value === 0", "then": "show 'No rating' label" }
+  ],
+  "tokens": {
+    "starSize": "text-2xl",
+    "activeColor": "text-amber-400",
+    "inactiveColor": "text-zinc-700",
+    "spacing": "gap-1"
+  },
+  "package": {
+    "name": "@small-organism/rating-input",
+    "version": "1.0.0",
+    "path": "components/rating-input"
+  },
+  "externalDependencies": [],
+  "organism": {
+    "type": "small-organism",
+    "restrictions": {
+      "noGlobalState": true,
+      "noNestedOrganisms": true,
+      "localStateOnly": true
+    }
+  },
+  "complexity": "low"
+}

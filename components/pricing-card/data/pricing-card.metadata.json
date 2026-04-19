@@ -1,0 +1,86 @@
+{
+  "identity": {
+    "name": "PricingCard",
+    "description": "Tarjeta de plan de precios con nombre, precio mensual, lista de features y CTA de selección. Soporta variante destacada.",
+    "family": "card",
+    "version": "1.0.0"
+  },
+  "usage": {
+    "purpose": "Mostrar un plan de precios individual con sus beneficios y permitir su selección.",
+    "useCases": ["pricing page", "plan comparison grid", "upgrade modal"],
+    "notUseCases": ["invoice detail", "payment form", "subscription management"]
+  },
+  "business": {
+    "domains": ["saas", "marketing"],
+    "scenarios": ["SaaS pricing page", "freemium upgrade flow", "annual vs monthly toggle"],
+    "priority": "core"
+  },
+  "businessData": [
+    { "name": "planId", "type": "string", "required": true, "description": "ID único del plan", "domain": "saas" },
+    { "name": "planName", "type": "string", "required": true, "description": "Nombre del plan", "domain": "saas" },
+    { "name": "priceMonthly", "type": "number", "required": true, "description": "Precio mensual", "domain": "saas" },
+    { "name": "features", "type": "string[]", "required": true, "description": "Lista de funcionalidades incluidas", "domain": "saas" }
+  ],
+  "composition": {
+    "isListable": true,
+    "compatibleWith": ["PricingGrid", "PlanComparison"],
+    "requires": []
+  },
+  "props": [
+    { "name": "planId", "type": "string", "required": true, "description": "ID del plan" },
+    { "name": "planName", "type": "string", "required": true, "description": "Nombre del plan" },
+    { "name": "priceMonthly", "type": "number", "required": true, "description": "Precio mensual en USD" },
+    { "name": "features", "type": "string[]", "required": true, "description": "Features incluidas" },
+    { "name": "highlighted", "type": "boolean", "required": false, "default": "false", "description": "Plan destacado" },
+    { "name": "onSelect", "type": "(planId: string) => void", "required": false, "description": "Callback al seleccionar plan" }
+  ],
+  "state": [
+    { "name": "isHovered", "type": "boolean", "initial": "false", "description": "Cursor sobre la tarjeta" }
+  ],
+  "modifiers": [
+    { "dataId": "pricing-card-highlighted", "description": "Borde de acento y badge popular", "appliesWhen": "highlighted === true" },
+    { "dataId": "pricing-card-hovered", "description": "Elevación sutil", "appliesWhen": "isHovered === true" }
+  ],
+  "interactions": [
+    { "event": "onMouseEnter", "handler": "setIsHovered(true)", "description": "Activa hover" },
+    { "event": "onMouseLeave", "handler": "setIsHovered(false)", "description": "Desactiva hover" },
+    { "event": "onClick (CTA)", "handler": "onSelect(planId)", "description": "Selecciona este plan" }
+  ],
+  "stateToUI": [
+    { "state": "isHovered", "modifier": "pricing-card-hovered", "description": "Hover eleva tarjeta" }
+  ],
+  "variants": [
+    { "name": "default", "description": "Plan estándar sin destacar", "props": { "highlighted": "false" } },
+    { "name": "popular", "description": "Plan destacado con borde y badge", "props": { "highlighted": "true" } }
+  ],
+  "rules": [
+    "must display planName and priceMonthly",
+    "must show at least one feature",
+    "must highlight CTA when plan is popular"
+  ],
+  "conditions": [
+    { "if": "highlighted === true", "then": "show 'Popular' badge and accent border" },
+    { "if": "priceMonthly === 0", "then": "show 'Free' instead of price" }
+  ],
+  "tokens": {
+    "borderRadius": "radius-lg",
+    "shadow": "shadow-card",
+    "spacing": "space-6",
+    "accentBorder": "border-indigo-500"
+  },
+  "package": {
+    "name": "@small-organism/pricing-card",
+    "version": "1.0.0",
+    "path": "components/pricing-card"
+  },
+  "externalDependencies": [],
+  "organism": {
+    "type": "small-organism",
+    "restrictions": {
+      "noGlobalState": true,
+      "noNestedOrganisms": true,
+      "localStateOnly": true
+    }
+  },
+  "complexity": "medium"
+}

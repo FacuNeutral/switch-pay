@@ -1,0 +1,19 @@
+{
+  "name": "DateRangeSelector",
+  "family": "input",
+  "keywords": ["date", "range", "picker", "calendar", "period", "from-to", "timeframe"],
+  "useCases": ["analytics date filter", "booking date range", "report period selector"],
+  "businessDomains": ["dashboard", "saas", "ecommerce"],
+  "structure": {
+    "hasImage": false,
+    "hasPrice": false,
+    "hasCTA": true,
+    "isListable": false
+  },
+  "interaction": {
+    "clickable": true,
+    "hoverable": false,
+    "focusable": true
+  },
+  "complexity": "medium"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "TransactionList",
+  "family": "list",
+  "keywords": ["transaction", "payment", "history", "money", "transfer", "ledger", "receipt"],
+  "useCases": ["payment history", "wallet transactions", "account statement"],
+  "businessDomains": ["ecommerce", "saas", "dashboard"],
+  "structure": {
+    "hasImage": false,
+    "hasPrice": true,
+    "hasCTA": false,
+    "isListable": true
+  },
+  "interaction": {
+    "clickable": true,
+    "hoverable": true
+  },
+  "complexity": "medium"
+}

@@ -1,0 +1,54 @@
+import V, { IsAlpha, IsBoolean, IsEmail, IsNumberString, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, IsUrl, IsUUID, Length, Matches, Max, MaxLength } from 'class-validator';
+import { User } from '../entities/user.entity';
+import { BankAccount } from '../entities/bank-account.entity';
+
+export class UserDto implements Pick<User, "id" | "email" | "password" | "pinCode" | "firstName" | "lastName" | "alias" | "profilePhoto" | "registerStep" | "termsAndConditions"> {
+
+    @IsOptional()
+    @IsUUID()
+    id: string;
+
+    @IsEmail()
+    email: string;
+
+    @IsStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 })
+    password: string;
+
+    @IsString()
+    @Length(6, 20, { message: "Alias must be between 6 and 20 characters" })
+    @Matches(/^[a-zA-Z0-9.-]+$/, {
+        message: "Alias can only contain letters, numbers, periods, and hyphens",
+    })
+    @Matches(/^[^ñÑ]+$/, {
+        message: "Alias cannot contain the letter 'ñ'",
+    })
+    alias: string;
+
+    @IsAlpha()
+    @Length(2, 30, { message: ({ constraints }) => `your "first name" must be between ${constraints[0]} and ${constraints[1]} characters` })
+    firstName: string;
+
+    @IsAlpha()
+    @Length(2, 30, { message: ({ constraints }) => `your "last name" must be between ${constraints[0]} and ${constraints[1]} characters` })
+    lastName: string;
+
+    @IsNumberString()
+    @Length(6, 6, { message: "your \"pin code\" must be exactly 6 characters" })
+    pinCode: string;
+
+    @IsUrl()
+    @MaxLength(100, { message: "your \"photo\" must be less than 100 characters" })
+    profilePhoto: string;
+
+    @IsString()
+    @IsOptional()
+    registerStep: User["registerStep"];
+
+    @IsBoolean()
+    termsAndConditions: boolean;
+
+    // @IsOptional()
+    // @IsString()
+    // @IsPhoneNumber("AR")
+    // phoneNumber?: string;
+}

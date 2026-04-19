@@ -1,0 +1,85 @@
+{
+  "identity": {
+    "name": "NotificationList",
+    "description": "Lista vertical de notificaciones con icono de tipo, mensaje, timestamp y estado leído/no leído. Permite marcar como leída al hacer click.",
+    "family": "list",
+    "version": "1.0.0"
+  },
+  "usage": {
+    "purpose": "Renderizar un feed de notificaciones con estado de lectura y acciones individuales.",
+    "useCases": ["notification dropdown", "alert center page", "inbox sidebar"],
+    "notUseCases": ["chat thread", "email detail", "system log viewer"]
+  },
+  "business": {
+    "domains": ["saas", "dashboard", "social"],
+    "scenarios": ["SaaS notification center", "dashboard alert panel", "social activity feed"],
+    "priority": "core"
+  },
+  "businessData": [
+    { "name": "notificationId", "type": "string", "required": true, "description": "ID único de la notificación", "domain": "saas" },
+    { "name": "message", "type": "string", "required": true, "description": "Texto del mensaje", "domain": "saas" },
+    { "name": "type", "type": "string", "required": true, "description": "Tipo: info | warning | error | success", "domain": "saas" },
+    { "name": "timestamp", "type": "string", "required": true, "description": "Fecha ISO 8601", "domain": "saas" },
+    { "name": "read", "type": "boolean", "required": true, "description": "Estado de lectura", "domain": "saas" }
+  ],
+  "composition": {
+    "isListable": true,
+    "compatibleWith": ["NotificationDropdown", "AlertCenter"],
+    "requires": []
+  },
+  "props": [
+    { "name": "items", "type": "NotificationItem[]", "required": true, "description": "Lista de notificaciones" },
+    { "name": "onMarkRead", "type": "(id: string) => void", "required": false, "description": "Callback al marcar como leída" },
+    { "name": "onDismiss", "type": "(id: string) => void", "required": false, "description": "Callback al descartar" },
+    { "name": "maxVisible", "type": "number", "required": false, "default": "5", "description": "Máximo de items visibles" }
+  ],
+  "state": [
+    { "name": "readIds", "type": "Set<string>", "initial": "new Set()", "description": "IDs marcados como leídos localmente" }
+  ],
+  "modifiers": [
+    { "dataId": "notification-unread", "description": "Fondo destacado para no leídas", "appliesWhen": "read === false" },
+    { "dataId": "notification-type-error", "description": "Icono rojo para errores", "appliesWhen": "type === 'error'" }
+  ],
+  "interactions": [
+    { "event": "onClick (item)", "handler": "onMarkRead(id)", "description": "Marca notificación como leída" },
+    { "event": "onClick (dismiss)", "handler": "onDismiss(id)", "description": "Descarta notificación" }
+  ],
+  "stateToUI": [
+    { "state": "readIds.has(id)", "modifier": "notification-unread", "description": "Items leídos pierden highlight" }
+  ],
+  "variants": [
+    { "name": "compact", "description": "Solo mensaje y timestamp, sin icono de tipo", "props": {} },
+    { "name": "detailed", "description": "Con icono, acciones y timestamp relativo", "props": {} }
+  ],
+  "rules": [
+    "must show unread indicator for unread items",
+    "must display timestamp in relative format",
+    "must limit visible items to maxVisible prop"
+  ],
+  "conditions": [
+    { "if": "items.length === 0", "then": "show empty state message" },
+    { "if": "type === 'error'", "then": "use red accent for icon" }
+  ],
+  "tokens": {
+    "spacing": "space-2",
+    "borderRadius": "radius-md",
+    "unreadBg": "bg-indigo-500/5",
+    "fontMessage": "text-sm",
+    "fontTime": "text-xs"
+  },
+  "package": {
+    "name": "@small-organism/notification-list",
+    "version": "1.0.0",
+    "path": "components/notification-list"
+  },
+  "externalDependencies": [],
+  "organism": {
+    "type": "small-organism",
+    "restrictions": {
+      "noGlobalState": true,
+      "noNestedOrganisms": true,
+      "localStateOnly": true
+    }
+  },
+  "complexity": "medium"
+}

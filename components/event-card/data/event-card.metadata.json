@@ -1,0 +1,89 @@
+{
+  "identity": {
+    "name": "EventCard",
+    "description": "Tarjeta compacta para mostrar un evento con fecha, lugar, imagen y precio. Permite interacción hover para revelar CTA de compra o reserva.",
+    "family": "card",
+    "version": "1.0.0"
+  },
+  "usage": {
+    "purpose": "Visualizar un evento individual con su información clave y permitir una acción directa.",
+    "useCases": ["event listing page", "calendar sidebar", "featured events grid", "ticket marketplace"],
+    "notUseCases": ["event detail full page", "event creation form", "multi-day schedule view"]
+  },
+  "business": {
+    "domains": ["content", "marketing"],
+    "scenarios": ["conference listing", "meetup discovery", "ticket marketplace grid"],
+    "priority": "core"
+  },
+  "businessData": [
+    { "name": "eventId", "type": "string", "required": true, "description": "Identificador único del evento", "domain": "content" },
+    { "name": "eventName", "type": "string", "required": true, "description": "Nombre del evento", "domain": "content" },
+    { "name": "date", "type": "string", "required": true, "description": "Fecha del evento en ISO 8601", "domain": "content" },
+    { "name": "venue", "type": "string", "required": true, "description": "Lugar del evento", "domain": "content" },
+    { "name": "price", "type": "number", "required": false, "description": "Precio de entrada", "domain": "marketing" },
+    { "name": "imageUrl", "type": "string", "required": false, "description": "URL de imagen del evento", "domain": "content" }
+  ],
+  "composition": {
+    "isListable": true,
+    "compatibleWith": ["EventGrid", "CalendarSidebar"],
+    "requires": []
+  },
+  "props": [
+    { "name": "eventId", "type": "string", "required": true, "description": "ID único del evento" },
+    { "name": "eventName", "type": "string", "required": true, "description": "Título del evento" },
+    { "name": "date", "type": "string", "required": true, "description": "Fecha ISO 8601" },
+    { "name": "venue", "type": "string", "required": true, "description": "Nombre del lugar" },
+    { "name": "price", "type": "number", "required": false, "default": "0", "description": "Precio de entrada" },
+    { "name": "imageUrl", "type": "string", "required": false, "description": "URL de la imagen" },
+    { "name": "onBook", "type": "(eventId: string) => void", "required": false, "description": "Callback al reservar" }
+  ],
+  "state": [
+    { "name": "isHovered", "type": "boolean", "initial": "false", "description": "Indica si el cursor está sobre la tarjeta" }
+  ],
+  "modifiers": [
+    { "dataId": "event-card-hovered", "description": "Eleva la tarjeta con sombra", "appliesWhen": "isHovered === true" }
+  ],
+  "interactions": [
+    { "event": "onMouseEnter", "handler": "setIsHovered(true)", "description": "Activa estado hover" },
+    { "event": "onMouseLeave", "handler": "setIsHovered(false)", "description": "Desactiva estado hover" },
+    { "event": "onClick", "handler": "onBook(eventId)", "description": "Dispara reserva del evento" }
+  ],
+  "stateToUI": [
+    { "state": "isHovered", "modifier": "event-card-hovered", "description": "Hover eleva tarjeta y muestra CTA" }
+  ],
+  "variants": [
+    { "name": "compact", "description": "Versión sin imagen, solo texto", "props": { "imageUrl": "" } },
+    { "name": "featured", "description": "Imagen grande, badge destacado", "props": { "featured": "true" } }
+  ],
+  "rules": [
+    "must display eventName and date at minimum",
+    "must show price only when value > 0",
+    "must show CTA on hover only"
+  ],
+  "conditions": [
+    { "if": "price === 0", "then": "show 'Free' badge instead of price" },
+    { "if": "imageUrl is empty", "then": "render compact variant" }
+  ],
+  "tokens": {
+    "borderRadius": "radius-md",
+    "shadow": "shadow-card",
+    "spacing": "space-4",
+    "fontTitle": "text-lg",
+    "fontMeta": "text-sm"
+  },
+  "package": {
+    "name": "@small-organism/event-card",
+    "version": "1.0.0",
+    "path": "components/event-card"
+  },
+  "externalDependencies": [],
+  "organism": {
+    "type": "small-organism",
+    "restrictions": {
+      "noGlobalState": true,
+      "noNestedOrganisms": true,
+      "localStateOnly": true
+    }
+  },
+  "complexity": "medium"
+}

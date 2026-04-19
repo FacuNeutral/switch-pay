@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Switch Pay - PIN Code Recovery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .header {
+      text-align: center;
+      padding-bottom: 20px;
+    }
+
+    .header h1 {
+      color: #1a202c;
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .content {
+      font-size: 16px;
+      color: #4a5568;
+      line-height: 1.6;
+    }
+
+    .code-box {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #edf2f7;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #2d3748;
+    }
+
+    .warning {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #e53e3e;
+      background-color: #fff5f5;
+      padding: 12px;
+      border-radius: 6px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #a0aec0;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Switch Pay</h1>
+    </div>
+
+    <div class="content">
+      <p>Hi {{firstName}} {{lastName}},</p>
+
+      <p>
+        We received a request to reset your PIN code for your Switch Pay account.
+        To continue, please use the verification code below:
+      </p>
+
+      <div class="code-box"><strong>{{code}}</strong></div>
+
+      <p>
+        Enter this code in the app to confirm your PIN reset.
+        The code is valid for a short time only.
+      </p>
+
+      <div class="warning">
+        ⚠️ For your protection, <strong>Switch Pay will never send links via email.</strong><br />
+        Always use the official app to perform security actions.
+      </div>
+
+      <p>Stay secure,<br />The Switch Pay Team</p>
+    </div>
+
+    <div class="footer">
+      &copy; {{year}} Switch Pay. All rights reserved.
+    </div>
+  </div>
+</body>
+
+</html>
