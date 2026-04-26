@@ -1,10 +1,4 @@
----
-name: "SEO"
-description: "Use when modifying SEO, metadata, index.html head, title, description, canonical URL, robots, Open Graph, Twitter cards, social preview assets, favicons, og-cover images, or route-level metadata."
-applyTo: "client/index.html,client/public/**"
----
-
-# SEO
+# SEO — Reference
 
 Reglas para cambios de metadata y assets SEO del proyecto.
 
@@ -38,11 +32,3 @@ Reglas para cambios de metadata y assets SEO del proyecto.
 - Si aparecen rutas dinamicas, no dependas solo de metadata global.
 - Define metadata por pagina con SSR, prerendering o una estrategia equivalente.
 - El `title`, la `description` y las social cards deben reflejar el contenido real de la ruta.
-
-## Checklist
-
-- Metadata basica y Open Graph siguen la misma referencia de marca, dominio y tono del proyecto.
-- Las imagenes sociales usan URL absoluta y dimensiones correctas.
-- Los assets publicos existen o el cambio deja claro que aun estan pendientes.
-- Si el trabajo tambien toca pages, layouts o estructura de rutas, combinar esta instruction con `infrastructure.instructions.md`.
-- Si el trabajo tambien toca branding visual o assets graficos, combinar esta instruction con `design-system.instructions.md`.

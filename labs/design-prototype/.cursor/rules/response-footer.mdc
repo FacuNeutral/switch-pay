@@ -1,0 +1,31 @@
+---
+description: "Define el footer estándar al final de cada respuesta: skills usadas y métricas de sesión."
+alwaysApply: true
+---
+
+# Response Footer
+
+Incluir siempre al final de cada respuesta, DESPUÉS de todo el contenido principal. El footer sigue este orden exacto:
+
+---
+
+## 1. Skills Usadas
+
+Solo si se aplicó al menos una skill durante la respuesta, incluir este bloque:
+
+⚡ *USED SKILLS*  
+`↳ nombre-skill-1`  
+`↳ nombre-skill-2`
+
+- Listar todas las skills aplicadas, sin omitir ninguna.
+- Si no se usó ninguna skill, omitir este bloque completamente.
+
+## 2. Contexto y Tiempo
+
+Siempre incluir este bloque al final, usando estimaciones aproximadas:
+
+🧠 `Context ~Xk/200k ────── Time: ~Xs`
+
+- **Context**: Estimación de tokens consumidos en la conversación actual sobre el límite del modelo (200k).
+- **Time**: Estimación aproximada del tiempo de procesamiento de la respuesta en segundos.
+- Ambos valores son aproximaciones; expresarlos con `~` para indicarlo.

@@ -1,19 +1,12 @@
----
-name: "Design System"
-description: "Use when modifying UI styling, Tailwind classes, tokens, dark mode, colors, spacing, typography, shadows, z-index, motion, src/index.css, tailwind.config.ts, postcss.config.js, or components.json."
-applyTo: "client/src/**,client/tailwind.config.ts,client/postcss.config.js,client/components.json"
----
+# Design System — Reference
 
-
-# Design System
-
-Reglas para consumir, extender y mantener el sistema visual del proyecto. Define cómo se usan los primitive tokens, cómo se implementa dark mode y cómo se integran los archivos de configuración. No repite la estructura de archivos ni las reglas de ubicación — esas viven en `structure.instructions.md`.
+Reglas para consumir, extender y mantener el sistema visual del proyecto. Define como se usan los primitive tokens, como se implementa dark mode y como se integran los archivos de configuracion.
 
 ---
 
 ## Arquitectura de tokens
 
-El sistema visual se construye sobre una sola capa de **primitive tokens**. No existe capa semántica intermedia. Los componentes consumen los primitives directamente a través de las utilidades de Tailwind generadas desde CSS custom properties.
+El sistema visual se construye sobre una sola capa de **primitive tokens**. No existe capa semantica intermedia. Los componentes consumen los primitives directamente a traves de las utilidades de Tailwind generadas desde CSS custom properties.
 
 ### Flujo
 
@@ -22,19 +15,19 @@ index.css (@theme inline) → Tailwind utilities → componentes (clases)
 ```
 
 - `src/index.css` define las CSS custom properties dentro de `@theme inline`.
-- Tailwind genera automáticamente las utilidades a partir de esas variables (ej. `--color-primary` → `bg-primary`, `text-primary`, `border-primary`).
+- Tailwind genera automaticamente las utilidades a partir de esas variables (ej. `--color-primary` → `bg-primary`, `text-primary`, `border-primary`).
 - `tailwind.config.ts` extiende solo lo que `@theme inline` no resuelve (container, plugins).
 - Los componentes consumen exclusivamente clases de Tailwind y la utilidad `cn()` para merge condicional.
 
 ### Reglas
 
-- No crear tokens semánticos como `--background`, `--foreground`, `--muted` ni redefinirlos en `:root` / `.dark`.
+- No crear tokens semanticos como `--background`, `--foreground`, `--muted` ni redefinirlos en `:root` / `.dark`.
 - No usar `var(--token)` en estilos inline de componentes. Todo se resuelve con clases de Tailwind.
 - No duplicar tokens entre `index.css` y `tailwind.config.ts`. La fuente de verdad es `@theme inline` en `index.css`.
 
 ---
 
-## Convención de naming de tokens
+## Convencion de naming de tokens
 
 ### Formato
 
@@ -42,7 +35,7 @@ index.css (@theme inline) → Tailwind utilities → componentes (clases)
 category-role-variant
 ```
 
-### Ejemplos válidos
+### Ejemplos validos
 
 ```
 color-primary
@@ -56,8 +49,8 @@ z-modal
 
 ### Reglas
 
-- Describir categoría y rol, no el componente ni la pantalla donde se usa.
-- No usar valores puros como nombre: `green-500`, `16px`, `radius-8` están prohibidos.
+- Describir categoria y rol, no el componente ni la pantalla donde se usa.
+- No usar valores puros como nombre: `green-500`, `16px`, `radius-8` estan prohibidos.
 - Mantener variantes intuitivas: `off`, `hover`, `dark`, `foreground` cuando el grupo lo necesite.
 - No agregar tokens superfluos. Si un valor se usa una sola vez y no justifica un token, evaluar si realmente pertenece al sistema.
 
@@ -67,31 +60,31 @@ z-modal
 
 ### Grupos de la paleta
 
-| Grupo | Tokens | Propósito |
+| Grupo | Tokens | Proposito |
 |---|---|---|
 | `neutral` | `neutral`, `neutral-off`, `neutral-off-dark`, `neutral-surface-dark`, `neutral-dark` | Fondos, textos y bordes base |
-| `primary` | `primary`, `primary-off`, `primary-hover`, `primary-foreground` | Acción principal, branding |
-| `accent` | `accent`, `accent-off`, `accent-hover`, `accent-foreground` | Énfasis secundario |
+| `primary` | `primary`, `primary-off`, `primary-hover`, `primary-foreground` | Accion principal, branding |
+| `accent` | `accent`, `accent-off`, `accent-hover`, `accent-foreground` | Enfasis secundario |
 | `secondary` | `secondary`, `secondary-off`, `secondary-hover`, `secondary-foreground` | Complemento de accent |
 | `tertiary` | `tertiary`, `tertiary-off`, `tertiary-hover` | Tercer nivel de acento |
 | `feedback` | `info`, `warning`, `success`, `error` | Estados de feedback invariantes |
 
 ### Reglas
 
-- La paleta neutral es la base del sistema. Todo fondo, texto y borde que no sea de acción o feedback usa neutral.
+- La paleta neutral es la base del sistema. Todo fondo, texto y borde que no sea de accion o feedback usa neutral.
 - Los colores de feedback (`info`, `warning`, `success`, `error`) son invariantes entre light y dark.
-- No crear tokens de color fuera de estos grupos sin justificación.
+- No crear tokens de color fuera de estos grupos sin justificacion.
 - `foreground` indica el color de texto sobre una superficie de ese grupo (ej. `text-primary-foreground` sobre `bg-primary`).
 
 ---
 
 ## Dark mode
 
-Dark mode se implementa exclusivamente con la variante `dark:` de Tailwind. La estrategia es `class` — el tema se activa con la clase `.dark` en el elemento raíz.
+Dark mode se implementa exclusivamente con la variante `dark:` de Tailwind. La estrategia es `class` — el tema se activa con la clase `.dark` en el elemento raiz.
 
-### Patrón de consumo
+### Patron de consumo
 
-Cada clase que cambia entre light y dark lleva su par explícito:
+Cada clase que cambia entre light y dark lleva su par explicito:
 
 ```tsx
 <div className="bg-neutral dark:bg-neutral-dark text-neutral-dark dark:text-neutral">
@@ -112,7 +105,7 @@ Cada clase que cambia entre light y dark lleva su par explícito:
 
 ### Reglas
 
-- Siempre declarar el par light + dark explícitamente. No depender de un default implícito.
+- Siempre declarar el par light + dark explicitamente. No depender de un default implicito.
 - No redefinir variables CSS en `:root` y `.dark` para simular dark mode. Usar la variante `dark:` de Tailwind.
 - Los tokens primitives son invariantes. El cambio light/dark se resuelve en cada componente eligiendo el token correcto con `dark:`.
 - Los colores de feedback y `ring-primary` no necesitan variante `dark:` — son invariantes.
@@ -135,18 +128,18 @@ El base layer en `index.css` aplica borde por defecto a todos los elementos:
 
 ---
 
-## Tipografía
+## Tipografia
 
 ### Familias
 
 | Token | Clase | Uso |
 |---|---|---|
 | `--font-primary` | `font-primary` | Familia principal — Poppins. Se aplica por defecto en body. |
-| `--font-secondary` | `font-secondary` | Familia secundaria — Inter. Para contextos específicos. |
+| `--font-secondary` | `font-secondary` | Familia secundaria — Inter. Para contextos especificos. |
 
-### Escala tipográfica
+### Escala tipografica
 
-La escala usa los tokens `text-xs` a `text-3xl` definidos en `@theme inline`. Los componentes consumen las clases estándar de Tailwind que mapean a estos tokens.
+La escala usa los tokens `text-xs` a `text-3xl` definidos en `@theme inline`. Los componentes consumen las clases estandar de Tailwind que mapean a estos tokens.
 
 ### Pesos
 
@@ -155,8 +148,8 @@ Valores disponibles: `font-light` (300), `font-normal`/`font-regular` (400), `fo
 ### Reglas
 
 - No hardcodear font-family, font-size ni font-weight. Usar las clases de Tailwind generadas desde los tokens.
-- `font-primary` se aplica globalmente en body. Solo declarar `font-secondary` cuando se necesite cambiar familia explícitamente.
-- Combinaciones habituales de jerarquía de texto:
+- `font-primary` se aplica globalmente en body. Solo declarar `font-secondary` cuando se necesite cambiar familia explicitamente.
+- Combinaciones habituales de jerarquia de texto:
   - Heading: `text-xl font-semibold` o `text-2xl font-bold`.
   - Body: `text-sm font-medium` o `text-base font-normal`.
   - Caption / metadata: `text-xs`.
@@ -165,13 +158,13 @@ Valores disponibles: `font-light` (300), `font-normal`/`font-regular` (400), `fo
 
 ## Spacing
 
-La escala de spacing está definida en tokens (`spacing-xs` a `spacing-2xl`). Tailwind los consume automáticamente como utilidades de gap, padding y margin.
+La escala de spacing esta definida en tokens (`spacing-xs` a `spacing-2xl`). Tailwind los consume automaticamente como utilidades de gap, padding y margin.
 
 ### Reglas
 
 - Preferir la escala del sistema (`gap-2`, `p-4`, `m-3`) sobre valores arbitrarios.
-- No usar valores arbitrarios con brackets (`ml-[72px]`, `pt-[3.5rem]`) salvo que el valor no lo cubra ningún token existente y no justifique crear uno nuevo.
-- Si un valor arbitrario se repite en más de un lugar, convertirlo en token.
+- No usar valores arbitrarios con brackets (`ml-[72px]`, `pt-[3.5rem]`) salvo que el valor no lo cubra ningun token existente y no justifique crear uno nuevo.
+- Si un valor arbitrario se repite en mas de un lugar, convertirlo en token.
 
 ---
 
@@ -195,23 +188,23 @@ Tailwind permite aplicar opacidad directamente sobre un color con la sintaxis `/
 ### Reglas
 
 - Usar la sintaxis `color/opacity` de Tailwind para fondos con transparencia, no `rgba()` ni `opacity` como propiedad.
-- Reservar `opacity-disabled` y `opacity-muted` para estados funcionales, no para decoración.
+- Reservar `opacity-disabled` y `opacity-muted` para estados funcionales, no para decoracion.
 
 ---
 
-## Elevación y sombras
+## Elevacion y sombras
 
 ### Tokens disponibles
 
 | Token | Clase | Uso |
 |---|---|---|
-| `--shadow-sm` | `shadow-sm` | Elevación sutil — cards, chips |
-| `--shadow-md` | `shadow-md` | Elevación media — dropdowns, popovers |
+| `--shadow-sm` | `shadow-sm` | Elevacion sutil — cards, chips |
+| `--shadow-md` | `shadow-md` | Elevacion media — dropdowns, popovers |
 
 ### Reglas
 
 - No crear sombras inline con `style`. Usar las clases `shadow-sm` y `shadow-md`.
-- Si se necesita un nuevo nivel de elevación, agregar el token en `index.css` dentro de `@theme inline`.
+- Si se necesita un nuevo nivel de elevacion, agregar el token en `index.css` dentro de `@theme inline`.
 
 ---
 
@@ -239,22 +232,22 @@ Tailwind permite aplicar opacidad directamente sobre un color con la sintaxis `/
 
 | Token | Valor | Uso |
 |---|---|---|
-| `z-base` | `1` | Elementos con stacking mínimo |
-| `z-dropdown` | `100` | Menús desplegables, tooltips |
+| `z-base` | `1` | Elementos con stacking minimo |
+| `z-dropdown` | `100` | Menus desplegables, tooltips |
 | `z-modal` | `1000` | Modales, dialogs |
 | `z-toast` | `1100` | Notificaciones toast |
 
 ### Reglas
 
-- Usar exclusivamente los tokens de z-index para controlar jerarquía de capas.
-- No inventar valores intermedios como `z-50`, `z-[999]`. Si la jerarquía actual no alcanza, evaluar si la estructura del DOM es correcta antes de agregar un token.
-- El header fijo y el sidebar deben respetar la jerarquía: header por encima del sidebar, ambos por debajo de modales.
+- Usar exclusivamente los tokens de z-index para controlar jerarquia de capas.
+- No inventar valores intermedios como `z-50`, `z-[999]`. Si la jerarquia actual no alcanza, evaluar si la estructura del DOM es correcta antes de agregar un token.
+- El header fijo y el sidebar deben respetar la jerarquia: header por encima del sidebar, ambos por debajo de modales.
 
 ---
 
 ## Motion y transiciones
 
-### Tokens de duración
+### Tokens de duracion
 
 | Token | Valor |
 |---|---|
@@ -264,7 +257,7 @@ Tailwind permite aplicar opacidad directamente sobre un color con la sintaxis `/
 
 ### Easing
 
-Un único easing estándar: `ease-standard` → `ease-in-out`.
+Un unico easing estandar: `ease-standard` → `ease-in-out`.
 
 ### Patrones de uso en componentes
 
@@ -274,7 +267,7 @@ Un único easing estándar: `ease-standard` → `ease-in-out`.
 
 ### Reglas
 
-- Mantener las transiciones conservadoras: solo `transition-colors` y `transition-transform` salvo necesidad específica.
+- Mantener las transiciones conservadoras: solo `transition-colors` y `transition-transform` salvo necesidad especifica.
 - No agregar `transition-all` por conveniencia — especificar la propiedad exacta.
 - Nuevas animaciones se definen como keyframe en `index.css` y se registran en `@theme inline` como `--animate-*`.
 - No definir keyframes inline ni en archivos CSS por componente.
@@ -293,16 +286,16 @@ gradient-tertiary:  180deg, transparente → rgba(26,26,26,0.72)
 
 ### Reglas
 
-- Los gradientes se consumen como clases de Tailwind cuando están registrados, o como CSS custom properties.
+- Los gradientes se consumen como clases de Tailwind cuando estan registrados, o como CSS custom properties.
 - No hardcodear gradientes inline con `background: linear-gradient(...)`. Si se necesita uno nuevo, registrarlo como token.
 
 ---
 
-## Cómo agregar un token nuevo
+## Como agregar un token nuevo
 
-1. Definir la CSS custom property en `src/index.css` dentro del bloque `@theme inline`, en la sección correspondiente a su categoría.
-2. Tailwind genera automáticamente la utilidad. No es necesario tocar `tailwind.config.ts` salvo para plugins o configuraciones que `@theme inline` no soporte.
-3. Seguir la convención de naming: `category-role-variant`.
+1. Definir la CSS custom property en `src/index.css` dentro del bloque `@theme inline`, en la seccion correspondiente a su categoria.
+2. Tailwind genera automaticamente la utilidad. No es necesario tocar `tailwind.config.ts` salvo para plugins o configuraciones que `@theme inline` no soporte.
+3. Seguir la convencion de naming: `category-role-variant`.
 4. Documentar el token nuevo en `design-token.md` dentro de su grupo.
 
 ### Reglas
@@ -313,7 +306,7 @@ gradient-tertiary:  180deg, transparente → rgba(26,26,26,0.72)
 
 ---
 
-## Archivos de configuración
+## Archivos de configuracion
 
 ### `src/index.css`
 
@@ -325,67 +318,54 @@ gradient-tertiary:  180deg, transparente → rgba(26,26,26,0.72)
 
 #### Reglas
 
-- No agregar estilos de componente aquí. Solo tokens, base layer, keyframes y utilidades custom.
-- Mantener las secciones con comentarios de separación por categoría de token.
-- No importar otros archivos CSS desde aquí salvo `tailwindcss`.
+- No agregar estilos de componente aqui. Solo tokens, base layer, keyframes y utilidades custom.
+- Mantener las secciones con comentarios de separacion por categoria de token.
+- No importar otros archivos CSS desde aqui salvo `tailwindcss`.
 
 ### `tailwind.config.ts`
 
 - Extiende solo lo que `@theme inline` no cubre: `container`, plugins.
-- El plugin `tailwindcss-animate` se carga aquí.
+- El plugin `tailwindcss-animate` se carga aqui.
 - `darkMode: ["class"]` habilita dark mode por clase.
 
 #### Reglas
 
 - No duplicar tokens ya definidos en `@theme inline`.
-- No agregar colores, spacing ni typography aquí — van en `index.css`.
-- Mantener el config mínimo: solo extensiones que requieren la API de config de Tailwind.
+- No agregar colores, spacing ni typography aqui — van en `index.css`.
+- Mantener el config minimo: solo extensiones que requieren la API de config de Tailwind.
 
 ### `postcss.config.js`
 
 - Carga `@tailwindcss/postcss` y `autoprefixer`.
-- No requiere modificación frecuente.
+- No requiere modificacion frecuente.
 
 #### Regla
 
-- No agregar plugins de PostCSS sin justificación. El pipeline es `tailwindcss → autoprefixer`.
+- No agregar plugins de PostCSS sin justificacion. El pipeline es `tailwindcss → autoprefixer`.
 
 ### `components.json`
 
-- Configuración de shadcn: estilo, aliases, ruta de CSS, uso de CSS variables.
+- Configuracion de shadcn: estilo, aliases, ruta de CSS, uso de CSS variables.
 - Los aliases deben coincidir con los paths de `tsconfig.app.json`.
 
 #### Regla
 
-- No modificar aliases sin actualizar también `tsconfig.app.json`.
+- No modificar aliases sin actualizar tambien `tsconfig.app.json`.
 
 ---
 
 ## Anti-patrones
 
-| Anti-patrón | Por qué evitarlo |
+| Anti-patron | Por que evitarlo |
 |---|---|
-| `bg-background`, `text-foreground`, `bg-muted` | Tokens semánticos intermedios — usar primitives directamente |
-| `var(--background)` con redefinición en `:root`/`.dark` | Viola la estrategia de dark mode con variante `dark:` |
+| `bg-background`, `text-foreground`, `bg-muted` | Tokens semanticos intermedios — usar primitives directamente |
+| `var(--background)` con redefinicion en `:root`/`.dark` | Viola la estrategia de dark mode con variante `dark:` |
 | `style={{ color: '#5EE1C0' }}` | Hardcodeo de valores — usar la clase `text-primary` |
 | `neutral-white`, `neutral-light` | Tokens superfluos — la paleta neutral se resuelve con los tokens existentes |
 | `padding-card`, `border-radius-primary` | Nombres acoplados a componentes |
 | `color-green-500`, `radius-8` | Nombres basados en valores puros |
 | `transition-all` | Demasiado amplio — especificar la propiedad exacta |
 | `z-[999]`, `z-50` | Z-index arbitrarios fuera de los tokens del sistema |
-| `rounded-[8px]`, `ml-[72px]` | Valores arbitrarios que deberían ser tokens |
+| `rounded-[8px]`, `ml-[72px]` | Valores arbitrarios que deberian ser tokens |
 | Crear archivos `.css` por componente | Todo se resuelve con Tailwind y tokens globales |
 | `className="bg-blue-500"` | Usar colores de Tailwind que no pertenezcan a la paleta del proyecto |
-
----
-
-## Checklist para cambios visuales
-
-Antes de dar por terminado un cambio visual, verificar:
-
-- [ ] Los colores provienen de los tokens de la paleta, no de valores hardcodeados ni de la paleta default de Tailwind.
-- [ ] Cada clase de color tiene su par `dark:` correspondiente (salvo feedback invariante).
-- [ ] No se introdujeron valores arbitrarios con brackets que puedan ser tokens.
-- [ ] Las transiciones especifican la propiedad exacta, no `transition-all`.
-- [ ] Los z-index usan tokens del sistema.
-- [ ] Los nuevos tokens (si los hay) están en `index.css` dentro de `@theme inline` y documentados en `design-token.md`.
