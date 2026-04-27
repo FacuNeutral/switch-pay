@@ -6,6 +6,7 @@ import DebugTrigger from "../components/DebugTrigger";
 import DebugPanel from "../components/DebugPanel";
 import DebugToolsModal from "../components/DebugToolsModal";
 import DTPanel from "../../design-tokens/components/DTPanel";
+import BDPanel from "../../brand-design/components/BDPanel";
 import { useDevtoolsKeyboard } from "../../core/hooks/useDevtoolsKeyboard";
 
 const IS_DEV_MODE = import.meta.env.VITE_DEV_MODE === "true";
@@ -36,6 +37,7 @@ export default function PagesExplorerIntegration({ children }: { children: React
       <DebugPanel>{children}</DebugPanel>
       <DebugToolsModal />
       <DTPanel />
+      <BDPanel />
     </>
   );
 }

@@ -7,8 +7,10 @@ import { useDebugToolsStore } from "../store/debug-tools.slice";
 import { useUiStore } from "@/zustand/ui/ui.slice";
 import { usePagesExplorerStore } from "../../pages-explorer/store/pages-explorer.slice";
 import { useDesignTokensStore } from "../../design-tokens/store/design-tokens.slice";
+import { useBrandDesignStore } from "../../brand-design/store/brand-design.slice";
 import type { ViewportMode } from "../../pages-explorer/store/pages-explorer.mock";
 import type { DesignTokensTab } from "../../design-tokens/store/design-tokens.mock";
+import { BRAND_SECTIONS } from "../../brand-design/store/brand-design.mock";
 
 /* ==========================================
    Pages Explorer Constants
@@ -157,6 +159,47 @@ function handleDesignTokens(e: KeyboardEvent, code: string): boolean {
 }
 
 /* ==========================================
+   Brand Design Handler
+   ========================================== */
+function handleBrandDesign(e: KeyboardEvent, code: string): boolean {
+  const store = useBrandDesignStore.getState();
+  if (!store.isOpen) return false;
+
+  /* --- Ctrl+Alt+1..8: jump to section by index --- */
+  if (code.startsWith("Digit")) {
+    const idx = parseInt(code.replace("Digit", ""), 10) - 1;
+    if (idx >= 0 && idx < BRAND_SECTIONS.length) {
+      e.preventDefault();
+      store.setActiveSection(BRAND_SECTIONS[idx].id);
+      return true;
+    }
+  }
+
+  /* --- Ctrl+Alt+J: next section --- */
+  if (code === "KeyJ") {
+    e.preventDefault();
+    store.nextSection();
+    return true;
+  }
+
+  /* --- Ctrl+Alt+K: previous section --- */
+  if (code === "KeyK") {
+    e.preventDefault();
+    store.prevSection();
+    return true;
+  }
+
+  /* --- Ctrl+Alt+Q: close brand design panel --- */
+  if (code === "KeyQ") {
+    e.preventDefault();
+    store.close();
+    return true;
+  }
+
+  return false;
+}
+
+/* ==========================================
    Hook
    ========================================== */
 export function useDevtoolsKeyboard() {
@@ -187,7 +230,8 @@ export function useDevtoolsKeyboard() {
         return;
       }
 
-      /* --- Dispatch to active tool (design-tokens has priority over pages-explorer) --- */
+      /* --- Dispatch to active tool (brand-design > design-tokens > pages-explorer) --- */
+      if (handleBrandDesign(e, code)) return;
       if (handleDesignTokens(e, code)) return;
       if (handlePagesExplorer(e, code, lastSTime, lastHTime)) return;
     }
