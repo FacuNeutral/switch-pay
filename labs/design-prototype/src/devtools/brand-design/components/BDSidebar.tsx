@@ -14,12 +14,15 @@ export default function BDSidebar() {
     <aside className="hidden lg:flex w-72 shrink-0 flex-col border-r border-debug-border dark:border-debug-border-dark bg-debug-surface-raised dark:bg-debug-surface-raised-dark">
       {/* <Tag> Header */}
       <div className="px-5 py-6 border-b border-debug-border dark:border-debug-border-dark">
-        <BDLogoMark
-          variant="horizontal"
-          size={36}
-          color="#15B981"
-          textColor="var(--color-debug-text)"
-        />
+        <span className="text-debug-text dark:text-debug-text-dark">
+          <BDLogoMark
+            variant="horizontal"
+            size={32}
+            color="#15B981"
+            textColor="currentColor"
+            accentColor="#15B981"
+          />
+        </span>
         <p className="mt-3 text-[10px] uppercase tracking-widest font-semibold text-debug-text-muted dark:text-debug-text-muted-dark">
           Brand Manual · v1.0
         </p>
@@ -89,20 +92,18 @@ export default function BDSidebar() {
       </nav>
 
       {/* <Tag> Footer hint */}
-      <div className="px-5 py-3 border-t border-debug-border dark:border-debug-border-dark text-[10px] text-debug-text-muted dark:text-debug-text-muted-dark">
+      <div className="px-5 py-3 border-t border-debug-border dark:border-debug-border-dark text-[10px] text-debug-text-muted dark:text-debug-text-muted-dark space-y-1.5">
         <div className="flex items-center gap-2">
           <kbd className="px-1.5 py-0.5 rounded bg-debug-surface-overlay dark:bg-debug-surface-overlay-dark border border-debug-border dark:border-debug-border-dark font-mono">
-            Ctrl
+            ←  →
           </kbd>
-          <span>+</span>
+          <span className="ml-1">navigate</span>
+        </div>
+        <div className="flex items-center gap-2">
           <kbd className="px-1.5 py-0.5 rounded bg-debug-surface-overlay dark:bg-debug-surface-overlay-dark border border-debug-border dark:border-debug-border-dark font-mono">
-            Alt
+            Ctrl+Alt+H
           </kbd>
-          <span>+</span>
-          <kbd className="px-1.5 py-0.5 rounded bg-debug-surface-overlay dark:bg-debug-surface-overlay-dark border border-debug-border dark:border-debug-border-dark font-mono">
-            1-8
-          </kbd>
-          <span className="ml-1">jump section</span>
+          <span className="ml-1">all shortcuts</span>
         </div>
       </div>
     </aside>

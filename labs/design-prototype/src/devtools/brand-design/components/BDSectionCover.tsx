@@ -7,10 +7,10 @@ import BDLogoMark from "./BDLogoMark";
 import { BRAND_SLOGANS } from "../store/brand-design.mock";
 
 const PRINCIPLES = [
-  { icon: Zap, title: "Claridad antes que decoración", text: "Cada elemento aporta lectura." },
-  { icon: Sparkles, title: "Acento controlado", text: "Un solo color de acción por pantalla." },
-  { icon: ShieldCheck, title: "Confianza bancaria", text: "Premium pero simple." },
-  { icon: HeartHandshake, title: "Cercanía humana", text: "Tecnología sin verse compleja." },
+  { icon: Zap, title: "Clarity over decoration", text: "Every element adds readability." },
+  { icon: Sparkles, title: "Controlled accent", text: "One action color per screen." },
+  { icon: ShieldCheck, title: "Banking trust", text: "Premium yet simple." },
+  { icon: HeartHandshake, title: "Human closeness", text: "Technology without complexity." },
 ];
 
 export default function BDSectionCover() {
@@ -25,9 +25,9 @@ export default function BDSectionCover() {
           <h1 className="text-3xl font-bold text-debug-text dark:text-debug-text-dark">
             Brand Foundation
           </h1>
-          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark max-w-xl">
-            La identidad de SwitchPay se construye sobre tres pilares: switch, pay y you.
-            Cambiar, confiar y elegir. La marca debe sentirse confiable pero amable, premium pero simple.
+          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark">
+            SwitchPay's identity is built on three pillars: switch, pay and you.
+            Change, trust and choose. The brand should feel trustworthy yet friendly, premium yet simple.
           </p>
         </div>
       </div>
@@ -36,7 +36,7 @@ export default function BDSectionCover() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
         {/* Light hero */}
         <div className="rounded-3xl bg-white border border-[#D9E8E5] p-12 flex flex-col items-center justify-center gap-6 min-h-[280px]">
-          <BDLogoMark variant="vertical" size={88} color="#15B981" textColor="#102021" />
+          <BDLogoMark variant="vertical" size={88} color="#15B981" textColor="#102021" accentColor="#15B981" />
           <span className="text-[10px] uppercase tracking-widest font-semibold text-[#5C6B70]">
             Light surface
           </span>
@@ -44,7 +44,7 @@ export default function BDSectionCover() {
 
         {/* Dark hero */}
         <div className="rounded-3xl bg-[#09111F] p-12 flex flex-col items-center justify-center gap-6 min-h-[280px]">
-          <BDLogoMark variant="vertical" size={88} color="#15B981" textColor="#F1FAF8" />
+          <BDLogoMark variant="vertical" size={88} color="#15B981" textColor="#F1FAF8" accentColor="#15B981" />
           <span className="text-[10px] uppercase tracking-widest font-semibold text-[#9BAEB7]">
             Dark surface
           </span>

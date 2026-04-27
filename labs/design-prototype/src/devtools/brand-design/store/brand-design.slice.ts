@@ -10,6 +10,8 @@ interface BrandDesignState {
   activeSection: BrandSection;
   /** Token copiado más reciente (para feedback visual). */
   copiedToken: string | null;
+  /** Panel lateral de atajos de teclado. */
+  shortcutsOpen: boolean;
 
   //* Abre el panel de brand design
   open: () => void;
@@ -25,12 +27,15 @@ interface BrandDesignState {
   prevSection: () => void;
   //* Marca un token como copiado y limpia el flag a los 1.6s
   markCopied: (token: string) => void;
+  //* Toggle del panel de shortcuts
+  toggleShortcuts: () => void;
 }
 
 export const useBrandDesignStore = create<BrandDesignState>((set, get) => ({
   isOpen: false,
   activeSection: "cover",
   copiedToken: null,
+  shortcutsOpen: false,
 
   open: () => {
     document.body.style.overflow = "hidden";
@@ -39,7 +44,7 @@ export const useBrandDesignStore = create<BrandDesignState>((set, get) => ({
 
   close: () => {
     document.body.style.overflow = "";
-    set({ isOpen: false });
+    set({ isOpen: false, shortcutsOpen: false });
   },
 
   toggle: () => {
@@ -70,4 +75,6 @@ export const useBrandDesignStore = create<BrandDesignState>((set, get) => ({
       if (get().copiedToken === token) set({ copiedToken: null });
     }, 1600);
   },
+
+  toggleShortcuts: () => set((s) => ({ shortcutsOpen: !s.shortcutsOpen })),
 }));

@@ -2,7 +2,7 @@
 //* @context Brand Design
 //* @utility Navbar del panel brand-design: branding, theme switch y boton close.
 
-import { Sun, Moon, X, ChevronUp, ChevronDown } from "lucide-react";
+import { Sun, Moon, X, ChevronUp, ChevronDown, Keyboard } from "lucide-react";
 import { useBrandDesignStore } from "../store/brand-design.slice";
 import { useUiStore } from "@/zustand/ui/ui.slice";
 import { BRAND_SECTIONS } from "../store/brand-design.mock";
@@ -12,6 +12,8 @@ export default function BDNavbar() {
   const activeSection = useBrandDesignStore((s) => s.activeSection);
   const nextSection = useBrandDesignStore((s) => s.nextSection);
   const prevSection = useBrandDesignStore((s) => s.prevSection);
+  const shortcutsOpen = useBrandDesignStore((s) => s.shortcutsOpen);
+  const toggleShortcuts = useBrandDesignStore((s) => s.toggleShortcuts);
   const darkMode = useUiStore((s) => s.darkMode);
   const toggleDarkMode = useUiStore((s) => s.toggleDarkMode);
 
@@ -35,7 +37,7 @@ export default function BDNavbar() {
         <button
           onClick={prevSection}
           className="p-1.5 rounded-(--radius-debug-tab) text-debug-text-muted dark:text-debug-text-muted-dark hover:bg-debug-surface-overlay dark:hover:bg-debug-surface-overlay-dark transition-colors duration-150"
-          title="Previous section (Ctrl+Alt+K)"
+          title="Previous section (←)"
         >
           <ChevronUp size={14} />
         </button>
@@ -53,7 +55,7 @@ export default function BDNavbar() {
         <button
           onClick={nextSection}
           className="p-1.5 rounded-(--radius-debug-tab) text-debug-text-muted dark:text-debug-text-muted-dark hover:bg-debug-surface-overlay dark:hover:bg-debug-surface-overlay-dark transition-colors duration-150"
-          title="Next section (Ctrl+Alt+J)"
+          title="Next section (→)"
         >
           <ChevronDown size={14} />
         </button>
@@ -61,6 +63,18 @@ export default function BDNavbar() {
 
       {/* <Tag> Right — actions */}
       <div className="flex items-center gap-2">
+        <button
+          onClick={toggleShortcuts}
+          className={`p-1.5 rounded-(--radius-debug-tab) transition-colors duration-150 ${
+            shortcutsOpen
+              ? "bg-debug-primary/10 text-debug-primary"
+              : "text-debug-text-muted dark:text-debug-text-muted-dark hover:bg-debug-surface-overlay dark:hover:bg-debug-surface-overlay-dark"
+          }`}
+          title="Keyboard shortcuts (Ctrl+Alt+H)"
+        >
+          <Keyboard size={14} />
+        </button>
+
         <button
           onClick={toggleDarkMode}
           className="p-1.5 rounded-(--radius-debug-tab) text-debug-text-muted dark:text-debug-text-muted-dark hover:bg-debug-surface-overlay dark:hover:bg-debug-surface-overlay-dark transition-colors duration-150"

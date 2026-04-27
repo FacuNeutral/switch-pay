@@ -33,7 +33,7 @@ function ColorSwatch({ token }: { token: BrandColorToken }) {
         onClick={handleCopy}
         className="relative aspect-[5/3] flex items-end p-4 group transition-transform duration-200 hover:scale-[1.01]"
         style={{ background: token.hex }}
-        title={`Copiar ${token.hex}`}
+        title={`Copy ${token.hex}`}
       >
         <span
           className="text-[11px] font-mono font-bold uppercase tracking-wider"
@@ -84,9 +84,9 @@ export default function BDSectionColor() {
           <h1 className="text-3xl font-bold text-debug-text dark:text-debug-text-dark">
             Color Palette
           </h1>
-          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark max-w-xl">
-            Aqua + Purple sobre una base neutral cálida. Construida para mantener
-            contraste 4.5:1 mínimo en light y dark, con feedback colors invariantes.
+          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark">
+            Aqua + Purple on a warm neutral base. Built to maintain
+            4.5:1 minimum contrast in light and dark, with invariant feedback colors.
           </p>
         </div>
       </div>
@@ -102,7 +102,7 @@ export default function BDSectionColor() {
               #15B981
             </p>
             <p className="text-sm font-medium mt-2" style={{ color: "#062014", opacity: 0.7 }}>
-              Acción, branding, confirmación
+              Action, branding, confirmation
             </p>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function BDSectionColor() {
               #6F4DE8
             </p>
             <p className="text-sm font-medium mt-2 text-white/75">
-              Switch, premium, secundario
+              Switch, premium, secondary
             </p>
           </div>
         </div>

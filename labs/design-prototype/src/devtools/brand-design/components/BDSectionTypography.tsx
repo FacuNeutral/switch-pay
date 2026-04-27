@@ -25,9 +25,9 @@ export default function BDSectionTypography() {
           <h1 className="text-3xl font-bold text-debug-text dark:text-debug-text-dark">
             Typography
           </h1>
-          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark max-w-xl">
-            Plus Jakarta Sans para UI y branding; Inter para datos, números y bloques
-            tabulares. Combinación humanista + neutral, ideal para banca digital moderna.
+          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark">
+            Plus Jakarta Sans for UI and branding; Inter for data, numbers and tabular
+            blocks. Humanist + neutral combination, ideal for modern digital banking.
           </p>
         </div>
       </div>

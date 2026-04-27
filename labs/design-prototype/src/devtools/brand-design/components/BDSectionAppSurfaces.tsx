@@ -59,7 +59,7 @@ function OnboardingScreen() {
     <div className="flex-1 flex flex-col items-center justify-between px-6 pb-6 pt-8" style={{ background: "#FFFFFF" }}>
       {/* hero */}
       <div className="flex-1 flex flex-col items-center justify-center gap-7 text-center">
-        <BDLogoMark variant="vertical" size={64} color="#15B981" textColor="#102021" />
+        <BDLogoMark variant="vertical" size={64} color="#15B981" textColor="#102021" accentColor="#15B981" />
         <div>
           <p className="text-lg font-extrabold leading-tight" style={{ color: "#102021" }}>
             Your money,
@@ -320,9 +320,9 @@ export default function BDSectionAppSurfaces() {
           <h1 className="text-3xl font-bold text-debug-text dark:text-debug-text-dark">
             App Surfaces
           </h1>
-          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark max-w-xl">
-            Pantallas clave de SwitchPay aplicando todo el sistema visual:
-            onboarding, dashboard con balance hero y selector de beneficios.
+          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark">
+            Key SwitchPay screens applying the full visual system:
+            onboarding, dashboard with hero balance and benefits picker.
           </p>
         </div>
       </div>
@@ -346,12 +346,12 @@ export default function BDSectionAppSurfaces() {
           UX Principles
         </p>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-debug-text-muted dark:text-debug-text-muted-dark leading-relaxed">
-          <li>· Una acción principal por pantalla.</li>
-          <li>· Saldo y estado visible siempre arriba.</li>
-          <li>· Confirmaciones claras antes de acciones sensibles.</li>
-          <li>· Beneficios agrupados por categoría con tabs.</li>
-          <li>· Cards amplias, legibles y con jerarquía obvia.</li>
-          <li>· Iconografía + label en accesos rápidos.</li>
+          <li>· One primary action per screen.</li>
+          <li>· Balance and status always visible at the top.</li>
+          <li>· Clear confirmations before sensitive actions.</li>
+          <li>· Benefits grouped by category with tabs.</li>
+          <li>· Wide, readable cards with obvious hierarchy.</li>
+          <li>· Icon + label on quick actions.</li>
         </ul>
       </div>
     </section>

@@ -9,21 +9,21 @@ const GRADIENTS = [
     id: "aqua-glow",
     label: "Aqua Glow",
     css: "linear-gradient(135deg, #15B981 0%, #6F4DE8 100%)",
-    use: "Hero backgrounds, banners promocionales",
+    use: "Hero backgrounds, promotional banners",
     onText: "#FFFFFF",
   },
   {
     id: "mist-fade",
     label: "Mist Fade",
     css: "linear-gradient(180deg, #DCF6E7 0%, #FFFFFF 100%)",
-    use: "Fondos suaves de seccion",
+    use: "Soft section backgrounds",
     onText: "#102021",
   },
   {
     id: "night-fade",
     label: "Night Fade",
     css: "linear-gradient(180deg, #09111F 0%, #17243A 100%)",
-    use: "Hero oscuro, dashboard balance",
+    use: "Dark hero, dashboard balance",
     onText: "#F1FAF8",
   },
   {
@@ -47,9 +47,9 @@ export default function BDSectionImagery() {
           <h1 className="text-3xl font-bold text-debug-text dark:text-debug-text-dark">
             Imagery & Patterns
           </h1>
-          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark max-w-xl">
-            Gradientes de marca, patrones decorativos derivados del isotipo y composiciones
-            sociales. Uso controlado: una sola pieza de color fuerte por composición.
+          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark">
+            Brand gradients, decorative patterns derived from the isotype and social
+            compositions. Controlled use: one bold color piece per composition.
           </p>
         </div>
       </div>
@@ -88,7 +88,7 @@ export default function BDSectionImagery() {
       {/* <Tag> Diagonal pattern */}
       <div>
         <p className="text-[10px] uppercase tracking-widest font-semibold text-debug-text-muted dark:text-debug-text-muted-dark mb-4">
-          Diagonal Bands · pattern derivado del isotipo
+          Diagonal Bands · pattern derived from isotype
         </p>
         <div
           className="rounded-3xl overflow-hidden relative min-h-[220px] flex items-center justify-center p-8"
@@ -98,7 +98,7 @@ export default function BDSectionImagery() {
           }}
         >
           <div className="text-center">
-            <BDLogoMark variant="vertical" size={64} color="#FFFFFF" textColor="#FFFFFF" accentColor="#FFFFFF" />
+            <BDLogoMark variant="vertical" size={56} color="#FFFFFF" textColor="#FFFFFF" accentColor="#FFFFFF" />
             <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white">
               Switch the way you live
             </p>
@@ -154,7 +154,7 @@ export default function BDSectionImagery() {
             className="aspect-square rounded-3xl p-8 flex flex-col justify-between"
             style={{ background: "#FFFFFF", border: "1px solid #D9E8E5" }}
           >
-            <BDLogoMark variant="horizontal" size={28} color="#15B981" textColor="#102021" />
+            <BDLogoMark variant="horizontal" size={24} color="#15B981" textColor="#102021" accentColor="#15B981" />
             <div>
               <p className="text-xl font-extrabold leading-tight" style={{ color: "#102021" }}>
                 Benefits that adapt to{" "}
@@ -227,7 +227,7 @@ export default function BDSectionImagery() {
             }}
           />
           <div className="relative flex items-center justify-between">
-            <BDLogoMark variant="horizontal" size={28} color="#15B981" textColor="#F1FAF8" accentColor="#15B981" />
+            <BDLogoMark variant="horizontal" size={24} color="#15B981" textColor="#F1FAF8" accentColor="#15B981" />
             <span className="text-[10px] uppercase tracking-widest font-bold text-white/60">
               Benefits
             </span>

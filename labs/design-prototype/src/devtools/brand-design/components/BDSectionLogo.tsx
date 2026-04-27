@@ -6,8 +6,8 @@ import { X, Check } from "lucide-react";
 import BDLogoMark from "./BDLogoMark";
 
 const VARIANTS = [
-  { id: "primary-light", label: "Primary on Light", bg: "#FFFFFF", color: "#15B981", textColor: "#102021", accent: "#6F4DE8" },
-  { id: "primary-dark", label: "Primary on Dark", bg: "#09111F", color: "#15B981", textColor: "#F1FAF8", accent: "#6F4DE8" },
+  { id: "primary-light", label: "Primary on Light", bg: "#FFFFFF", color: "#15B981", textColor: "#102021", accent: "#15B981" },
+  { id: "primary-dark", label: "Primary on Dark", bg: "#09111F", color: "#15B981", textColor: "#F1FAF8", accent: "#15B981" },
   { id: "inverse-on-aqua", label: "Inverse on Aqua", bg: "#15B981", color: "#FFFFFF", textColor: "#062014", accent: "#FFFFFF" },
   { id: "inverse-on-purple", label: "Inverse on Purple", bg: "#6F4DE8", color: "#FFFFFF", textColor: "#FFFFFF", accent: "#FFFFFF" },
   { id: "mono-dark", label: "Mono Dark", bg: "#FFFFFF", color: "#102021", textColor: "#102021", accent: "#102021" },
@@ -40,9 +40,10 @@ export default function BDSectionLogo() {
           <h1 className="text-3xl font-bold text-debug-text dark:text-debug-text-dark">
             Logo & Usage
           </h1>
-          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark max-w-xl">
-            Isotipo "S" en cuatro bandas formando dos chevrones entrelazados, lockups horizontal
-            y vertical. Funciona sobre fondos claros, oscuros y bloques de color.
+          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark">
+            Three-band "S" isotype inside a hexagon with decorative arrows.
+            Fused horizontal lockup (isotype + "witch Pay") and classic vertical lockup.
+            Works on light, dark and colored backgrounds.
           </p>
         </div>
       </div>
@@ -56,17 +57,17 @@ export default function BDSectionLogo() {
           <div className="rounded-2xl bg-white border border-[#D9E8E5] p-8 flex flex-col items-center justify-center gap-4 min-h-[200px]">
             <BDLogoMark variant="mark" size={80} color="#15B981" />
             <span className="text-[10px] uppercase tracking-widest font-semibold text-[#5C6B70]">
-              Isotype
+              Isotype (full)
             </span>
           </div>
           <div className="rounded-2xl bg-white border border-[#D9E8E5] p-8 flex flex-col items-center justify-center gap-4 min-h-[200px]">
-            <BDLogoMark variant="horizontal" size={56} color="#15B981" textColor="#102021" />
+            <BDLogoMark variant="horizontal" size={44} color="#15B981" textColor="#102021" accentColor="#15B981" />
             <span className="text-[10px] uppercase tracking-widest font-semibold text-[#5C6B70]">
-              Horizontal
+              Horizontal (fused)
             </span>
           </div>
           <div className="rounded-2xl bg-white border border-[#D9E8E5] p-8 flex flex-col items-center justify-center gap-4 min-h-[200px]">
-            <BDLogoMark variant="vertical" size={64} color="#15B981" textColor="#102021" />
+            <BDLogoMark variant="vertical" size={64} color="#15B981" textColor="#102021" accentColor="#15B981" />
             <span className="text-[10px] uppercase tracking-widest font-semibold text-[#5C6B70]">
               Vertical
             </span>
@@ -108,7 +109,7 @@ export default function BDSectionLogo() {
       {/* <Tag> Clearspace */}
       <div>
         <p className="text-[10px] uppercase tracking-widest font-semibold text-debug-text-muted dark:text-debug-text-muted-dark mb-4">
-          Clearspace · x = altura de banda
+          Clearspace · x = band height
         </p>
         <div className="rounded-2xl bg-debug-surface-raised dark:bg-debug-surface-raised-dark border border-debug-border dark:border-debug-border-dark p-12 flex items-center justify-center">
           <div className="relative">
@@ -127,7 +128,7 @@ export default function BDSectionLogo() {
             <span className="absolute top-1/2 -right-12 -translate-y-1/2 text-[10px] font-mono font-bold text-debug-primary">
               x
             </span>
-            <BDLogoMark variant="horizontal" size={64} color="#15B981" textColor="var(--color-debug-text)" />
+            <BDLogoMark variant="horizontal" size={52} color="#15B981" textColor="var(--color-debug-text)" accentColor="#15B981" />
           </div>
         </div>
       </div>
@@ -163,10 +164,10 @@ export default function BDSectionLogo() {
             <p className="text-sm font-semibold text-debug-text dark:text-debug-text-dark">Correct use</p>
           </div>
           <ul className="space-y-2 text-xs text-debug-text-muted dark:text-debug-text-muted-dark leading-relaxed">
-            <li>· Mantener proporciones originales del isotipo.</li>
-            <li>· Usar la combinación de color que cumpla contraste 4.5:1 mínimo.</li>
-            <li>· Respetar el clearspace en TODA aplicación.</li>
-            <li>· Usar el wordmark en la familia tipográfica primaria.</li>
+            <li>· Maintain the original isotype proportions.</li>
+            <li>· Use a color combination that meets 4.5:1 minimum contrast.</li>
+            <li>· Respect the clearspace in ALL applications.</li>
+            <li>· Use the wordmark in the primary typeface.</li>
           </ul>
         </div>
 
@@ -182,7 +183,7 @@ export default function BDSectionLogo() {
             {INCORRECT.map((rule) => (
               <li key={rule.label}>· {rule.label}.</li>
             ))}
-            <li>· No componer el wordmark en una fuente distinta.</li>
+            <li>· Don't compose the wordmark in a different typeface.</li>
           </ul>
         </div>
       </div>

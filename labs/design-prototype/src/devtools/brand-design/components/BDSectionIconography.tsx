@@ -88,9 +88,9 @@ export default function BDSectionIconography() {
           <h1 className="text-3xl font-bold text-debug-text dark:text-debug-text-dark">
             Iconography
           </h1>
-          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark max-w-xl">
-            Set lineal redondeado con stroke uniforme 1.5px. Curvaturas suaves, esquinas
-            redondeadas, escala en múltiplos de 4. Color hereda del contexto vía currentColor.
+          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark">
+            Rounded linear set with uniform 1.5px stroke. Soft curves, rounded
+            corners, scale in multiples of 4. Color inherits from context via currentColor.
           </p>
         </div>
       </div>

@@ -2,6 +2,8 @@
 //* @context Brand Design
 //* @utility Logo SwitchPay renderizado en SVG. Modo isotipo, lockup horizontal y lockup vertical.
 
+import BDLogoArrow from "./BDLogoArrow";
+
 interface BDLogoMarkProps {
   variant?: "mark" | "horizontal" | "vertical";
   /** Color del isotipo. Por defecto currentColor. */
@@ -15,62 +17,118 @@ interface BDLogoMarkProps {
 }
 
 /* ==========================================
-   Isotipo SVG
-   3 paralelogramos con esquinas redondeadas y caras
-   horizontales. Slant pronunciado (~28°) y desplazamiento
-   horizontal escalonado para formar una "S" estilizada.
-   Top y bottom alineados a la izquierda, middle shift right.
+   Isotipo SVG — versión completa
+   Hexágono con 3 paralelogramos internos (S estilizada)
+   y 2 flechas decorativas (arriba-derecha, abajo-izquierda).
    ========================================== */
 function Isotype({ size, color }: { size: number; color: string }) {
+  const vw = 1141;
+  const vh = 958;
+
   return (
     <svg
-      viewBox="0 0 100 100"
       width={size}
-      height={size}
-      role="img"
-      aria-label="SwitchPay isotipo"
+      height={(size * vh) / vw}
+      viewBox={`0 0 ${vw} ${vh}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
     >
-      <g fill={color}>
-        {/* Top band — alineada a la izquierda */}
-        <rect
-          x="0"
-          y="0"
-          width="50"
-          height="26"
-          rx="3"
-          ry="3"
-          transform="translate(17 4) skewX(-28.3)"
-        />
-        {/* Middle band — desplazada a la derecha */}
-        <rect
-          x="0"
-          y="0"
-          width="50"
-          height="26"
-          rx="3"
-          ry="3"
-          transform="translate(47 37) skewX(-28.3)"
-        />
-        {/* Bottom band — alineada como la top */}
-        <rect
-          x="0"
-          y="0"
-          width="50"
-          height="26"
-          rx="3"
-          ry="3"
-          transform="translate(17 70) skewX(-28.3)"
-        />
-      </g>
+      <path
+        d="M571.24 49L943.48 264V694L571.24 909L199 694V264L571.24 49Z"
+        stroke={color}
+        strokeWidth={36}
+        strokeLinejoin="round"
+      />
+      <path
+        d="M388.027 277.562C391.358 275.027 395.915 274.835 399.448 277.08L861.115 589.45C866.908 593.132 867.355 601.422 861.99 605.705L760.579 676.162C757.23 678.836 752.549 679.078 748.942 676.764L285.812 363.263C279.967 359.514 279.629 351.094 285.155 346.888L388.027 277.562Z"
+        fill={color}
+      />
+      <path
+        d="M566.457 157.633C569.87 154.969 574.608 154.804 578.198 157.222L839.359 330.018C844.867 333.729 845.294 341.68 840.215 345.959L781.859 385.518C778.494 388.353 773.672 388.656 769.979 386.265L656.359 308.018C652.678 305.635 647.873 305.927 644.509 308.74L596.359 342.018C593.008 344.819 583.186 344.968 579.509 342.613L447.509 253.591C441.702 249.872 445.685 240.36 451.12 236.116L566.457 157.633Z"
+        fill={color}
+      />
+      <path
+        d="M575.999 799.467C572.587 802.13 567.848 802.296 564.258 799.878L303.098 627.081C297.59 623.37 297.163 615.42 302.242 611.14L360.598 571.581C363.963 568.746 368.784 568.444 372.477 570.835L486.098 649.081C489.779 651.465 494.584 651.172 497.948 648.359L546.098 615.081C549.448 612.28 559.271 612.131 562.948 614.486L694.948 703.508C700.754 707.227 696.772 716.74 691.337 720.983L575.999 799.467Z"
+        fill={color}
+      />
+      <path
+        d="M937.458 115.792C932.571 113.883 927.061 116.296 925.152 121.183C923.243 126.07 925.656 131.58 930.543 133.489L934.001 124.641L937.458 115.792ZM1054.13 213.658L1045.31 217.189L1054.13 213.658ZM1067.22 420.363L1123.1 325.964L1013.41 324.773L1067.22 420.363ZM934.001 124.641C930.543 133.489 930.542 133.489 930.541 133.488C930.542 133.488 930.541 133.488 930.542 133.488C930.542 133.489 930.545 133.49 930.549 133.491C930.557 133.494 930.571 133.5 930.59 133.508C930.63 133.523 930.693 133.548 930.78 133.582C930.952 133.651 931.216 133.757 931.567 133.899C932.268 134.182 933.315 134.611 934.662 135.177C937.358 136.31 941.255 137.993 946.003 140.17C955.513 144.53 968.369 150.841 981.799 158.655C995.263 166.487 1009.1 175.709 1020.68 185.851C1032.36 196.084 1041.11 206.705 1045.31 217.189L1054.13 213.658L1062.95 210.127C1057.16 195.669 1045.91 182.692 1033.19 171.558C1020.38 160.332 1005.43 150.418 991.354 142.231C977.248 134.026 963.816 127.435 953.922 122.899C948.968 120.628 944.884 118.863 942.024 117.662C940.594 117.061 939.469 116.6 938.694 116.286C938.306 116.129 938.005 116.009 937.798 115.926C937.694 115.885 937.613 115.853 937.556 115.831C937.528 115.819 937.505 115.81 937.489 115.804C937.481 115.801 937.474 115.798 937.469 115.796C937.466 115.795 937.464 115.794 937.462 115.794C937.46 115.793 937.458 115.792 934.001 124.641ZM1054.13 213.658L1045.31 217.189C1049.74 228.254 1052.95 246.103 1055.11 267.549C1057.24 288.74 1058.25 312.562 1058.65 335.046L1068.15 334.877L1077.65 334.709C1077.25 311.956 1076.21 287.563 1074.01 265.65C1071.84 243.992 1068.44 223.85 1062.95 210.127L1054.13 213.658Z"
+        fill={color}
+        stroke={color}
+        strokeWidth={14}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <path
+        d="M195.298 843.243C200.127 845.295 205.705 843.044 207.757 838.215C209.809 833.386 207.557 827.808 202.729 825.757L199.013 834.5L195.298 843.243ZM81.5442 742L90.4633 738.729L81.5442 742ZM74.5158 535L15.8966 627.721L125.505 632.126L74.5158 535ZM199.013 834.5C202.729 825.757 202.73 825.757 202.73 825.757C202.73 825.757 202.731 825.757 202.73 825.757C202.729 825.757 202.727 825.756 202.723 825.754C202.715 825.751 202.701 825.745 202.682 825.737C202.643 825.72 202.58 825.693 202.495 825.656C202.325 825.583 202.064 825.469 201.717 825.317C201.025 825.013 199.991 824.554 198.661 823.948C195.999 822.737 192.153 820.94 187.471 818.625C178.093 813.988 165.428 807.303 152.232 799.1C139.004 790.876 125.447 781.252 114.169 770.776C102.791 760.205 94.3513 749.331 90.4633 738.729L81.5442 742L72.625 745.271C77.9871 759.893 88.8564 773.193 101.238 784.696C113.72 796.292 128.374 806.64 142.201 815.236C156.059 823.851 169.293 830.833 179.05 835.657C183.935 838.072 187.966 839.956 190.789 841.241C192.2 841.883 193.311 842.377 194.077 842.714C194.46 842.882 194.757 843.011 194.963 843.099C195.065 843.144 195.145 843.178 195.201 843.202C195.229 843.214 195.251 843.223 195.268 843.23C195.276 843.234 195.282 843.237 195.287 843.239C195.29 843.24 195.293 843.241 195.294 843.242C195.296 843.243 195.298 843.243 199.013 834.5ZM81.5442 742L90.4633 738.729C86.3596 727.539 83.67 709.603 82.1458 688.104C80.6398 666.86 80.3217 643.018 80.5819 620.532L71.0825 620.422L61.5832 620.312C61.3198 643.066 61.636 667.48 63.1934 689.447C64.7327 711.16 67.5357 731.393 72.625 745.271L81.5442 742Z"
+        fill={color}
+        stroke={color}
+        strokeWidth={14}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
 
 /* ==========================================
-   Wordmark — SWITCH PAY
-   uppercase con tracking moderado, "PAY" en accent.
-   Espacio amplio entre SWITCH y PAY (en/m space) replica
-   el lockup oficial de la marca.
+   IsotypeBare — variante sin flechas
+   Solo hexágono + 3 paralelogramos. ViewBox recortado
+   al bounding box del hexágono para que encaje como
+   primera letra junto al texto del wordmark.
+   ========================================== */
+function IsotypeBare({ size, color }: { size: number; color: string }) {
+  const x = 0;
+  const y = 30;
+  const vw = 970;
+  const vh = 930;
+
+  return (
+    <svg
+      width={(size * vw) / vh}
+      height={size}
+      viewBox={`${x} ${y} ${vw} ${vh}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      style={{ display: "block" }}
+    >
+      <path
+        d="M571.24 49L943.48 264V694L571.24 909L199 694V264L571.24 49Z"
+        stroke={color}
+        strokeWidth={36}
+        strokeLinejoin="round"
+      />
+      <path
+        d="M388.027 277.562C391.358 275.027 395.915 274.835 399.448 277.08L861.115 589.45C866.908 593.132 867.355 601.422 861.99 605.705L760.579 676.162C757.23 678.836 752.549 679.078 748.942 676.764L285.812 363.263C279.967 359.514 279.629 351.094 285.155 346.888L388.027 277.562Z"
+        fill={color}
+      />
+      <path
+        d="M566.457 157.633C569.87 154.969 574.608 154.804 578.198 157.222L839.359 330.018C844.867 333.729 845.294 341.68 840.215 345.959L781.859 385.518C778.494 388.353 773.672 388.656 769.979 386.265L656.359 308.018C652.678 305.635 647.873 305.927 644.509 308.74L596.359 342.018C593.008 344.819 583.186 344.968 579.509 342.613L447.509 253.591C441.702 249.872 445.685 240.36 451.12 236.116L566.457 157.633Z"
+        fill={color}
+      />
+      <path
+        d="M575.999 799.467C572.587 802.13 567.848 802.296 564.258 799.878L303.098 627.081C297.59 623.37 297.163 615.42 302.242 611.14L360.598 571.581C363.963 568.746 368.784 568.444 372.477 570.835L486.098 649.081C489.779 651.465 494.584 651.172 497.948 648.359L546.098 615.081C549.448 612.28 559.271 612.131 562.948 614.486L694.948 703.508C700.754 707.227 696.772 716.74 691.337 720.983L575.999 799.467Z"
+        fill={color}
+      />
+      {/* Flecha abajo-izquierda */}
+      <path
+        d="M195.298 843.243C200.127 845.295 205.705 843.044 207.757 838.215C209.809 833.386 207.557 827.808 202.729 825.757L199.013 834.5L195.298 843.243ZM81.5442 742L90.4633 738.729L81.5442 742ZM74.5158 535L15.8966 627.721L125.505 632.126L74.5158 535ZM199.013 834.5C202.729 825.757 202.73 825.757 202.73 825.757C202.73 825.757 202.731 825.757 202.73 825.757C202.729 825.757 202.727 825.756 202.723 825.754C202.715 825.751 202.701 825.745 202.682 825.737C202.643 825.72 202.58 825.693 202.495 825.656C202.325 825.583 202.064 825.469 201.717 825.317C201.025 825.013 199.991 824.554 198.661 823.948C195.999 822.737 192.153 820.94 187.471 818.625C178.093 813.988 165.428 807.303 152.232 799.1C139.004 790.876 125.447 781.252 114.169 770.776C102.791 760.205 94.3513 749.331 90.4633 738.729L81.5442 742L72.625 745.271C77.9871 759.893 88.8564 773.193 101.238 784.696C113.72 796.292 128.374 806.64 142.201 815.236C156.059 823.851 169.293 830.833 179.05 835.657C183.935 838.072 187.966 839.956 190.789 841.241C192.2 841.883 193.311 842.377 194.077 842.714C194.46 842.882 194.757 843.011 194.963 843.099C195.065 843.144 195.145 843.178 195.201 843.202C195.229 843.214 195.251 843.223 195.268 843.23C195.276 843.234 195.282 843.237 195.287 843.239C195.29 843.24 195.293 843.241 195.294 843.242C195.296 843.243 195.298 843.243 199.013 834.5ZM81.5442 742L90.4633 738.729C86.3596 727.539 83.67 709.603 82.1458 688.104C80.6398 666.86 80.3217 643.018 80.5819 620.532L71.0825 620.422L61.5832 620.312C61.3198 643.066 61.636 667.48 63.1934 689.447C64.7327 711.16 67.5357 731.393 72.625 745.271L81.5442 742Z"
+        fill={color}
+        stroke={color}
+        strokeWidth={14}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/* ==========================================
+   Wordmark — Switch Pay
+   Mixed case, Plus Jakarta Sans ExtraBold.
+   "Pay" en accentColor, tracking leve, sin uppercase.
    ========================================== */
 function Wordmark({
   fontSize,
@@ -83,16 +141,16 @@ function Wordmark({
 }) {
   return (
     <span
-      className="font-extrabold leading-none whitespace-nowrap"
+      className="leading-none whitespace-nowrap"
       style={{
         fontSize,
         color: textColor,
-        letterSpacing: "0.02em",
-        textTransform: "uppercase",
-        fontFamily: "'Plus Jakarta Sans', 'Poppins', system-ui, sans-serif",
+        fontWeight: 800,
+        letterSpacing: "-0.01em",
+        fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
       }}
     >
-      {"Switch\u2002"}
+      {"Switch\u00A0"}
       <span style={{ color: accentColor }}>Pay</span>
     </span>
   );
@@ -108,7 +166,7 @@ export default function BDLogoMark({
 }: BDLogoMarkProps) {
   const accent = accentColor ?? color;
 
-  /* <Tag> Isotipo standalone */
+  /* <Tag> Isotipo standalone (logo completo, con flechas) */
   if (variant === "mark") {
     return (
       <span className={className}>
@@ -117,17 +175,53 @@ export default function BDLogoMark({
     );
   }
 
-  /* <Tag> Lockup horizontal */
+  /* <Tag> Lockup horizontal — isotipo reemplaza la "S" inicial,
+     BDLogoArrow flota sobre el final del wordmark. */
   if (variant === "horizontal") {
+    const isoSize = size * 1.3;
+    const fontSize = size * 0.92;
+    const arrowSize = size * 0.38;
+
     return (
-      <div className={`inline-flex items-center gap-2.5 ${className}`}>
-        <Isotype size={size} color={color} />
-        <Wordmark fontSize={size * 0.62} textColor={textColor} accentColor={accent} />
+      <div
+        className={`relative inline-flex items-center ${className}`}
+        style={{ gap: size * 0.06 }}
+      >
+        <span style={{ marginTop: size * 0.2, flexShrink: 0 }}>
+          <IsotypeBare size={isoSize} color={color} />
+        </span>
+        <span
+          className="leading-none whitespace-nowrap"
+          style={{
+            fontSize,
+            color: textColor,
+            fontWeight: 800,
+            letterSpacing: "-0.02em",
+            fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+            paddingBottom: size * 0.06,
+          }}
+        >
+          {"witch\u00A0"}
+          <span style={{ color: accent, position: "relative" }}>
+            Pay
+            <span
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                right: -arrowSize * 0.6,
+                top: +arrowSize * 0.4,
+                pointerEvents: "none",
+              }}
+            >
+              <BDLogoArrow size={arrowSize} color={color} />
+            </span>
+          </span>
+        </span>
       </div>
     );
   }
 
-  /* <Tag> Lockup vertical */
+  /* <Tag> Lockup vertical — logo completo arriba, wordmark abajo */
   return (
     <div className={`inline-flex flex-col items-center gap-3 ${className}`}>
       <Isotype size={size} color={color} />

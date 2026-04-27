@@ -27,19 +27,19 @@ export const BRAND_SECTIONS: BrandSectionMeta[] = [
     id: "cover",
     number: "01",
     title: "Brand Foundation",
-    caption: "Identidad y principios visuales",
+    caption: "Identity and visual principles",
   },
   {
     id: "logo",
     number: "02",
     title: "Logo & Usage",
-    caption: "Isotipo, lockups, clearspace y uso",
+    caption: "Isotype, lockups, clearspace & usage",
   },
   {
     id: "color",
     number: "03",
     title: "Color Palette",
-    caption: "Aqua, purple, neutrales y feedback",
+    caption: "Aqua, purple, neutrals & feedback",
   },
   {
     id: "typography",
@@ -63,13 +63,13 @@ export const BRAND_SECTIONS: BrandSectionMeta[] = [
     id: "app-surfaces",
     number: "07",
     title: "App Surfaces",
-    caption: "Pantallas clave de SwitchPay",
+    caption: "Key SwitchPay screens",
   },
   {
     id: "imagery",
     number: "08",
     title: "Imagery & Patterns",
-    caption: "Gradientes, blending, social",
+    caption: "Gradients, blending, social",
   },
 ];
 
@@ -95,60 +95,60 @@ export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
   {
     id: "primary",
     label: "Primary — Aqua",
-    description: "Acción, branding, confirmación, bienestar.",
+    description: "Action, branding, confirmation, wellness.",
     tokens: [
-      { key: "primary", label: "Primary", hex: "#15B981", description: "CTAs, links, isotipo", textOn: "dark" },
-      { key: "primary-hover", label: "Primary Hover", hex: "#0FA571", description: "Estado hover/pressed", textOn: "dark" },
-      { key: "primary-soft", label: "Primary Soft", hex: "#DCF6E7", description: "Fondos suaves, chips (light)", textOn: "dark" },
-      { key: "primary-foreground", label: "Primary Foreground", hex: "#062014", description: "Texto sobre bg-primary", textOn: "light" },
+      { key: "primary", label: "Primary", hex: "#15B981", description: "CTAs, links, isotype", textOn: "dark" },
+      { key: "primary-hover", label: "Primary Hover", hex: "#0FA571", description: "Hover/pressed state", textOn: "dark" },
+      { key: "primary-soft", label: "Primary Soft", hex: "#DCF6E7", description: "Soft backgrounds, chips (light)", textOn: "dark" },
+      { key: "primary-foreground", label: "Primary Foreground", hex: "#062014", description: "Text on bg-primary", textOn: "light" },
     ],
   },
   {
     id: "accent",
     label: "Accent — Purple",
-    description: "Switch, premium, secundario.",
+    description: "Switch, premium, secondary.",
     tokens: [
       { key: "accent", label: "Accent", hex: "#6F4DE8", description: "Tags premium, badges, switch", textOn: "light" },
       { key: "accent-hover", label: "Accent Hover", hex: "#5A3DD1", description: "Hover/pressed accent", textOn: "light" },
-      { key: "accent-soft", label: "Accent Soft", hex: "#E8E1FF", description: "Fondos suaves accent (light)", textOn: "dark" },
-      { key: "accent-foreground", label: "Accent Foreground", hex: "#FFFFFF", description: "Texto sobre bg-accent", textOn: "dark" },
+      { key: "accent-soft", label: "Accent Soft", hex: "#E8E1FF", description: "Soft backgrounds accent (light)", textOn: "dark" },
+      { key: "accent-foreground", label: "Accent Foreground", hex: "#FFFFFF", description: "Text on bg-accent", textOn: "dark" },
     ],
   },
   {
     id: "neutral-light",
     label: "Neutral — Light",
-    description: "Base de superficies y texto en light mode.",
+    description: "Surface and text base for light mode.",
     tokens: [
-      { key: "neutral", label: "Neutral", hex: "#FFFFFF", description: "Fondo base claro", textOn: "dark" },
-      { key: "neutral-off", label: "Neutral Off", hex: "#F4F8F7", description: "Fondo secundario, listas", textOn: "dark" },
-      { key: "neutral-mist", label: "Neutral Mist", hex: "#EDF7F5", description: "Banners suaves, secciones tonales", textOn: "dark" },
-      { key: "neutral-line", label: "Neutral Line", hex: "#D9E8E5", description: "Bordes, dividers", textOn: "dark" },
-      { key: "neutral-muted", label: "Neutral Muted", hex: "#5C6B70", description: "Texto secundario, captions", textOn: "light" },
-      { key: "neutral-ink", label: "Neutral Ink", hex: "#102021", description: "Texto principal sobre claro", textOn: "light" },
+      { key: "neutral", label: "Neutral", hex: "#FFFFFF", description: "Base light background", textOn: "dark" },
+      { key: "neutral-off", label: "Neutral Off", hex: "#F4F8F7", description: "Secondary background, lists", textOn: "dark" },
+      { key: "neutral-mist", label: "Neutral Mist", hex: "#EDF7F5", description: "Soft banners, tonal sections", textOn: "dark" },
+      { key: "neutral-line", label: "Neutral Line", hex: "#D9E8E5", description: "Borders, dividers", textOn: "dark" },
+      { key: "neutral-muted", label: "Neutral Muted", hex: "#5C6B70", description: "Secondary text, captions", textOn: "light" },
+      { key: "neutral-ink", label: "Neutral Ink", hex: "#102021", description: "Primary text on light", textOn: "light" },
     ],
   },
   {
     id: "neutral-dark",
     label: "Neutral — Dark",
-    description: "Base de superficies y texto en dark mode.",
+    description: "Surface and text base for dark mode.",
     tokens: [
-      { key: "neutral-dark", label: "Neutral Dark", hex: "#09111F", description: "Fondo base oscuro", textOn: "light" },
-      { key: "neutral-surface-dark", label: "Neutral Surface", hex: "#101B2E", description: "Surfaces elevadas, cards", textOn: "light" },
-      { key: "neutral-card-dark", label: "Neutral Card", hex: "#17243A", description: "Cards sobre surfaces, modales", textOn: "light" },
-      { key: "neutral-line-dark", label: "Neutral Line Dark", hex: "#22324A", description: "Bordes en dark", textOn: "light" },
-      { key: "neutral-muted-dark", label: "Neutral Muted Dark", hex: "#9BAEB7", description: "Texto secundario en dark", textOn: "dark" },
-      { key: "neutral-ink-dark", label: "Neutral Ink Dark", hex: "#F1FAF8", description: "Texto principal en dark", textOn: "dark" },
+      { key: "neutral-dark", label: "Neutral Dark", hex: "#09111F", description: "Base dark background", textOn: "light" },
+      { key: "neutral-surface-dark", label: "Neutral Surface", hex: "#101B2E", description: "Elevated surfaces, cards", textOn: "light" },
+      { key: "neutral-card-dark", label: "Neutral Card", hex: "#17243A", description: "Cards on surfaces, modals", textOn: "light" },
+      { key: "neutral-line-dark", label: "Neutral Line Dark", hex: "#22324A", description: "Borders in dark", textOn: "light" },
+      { key: "neutral-muted-dark", label: "Neutral Muted Dark", hex: "#9BAEB7", description: "Secondary text in dark", textOn: "dark" },
+      { key: "neutral-ink-dark", label: "Neutral Ink Dark", hex: "#F1FAF8", description: "Primary text in dark", textOn: "dark" },
     ],
   },
   {
     id: "feedback",
     label: "Feedback",
-    description: "Invariantes entre light y dark.",
+    description: "Invariant between light and dark.",
     tokens: [
-      { key: "success", label: "Success", hex: "#63D69F", description: "Confirmaciones, transacciones OK", textOn: "dark" },
-      { key: "warning", label: "Warning", hex: "#F3C74D", description: "Avisos, límites", textOn: "dark" },
-      { key: "error", label: "Error", hex: "#EF5B5B", description: "Errores, validaciones críticas", textOn: "light" },
-      { key: "info", label: "Info", hex: "#53C7F0", description: "Tips, mensajes neutros", textOn: "dark" },
+      { key: "success", label: "Success", hex: "#63D69F", description: "Confirmations, successful transactions", textOn: "dark" },
+      { key: "warning", label: "Warning", hex: "#F3C74D", description: "Alerts, limits", textOn: "dark" },
+      { key: "error", label: "Error", hex: "#EF5B5B", description: "Errors, critical validations", textOn: "light" },
+      { key: "info", label: "Info", hex: "#53C7F0", description: "Tips, neutral messages", textOn: "dark" },
     ],
   },
 ];
@@ -168,8 +168,8 @@ export interface BrandTypeStyle {
 }
 
 export const BRAND_TYPE_FAMILIES = [
-  { id: "primary", name: "Plus Jakarta Sans", role: "Primaria — UI, headings, branding", weights: [300, 400, 500, 600, 700, 800] },
-  { id: "secondary", name: "Inter", role: "Secundaria — números, datos densos", weights: [400, 500, 600, 700] },
+  { id: "primary", name: "Plus Jakarta Sans", role: "Primary — UI, headings, branding", weights: [300, 400, 500, 600, 700, 800] },
+  { id: "secondary", name: "Inter", role: "Secondary — numbers, dense data", weights: [400, 500, 600, 700] },
 ];
 
 export const BRAND_TYPE_STYLES: BrandTypeStyle[] = [
@@ -268,20 +268,20 @@ export const BRAND_SPACING = [
 ];
 
 export const BRAND_RADIUS = [
-  { token: "radius-sm", value: "4px", description: "Inputs internos, chips chicos" },
+  { token: "radius-sm", value: "4px", description: "Inner inputs, small chips" },
   { token: "radius-md", value: "8px", description: "Inputs, badges" },
-  { token: "radius-lg", value: "12px", description: "Inputs principales" },
-  { token: "radius-xl", value: "16px", description: "Cards y botones" },
-  { token: "radius-2xl", value: "20px", description: "Cards principales" },
-  { token: "radius-3xl", value: "28px", description: "Modales, hero cards" },
-  { token: "radius-full", value: "9999px", description: "Avatares, chips" },
+  { token: "radius-lg", value: "12px", description: "Main inputs" },
+  { token: "radius-xl", value: "16px", description: "Cards and buttons" },
+  { token: "radius-2xl", value: "20px", description: "Main cards" },
+  { token: "radius-3xl", value: "28px", description: "Modals, hero cards" },
+  { token: "radius-full", value: "9999px", description: "Avatars, chips" },
 ];
 
 export const BRAND_SHADOWS = [
-  { token: "shadow-xs", value: "0 1px 2px rgba(8, 34, 28, 0.04)", description: "Sutil — inputs, hover" },
-  { token: "shadow-sm", value: "0 2px 6px rgba(8, 34, 28, 0.06)", description: "Cards de listado" },
-  { token: "shadow-md", value: "0 6px 18px rgba(8, 34, 28, 0.08)", description: "Cards elevadas, popovers" },
-  { token: "shadow-lg", value: "0 16px 32px rgba(8, 34, 28, 0.12)", description: "Modales, hero cards" },
+  { token: "shadow-xs", value: "0 1px 2px rgba(8, 34, 28, 0.04)", description: "Subtle — inputs, hover" },
+  { token: "shadow-sm", value: "0 2px 6px rgba(8, 34, 28, 0.06)", description: "List cards" },
+  { token: "shadow-md", value: "0 6px 18px rgba(8, 34, 28, 0.08)", description: "Elevated cards, popovers" },
+  { token: "shadow-lg", value: "0 16px 32px rgba(8, 34, 28, 0.12)", description: "Modals, hero cards" },
 ];
 
 /* ==========================================

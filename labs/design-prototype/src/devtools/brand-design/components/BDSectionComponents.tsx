@@ -17,9 +17,9 @@ export default function BDSectionComponents() {
           <h1 className="text-3xl font-bold text-debug-text dark:text-debug-text-dark">
             Components & UI
           </h1>
-          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark max-w-xl">
-            Building blocks de la app: buttons, cards, inputs, chips. Curvatura coherente
-            (rounded-2xl por defecto), spacing en múltiplos de 4, sombras suaves.
+          <p className="mt-2 text-sm text-debug-text-muted dark:text-debug-text-muted-dark">
+            App building blocks: buttons, cards, inputs, chips. Consistent curvature
+            (rounded-2xl by default), spacing in multiples of 4, soft shadows.
           </p>
         </div>
       </div>
