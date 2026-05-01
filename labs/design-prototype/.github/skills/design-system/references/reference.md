@@ -14,7 +14,7 @@ El sistema visual se construye sobre una sola capa de **primitive tokens**. No e
 index.css (@theme inline) → Tailwind utilities → componentes (clases)
 ```
 
-- `src/index.css` define las CSS custom properties dentro de `@theme inline`.
+- `src/styles/index.css` define las CSS custom properties dentro de `@theme inline`.
 - Tailwind genera automaticamente las utilidades a partir de esas variables (ej. `--color-primary` → `bg-primary`, `text-primary`, `border-primary`).
 - `tailwind.config.ts` extiende solo lo que `@theme inline` no resuelve (container, plugins).
 - Los componentes consumen exclusivamente clases de Tailwind y la utilidad `cn()` para merge condicional.
@@ -293,10 +293,10 @@ gradient-tertiary:  180deg, transparente → rgba(26,26,26,0.72)
 
 ## Como agregar un token nuevo
 
-1. Definir la CSS custom property en `src/index.css` dentro del bloque `@theme inline`, en la seccion correspondiente a su categoria.
+1. Definir la CSS custom property en `src/styles/index.css` dentro del bloque `@theme inline`, en la seccion correspondiente a su categoria.
 2. Tailwind genera automaticamente la utilidad. No es necesario tocar `tailwind.config.ts` salvo para plugins o configuraciones que `@theme inline` no soporte.
 3. Seguir la convencion de naming: `category-role-variant`.
-4. Documentar el token nuevo en `design-token.md` dentro de su grupo.
+4. Documentar el token nuevo en `docs/markdown/design-tokens.md` dentro de su grupo.
 
 ### Reglas
 
@@ -308,7 +308,7 @@ gradient-tertiary:  180deg, transparente → rgba(26,26,26,0.72)
 
 ## Archivos de configuracion
 
-### `src/index.css`
+### `src/styles/index.css`
 
 - Fuente de verdad de todos los primitive tokens (dentro de `@theme inline`).
 - Define la variante dark: `@custom-variant dark (&:is(.dark *))`.

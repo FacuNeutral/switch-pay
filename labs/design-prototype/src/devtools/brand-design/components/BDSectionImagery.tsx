@@ -22,9 +22,9 @@ const GRADIENTS = [
   {
     id: "night-fade",
     label: "Night Fade",
-    css: "linear-gradient(180deg, #09111F 0%, #17243A 100%)",
+    css: "linear-gradient(180deg, #09090B 0%, #141416 100%)",
     use: "Dark hero, dashboard balance",
-    onText: "#F1FAF8",
+    onText: "#FAFAFA",
   },
   {
     id: "purple-glow",
@@ -94,7 +94,7 @@ export default function BDSectionImagery() {
           className="rounded-3xl overflow-hidden relative min-h-[220px] flex items-center justify-center p-8"
           style={{
             background:
-              "repeating-linear-gradient(115deg, #15B981 0px, #15B981 24px, transparent 24px, transparent 48px), #09111F",
+              "repeating-linear-gradient(115deg, #15B981 0px, #15B981 24px, transparent 24px, transparent 48px), #09090B",
           }}
         >
           <div className="text-center">
@@ -122,7 +122,7 @@ export default function BDSectionImagery() {
           {/* Dark icon */}
           <div
             className="aspect-square rounded-3xl flex items-center justify-center"
-            style={{ background: "#09111F" }}
+            style={{ background: "#09090B" }}
           >
             <BDLogoMark variant="mark" size={72} color="#15B981" />
           </div>
@@ -187,7 +187,7 @@ export default function BDSectionImagery() {
           {/* Square 3 — dark */}
           <div
             className="aspect-square rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden"
-            style={{ background: "#09111F" }}
+            style={{ background: "#09090B" }}
           >
             {/* decorative blob */}
             <div
@@ -201,7 +201,7 @@ export default function BDSectionImagery() {
               <p className="text-xl font-extrabold leading-tight text-white">
                 Trust. Flexibility. Freedom.
               </p>
-              <p className="text-[11px] font-medium mt-3" style={{ color: "#9BAEB7" }}>
+              <p className="text-[11px] font-medium mt-3" style={{ color: "#71717A" }}>
                 The new way to choose your benefits.
               </p>
             </div>
@@ -216,7 +216,7 @@ export default function BDSectionImagery() {
         </p>
         <div
           className="rounded-3xl p-8 max-w-md flex flex-col justify-between aspect-[1.6/1] relative overflow-hidden"
-          style={{ background: "linear-gradient(135deg, #09111F 0%, #17243A 100%)" }}
+          style={{ background: "linear-gradient(135deg, #09090B 0%, #141416 100%)" }}
         >
           {/* diagonal bands decorative */}
           <div
@@ -227,7 +227,7 @@ export default function BDSectionImagery() {
             }}
           />
           <div className="relative flex items-center justify-between">
-            <BDLogoMark variant="horizontal" size={24} color="#15B981" textColor="#F1FAF8" accentColor="#15B981" />
+            <BDLogoMark variant="horizontal" size={24} color="#15B981" textColor="#FAFAFA" accentColor="#15B981" />
             <span className="text-[10px] uppercase tracking-widest font-bold text-white/60">
               Benefits
             </span>

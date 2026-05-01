@@ -27,7 +27,7 @@ function PhoneFrame({ children, label }: { children: React.ReactNode; label: str
     <div className="flex flex-col items-center gap-3">
       <div
         className="rounded-[2.4rem] p-2 shadow-xl shrink-0"
-        style={{ background: "#0B1422", border: "1px solid #22324A" }}
+        style={{ background: "#0F0F11", border: "1px solid #27272A" }}
       >
         <div
           className="w-[280px] h-[560px] rounded-[2rem] overflow-hidden flex flex-col relative"
@@ -119,9 +119,9 @@ function DashboardScreen() {
       </div>
 
       {/* hero balance */}
-      <div className="mx-4 rounded-3xl p-5 space-y-3" style={{ background: "#101B2E", color: "#F1FAF8" }}>
+      <div className="mx-4 rounded-3xl p-5 space-y-3" style={{ background: "#18181B", color: "#FAFAFA" }}>
         <div className="flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-widest font-bold" style={{ color: "#9BAEB7" }}>
+          <span className="text-[10px] uppercase tracking-widest font-bold" style={{ color: "#71717A" }}>
             Available
           </span>
           <span
@@ -132,7 +132,7 @@ function DashboardScreen() {
           </span>
         </div>
         <p className="text-2xl font-extrabold tracking-tight">$1,250.00</p>
-        <p className="text-[10px]" style={{ color: "#9BAEB7" }}>
+        <p className="text-[10px]" style={{ color: "#71717A" }}>
           Annual benefits balance
         </p>
       </div>
@@ -208,7 +208,7 @@ function DashboardScreen() {
             key={i}
             size={20}
             strokeWidth={1.5}
-            style={{ color: active ? "#15B981" : "#9BAEB7" }}
+            style={{ color: active ? "#15B981" : "#71717A" }}
           />
         ))}
       </div>
@@ -286,7 +286,7 @@ function BenefitsScreen() {
                 Up to {perk.value}
               </p>
             </div>
-            <Sparkles size={12} strokeWidth={1.5} style={{ color: perk.selected ? "#6F4DE8" : "#9BAEB7" }} />
+            <Sparkles size={12} strokeWidth={1.5} style={{ color: perk.selected ? "#6F4DE8" : "#71717A" }} />
           </div>
         ))}
       </div>

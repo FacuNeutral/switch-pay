@@ -43,9 +43,9 @@ export default function BDSectionCover() {
         </div>
 
         {/* Dark hero */}
-        <div className="rounded-3xl bg-[#09111F] p-12 flex flex-col items-center justify-center gap-6 min-h-[280px]">
-          <BDLogoMark variant="vertical" size={88} color="#15B981" textColor="#F1FAF8" accentColor="#15B981" />
-          <span className="text-[10px] uppercase tracking-widest font-semibold text-[#9BAEB7]">
+        <div className="rounded-3xl bg-[#09090B] p-12 flex flex-col items-center justify-center gap-6 min-h-[280px]">
+          <BDLogoMark variant="vertical" size={88} color="#15B981" textColor="#FAFAFA" accentColor="#15B981" />
+          <span className="text-[10px] uppercase tracking-widest font-semibold text-[#71717A]">
             Dark surface
           </span>
         </div>

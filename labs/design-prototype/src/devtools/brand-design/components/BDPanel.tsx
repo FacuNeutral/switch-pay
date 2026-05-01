@@ -12,6 +12,7 @@ import BDSectionLogo from "./BDSectionLogo";
 import BDSectionColor from "./BDSectionColor";
 import BDSectionTypography from "./BDSectionTypography";
 import BDSectionIconography from "./BDSectionIconography";
+import BDSectionIllustrations from "./BDSectionIllustrations";
 import BDSectionComponents from "./BDSectionComponents";
 import BDSectionAppSurfaces from "./BDSectionAppSurfaces";
 import BDSectionImagery from "./BDSectionImagery";
@@ -71,6 +72,7 @@ export default function BDPanel() {
           {activeSection === "color" && <BDSectionColor />}
           {activeSection === "typography" && <BDSectionTypography />}
           {activeSection === "iconography" && <BDSectionIconography />}
+          {activeSection === "illustrations" && <BDSectionIllustrations />}
           {activeSection === "components" && <BDSectionComponents />}
           {activeSection === "app-surfaces" && <BDSectionAppSurfaces />}
           {activeSection === "imagery" && <BDSectionImagery />}

@@ -7,11 +7,11 @@ import BDLogoMark from "./BDLogoMark";
 
 const VARIANTS = [
   { id: "primary-light", label: "Primary on Light", bg: "#FFFFFF", color: "#15B981", textColor: "#102021", accent: "#15B981" },
-  { id: "primary-dark", label: "Primary on Dark", bg: "#09111F", color: "#15B981", textColor: "#F1FAF8", accent: "#15B981" },
+  { id: "primary-dark", label: "Primary on Dark", bg: "#09090B", color: "#15B981", textColor: "#FAFAFA", accent: "#15B981" },
   { id: "inverse-on-aqua", label: "Inverse on Aqua", bg: "#15B981", color: "#FFFFFF", textColor: "#062014", accent: "#FFFFFF" },
   { id: "inverse-on-purple", label: "Inverse on Purple", bg: "#6F4DE8", color: "#FFFFFF", textColor: "#FFFFFF", accent: "#FFFFFF" },
   { id: "mono-dark", label: "Mono Dark", bg: "#FFFFFF", color: "#102021", textColor: "#102021", accent: "#102021" },
-  { id: "mono-light", label: "Mono Light", bg: "#09111F", color: "#FFFFFF", textColor: "#FFFFFF", accent: "#FFFFFF" },
+  { id: "mono-light", label: "Mono Light", bg: "#09090B", color: "#FFFFFF", textColor: "#FFFFFF", accent: "#FFFFFF" },
 ];
 
 const SIZES = [

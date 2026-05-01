@@ -1,31 +1,30 @@
 ---
-name: "Project Guidelines"
-description: "Regla principal del workspace. Define activacion de skills, rol de frontend, formato de respuesta y convenciones globales."
-globs: "**"
-alwaysApply: true
+name: project-guidelines
+description: Project-wide rules for this project. Covers skill activation, architecture conventions, design system, response format and global rules. Applies to every chat interaction in the workspace.
+applyTo: "**"
 ---
 
 # Project Guidelines
 
-Estas reglas aplican a cualquier prompt en este workspace.
+Estas instrucciones aplican a cualquier prompt en este workspace cuando trabajes con GitHub Copilot.
 
 ## Skill Activation
 
-Cada skill debe cargarse obligatoriamente cuando la tarea involucra su area de conocimiento. No se activan en toda respuesta, sino cada vez que la solucion o la habilidad requerida para completar la tarea pertenece a ese dominio.
+Las skills del proyecto viven en `.github/skills/<skill-name>/SKILL.md`. Carga una skill cuando la tarea pertenezca a su area de conocimiento; no cargues todas por defecto.
 
 - Evalua el contexto de cada tarea e identifica que skills son necesarias para resolverla correctamente.
 - Si la tarea toca varias areas, carga todas las skills que correspondan antes de continuar.
-- Las reglas detalladas de cada area viven en `references/reference.md` dentro de cada skill en `.cursor/skills/`.
+- Para cargar una skill, lee su `SKILL.md` y luego su referencia (`references/reference.md` o el archivo indicado por la skill) cuando el procedimiento lo requiera.
 - No inventes convenciones paralelas cuando una skill ya define la regla del proyecto.
-- Si ninguna skill aplica, igual respeta las convenciones ya presentes en el repo.
+- Si ninguna skill aplica, respeta igualmente las convenciones existentes del repo.
 
 ### Infrastructure
 
-Cargar la skill `infrastructure` cuando la tarea involucre la estructura de `client/src/**` o decisiones de arquitectura:
+Cargar la skill `infrastructure` cuando la tarea involucre estructura de `src/**` o decisiones de arquitectura:
 
-- `client/src/App.tsx`, `client/src/main.tsx`, routes, pages y layouts.
-- `client/src/application/**`, `client/src/components/**`, `client/src/hooks/**`, `client/src/helpers/**`, `client/src/lib/**`, `client/src/data/**`.
-- `client/src/zustand/**`, contexts, services, naming, ubicacion de archivos y dependencias entre capas.
+- `src/App.tsx`, `src/main.tsx`, routes, pages y layouts.
+- `src/application/**`, `src/components/**`, `src/hooks/**`, `src/helpers/**`, `src/lib/**`, `src/data/**`.
+- `src/zustand/**`, contexts, services, naming, ubicacion de archivos y dependencias entre capas.
 - Cabeceras `//* @type`, `//* @context`, `//* @utility` y comentarios de regiones del DOM.
 
 ### Design System
@@ -33,14 +32,14 @@ Cargar la skill `infrastructure` cuando la tarea involucre la estructura de `cli
 Cargar la skill `design-system` cuando la tarea involucre el sistema visual:
 
 - Clases de Tailwind, `className`, estilos, colores, spacing, tipografia, motion, z-index y dark mode.
-- `client/src/index.css`, `client/tailwind.config.ts`, `client/postcss.config.js`, `client/components.json` y documentacion de tokens.
+- `src/styles/index.css`, `tailwind.config.ts`, `postcss.config.js`, `components.json` y documentacion de tokens.
 - Tokens, utilidades generadas por `@theme inline`, configuracion de shadcn y consumo visual de componentes.
 
 ### SEO
 
 Cargar la skill `seo` cuando la tarea involucre SEO o metadata:
 
-- `client/index.html`, `<head>`, title, description, canonical, robots, Open Graph y Twitter cards.
+- `index.html`, `<head>`, title, description, canonical, robots, Open Graph y Twitter cards.
 - Assets publicos de SEO como `og-cover`, `favicon` y `apple-touch-icon`.
 - Metadata por ruta, previews sociales, structured data y documentacion SEO.
 
@@ -49,7 +48,7 @@ Cargar la skill `seo` cuando la tarea involucre SEO o metadata:
 Cargar la skill `commits` cuando la tarea involucre creacion, revision o asistencia de commits:
 
 - Mensajes de commit, formato convencional, tipos (`feat`, `fix`, `refactor`, etc.).
-- Flujo guiado de commit (`git status` → `git add` → `git commit` → `git push`).
+- Flujo guiado de commit (`git status` -> `git add` -> `git commit` -> `git push`).
 - Deteccion de tipo y scope a partir de cambios en el workspace.
 - Validacion de formato, multi-type strategy y buenas practicas de historial.
 
@@ -57,7 +56,7 @@ Cargar la skill `commits` cuando la tarea involucre creacion, revision o asisten
 
 Cargar la skill `doc-pages-explorer` cuando la tarea involucre la documentacion JSON de paginas para el panel pages-explorer:
 
-- Archivos JSON en `client/src/devtools/pages-explorer/docs/pages/`.
+- Archivos JSON en `src/devtools/pages-explorer/docs/pages/`.
 - Registro en `PAGE_DOCS`, `ROUTE_MAP` y el mock de pages-explorer.
 - Creacion, actualizacion o revision de documentacion de paginas.
 
@@ -66,9 +65,9 @@ Cargar la skill `doc-pages-explorer` cuando la tarea involucre la documentacion 
 Cargar la skill `illustration-generator` cuando la tarea involucre generar ilustraciones flat-vector para SwitchPay:
 
 - Generacion de imagenes para web, landing, blog, redes sociales o secciones internas.
-- Uso de `GenerateImage` con paletas de marca compatibles con fondos claros y oscuros.
-- Flujo guiado de 5 pasos: fondo base, paleta, acciones detectadas, logos/iconos, confirmacion del contexto.
-- Mantener estilo coherente con las referencias en `.cursor/skills/illustration-generator/assets/`.
+- Uso de la herramienta de generacion de imagenes con paletas de marca compatibles con fondos claros y oscuros.
+- Flujo guiado de 6 pasos: fondo base, paleta, entorno, acciones, logos/iconos y confirmacion.
+- Mantener estilo coherente con las referencias en `.github/skills/illustration-generator/assets/`.
 
 ### SSH Node Exec
 
@@ -76,12 +75,12 @@ Cargar la skill `ssh-node-exec` cuando la tarea requiera ejecutar comandos en el
 
 - Comandos de consola: `npm run <script>`, `npm test`, `npm install`, `npm ci`, `node`, `npx`, `tsx`, `bun`, `vitest`, `playwright`.
 - Acceso al proyecto montado en otra PC, sesion remota o terminal persistente.
-- Credenciales extraidas de `.cursor/skills/ssh-node-exec/.env` (`root` y `pasword`).
+- Credenciales extraidas de `.github/skills/ssh-node-exec/.env` (`root` y `pasword`).
 - Nunca sincronizar ni copiar el proyecto localmente; ejecutar siempre desde la terminal SSH.
 
-## Role — Frontend Engineering
+## Role - Frontend Engineering
 
-Aplica esta perspectiva cuando el trabajo toque archivos dentro de `client/`:
+Aplica esta perspectiva cuando el trabajo toque archivos dentro de `src/` o la UI del proyecto:
 
 - Actua como un ingeniero de software especializado en frontend y diseno.
 - Prioriza claridad visual, consistencia de interfaz, accesibilidad y calidad de implementacion.
@@ -89,10 +88,6 @@ Aplica esta perspectiva cuando el trabajo toque archivos dentro de `client/`:
 - Si hay tradeoffs relevantes, explicalos con foco en impacto tecnico y visual.
 
 ## Response Format
-
-Reglas de formato que aplican siempre:
-
-Leer siempre la regla `response-footer.mdc` para el formato del footer de cada respuesta (skills usadas y métricas de sesión).
 
 - Responde con tono directo, practico y orientado a accion.
 - Mantene las explicaciones breves y concretas.
@@ -103,6 +98,27 @@ Leer siempre la regla `response-footer.mdc` para el formato del footer de cada r
 - Presenta `Tasks` en formato puntuado, sin tablas.
 - Cada item de `Tasks` debe incluir `Nombre:` y `Descripcion:` con lo que se aplico o cambio.
 - Termina cada respuesta con preguntas para confirmar si el resultado es el esperado.
+
+### Response Footer
+
+Incluir siempre al final de cada respuesta, despues de todo el contenido principal.
+
+Solo si se aplico al menos una skill durante la respuesta, incluir este bloque:
+
+⚡ *USED SKILLS*  
+`↳ nombre-skill-1`  
+`↳ nombre-skill-2`
+
+- Listar todas las skills aplicadas, sin omitir ninguna.
+- Si no se uso ninguna skill, omitir este bloque completamente.
+
+Siempre incluir este bloque al final, usando estimaciones aproximadas:
+
+🧠 `Context ~Xk/200k ────── Time: ~Xs`
+
+- `Context`: estimacion de tokens consumidos en la conversacion actual sobre el limite del modelo.
+- `Time`: estimacion aproximada del tiempo de procesamiento de la respuesta en segundos.
+- Ambos valores son aproximados; expresarlos con `~`.
 
 ## Global Rules
 

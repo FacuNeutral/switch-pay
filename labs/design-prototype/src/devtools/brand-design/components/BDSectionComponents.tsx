@@ -305,15 +305,15 @@ export default function BDSectionComponents() {
           <div
             className="rounded-3xl p-6 space-y-4"
             style={{
-              background: "#101B2E",
-              border: "1px solid #22324A",
+              background: "#18181B",
+              border: "1px solid #27272A",
               boxShadow: "0 6px 18px rgba(0, 0, 0, 0.3)",
             }}
           >
             <div className="flex items-center justify-between">
               <span
                 className="text-[10px] uppercase tracking-widest font-bold"
-                style={{ color: "#9BAEB7" }}
+                style={{ color: "#71717A" }}
               >
                 Active perk
               </span>
@@ -324,10 +324,10 @@ export default function BDSectionComponents() {
                 Premium
               </span>
             </div>
-            <p className="text-2xl font-bold" style={{ color: "#F1FAF8" }}>
+            <p className="text-2xl font-bold" style={{ color: "#FAFAFA" }}>
               Gym Membership
             </p>
-            <p className="text-xs" style={{ color: "#9BAEB7" }}>
+            <p className="text-xs" style={{ color: "#71717A" }}>
               $200 / year · 3 visits remaining this month.
             </p>
             <button

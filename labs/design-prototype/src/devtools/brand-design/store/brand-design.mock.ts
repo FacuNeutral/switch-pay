@@ -11,6 +11,7 @@ export type BrandSection =
   | "color"
   | "typography"
   | "iconography"
+  | "illustrations"
   | "components"
   | "app-surfaces"
   | "imagery";
@@ -54,20 +55,26 @@ export const BRAND_SECTIONS: BrandSectionMeta[] = [
     caption: "Set lineal, stroke 1.5",
   },
   {
-    id: "components",
+    id: "illustrations",
     number: "06",
+    title: "Illustrations",
+    caption: "Flat-vector scenes & characters",
+  },
+  {
+    id: "components",
+    number: "07",
     title: "Components & UI",
     caption: "Buttons, cards, inputs, chips",
   },
   {
     id: "app-surfaces",
-    number: "07",
+    number: "08",
     title: "App Surfaces",
     caption: "Key SwitchPay screens",
   },
   {
     id: "imagery",
-    number: "08",
+    number: "09",
     title: "Imagery & Patterns",
     caption: "Gradients, blending, social",
   },
@@ -100,7 +107,7 @@ export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
       { key: "primary", label: "Primary", hex: "#15B981", description: "CTAs, links, isotype", textOn: "dark" },
       { key: "primary-hover", label: "Primary Hover", hex: "#0FA571", description: "Hover/pressed state", textOn: "dark" },
       { key: "primary-soft", label: "Primary Soft", hex: "#DCF6E7", description: "Soft backgrounds, chips (light)", textOn: "dark" },
-      { key: "primary-foreground", label: "Primary Foreground", hex: "#062014", description: "Text on bg-primary", textOn: "light" },
+      { key: "primary-foreground", label: "Primary Foreground", hex: "#F4F8F7", description: "Text on bg-primary", textOn: "dark" },
     ],
   },
   {
@@ -111,7 +118,7 @@ export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
       { key: "accent", label: "Accent", hex: "#6F4DE8", description: "Tags premium, badges, switch", textOn: "light" },
       { key: "accent-hover", label: "Accent Hover", hex: "#5A3DD1", description: "Hover/pressed accent", textOn: "light" },
       { key: "accent-soft", label: "Accent Soft", hex: "#E8E1FF", description: "Soft backgrounds accent (light)", textOn: "dark" },
-      { key: "accent-foreground", label: "Accent Foreground", hex: "#FFFFFF", description: "Text on bg-accent", textOn: "dark" },
+      { key: "accent-foreground", label: "Accent Foreground", hex: "#F4F8F7", description: "Text on bg-accent", textOn: "dark" },
     ],
   },
   {
@@ -119,7 +126,7 @@ export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
     label: "Neutral — Light",
     description: "Surface and text base for light mode.",
     tokens: [
-      { key: "neutral", label: "Neutral", hex: "#FFFFFF", description: "Base light background", textOn: "dark" },
+      { key: "neutral", label: "Neutral", hex: "#F4F8F7", description: "Base light background", textOn: "dark" },
       { key: "neutral-off", label: "Neutral Off", hex: "#F4F8F7", description: "Secondary background, lists", textOn: "dark" },
       { key: "neutral-mist", label: "Neutral Mist", hex: "#EDF7F5", description: "Soft banners, tonal sections", textOn: "dark" },
       { key: "neutral-line", label: "Neutral Line", hex: "#D9E8E5", description: "Borders, dividers", textOn: "dark" },
@@ -132,12 +139,12 @@ export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
     label: "Neutral — Dark",
     description: "Surface and text base for dark mode.",
     tokens: [
-      { key: "neutral-dark", label: "Neutral Dark", hex: "#09111F", description: "Base dark background", textOn: "light" },
-      { key: "neutral-surface-dark", label: "Neutral Surface", hex: "#101B2E", description: "Elevated surfaces, cards", textOn: "light" },
-      { key: "neutral-card-dark", label: "Neutral Card", hex: "#17243A", description: "Cards on surfaces, modals", textOn: "light" },
-      { key: "neutral-line-dark", label: "Neutral Line Dark", hex: "#22324A", description: "Borders in dark", textOn: "light" },
-      { key: "neutral-muted-dark", label: "Neutral Muted Dark", hex: "#9BAEB7", description: "Secondary text in dark", textOn: "dark" },
-      { key: "neutral-ink-dark", label: "Neutral Ink Dark", hex: "#F1FAF8", description: "Primary text in dark", textOn: "dark" },
+      { key: "neutral-dark", label: "Neutral Dark", hex: "#09090B", description: "Base dark background", textOn: "light" },
+      { key: "neutral-surface-dark", label: "Neutral Surface", hex: "#18181B", description: "Elevated surfaces, cards", textOn: "light" },
+      { key: "neutral-card-dark", label: "Neutral Card", hex: "#141416", description: "Cards on surfaces, modals", textOn: "light" },
+      { key: "neutral-line-dark", label: "Neutral Line Dark", hex: "#27272A", description: "Borders in dark", textOn: "light" },
+      { key: "neutral-muted-dark", label: "Neutral Muted Dark", hex: "#71717A", description: "Secondary text in dark", textOn: "light" },
+      { key: "neutral-ink-dark", label: "Neutral Ink Dark", hex: "#F4F8F7", description: "Primary text in dark", textOn: "dark" },
     ],
   },
   {
