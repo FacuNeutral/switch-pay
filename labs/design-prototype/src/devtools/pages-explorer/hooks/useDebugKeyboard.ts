@@ -5,7 +5,6 @@
 import { useEffect } from "react";
 import { usePagesExplorerStore } from "../store/pages-explorer.slice";
 import { useDebugToolsStore } from "../../core/store/debug-tools.slice";
-import { useBrandDesignStore } from "../../brand-design/store/brand-design.slice";
 import { useUiStore } from "@/zustand/ui/ui.slice";
 import type { ViewportMode } from "../store/pages-explorer.mock";
 
@@ -36,6 +35,8 @@ export const DEBUG_COMMANDS: DebugCommand[] = [
   /* --- Navigation --- */
   { id: "search-focus", label: "Focus page search", shortcut: "Ctrl+Alt+S", section: "Navigation" },
   { id: "gallery-open", label: "Open page gallery", shortcut: "Ctrl+Alt+S+S", section: "Navigation" },
+  { id: "scroll-down", label: "Scroll app down", shortcut: "Shift+↓", section: "Navigation" },
+  { id: "scroll-up", label: "Scroll app up", shortcut: "Shift+↑", section: "Navigation" },
 
   /* --- Panels --- */
   { id: "panel-description", label: "Toggle detail panel", shortcut: "Ctrl+Alt+D", section: "Panels" },
@@ -46,24 +47,6 @@ export const DEBUG_COMMANDS: DebugCommand[] = [
   { id: "theme-toggle", label: "Toggle dark / light", shortcut: "Ctrl+Alt+T", section: "Tools" },
   { id: "exit-debug", label: "Exit debug mode", shortcut: "Ctrl+Alt+Q", section: "Tools" },
   { id: "open-debug", label: "Open debug tools", shortcut: "Ctrl+Alt+<", section: "Tools" },
-
-  /* --- Brand Design --- */
-  { id: "bd-section", label: "Jump to section", shortcut: "Ctrl+Alt+1–8", section: "Brand Design" },
-  { id: "bd-next", label: "Next section", shortcut: "→", section: "Brand Design" },
-  { id: "bd-prev", label: "Previous section", shortcut: "←", section: "Brand Design" },
-  { id: "bd-shortcuts", label: "Toggle shortcuts", shortcut: "Ctrl+Alt+H", section: "Brand Design" },
-  { id: "bd-close", label: "Close panel", shortcut: "Ctrl+Alt+Q", section: "Brand Design" },
-
-  /* --- Design Tokens --- */
-  { id: "dt-save", label: "Save changes", shortcut: "Ctrl+Alt+S", section: "Design Tokens" },
-  { id: "dt-discard", label: "Discard changes", shortcut: "Ctrl+Alt+Z", section: "Design Tokens" },
-  { id: "dt-resync", label: "Re-sync tokens", shortcut: "Ctrl+Alt+R", section: "Design Tokens" },
-  { id: "dt-tab-1", label: "Tokens tab", shortcut: "Ctrl+Alt+1", section: "Design Tokens" },
-  { id: "dt-tab-2", label: "Preview landing tab", shortcut: "Ctrl+Alt+2", section: "Design Tokens" },
-  { id: "dt-tab-3", label: "Preview raw tab", shortcut: "Ctrl+Alt+3", section: "Design Tokens" },
-  { id: "dt-tab-4", label: "Palettes tab", shortcut: "Ctrl+Alt+4", section: "Design Tokens" },
-  { id: "dt-tab-5", label: "Backups tab", shortcut: "Ctrl+Alt+5", section: "Design Tokens" },
-  { id: "dt-close", label: "Close panel", shortcut: "Ctrl+Alt+Q", section: "Design Tokens" },
 ];
 
 /* ==========================================
@@ -152,14 +135,9 @@ export function useDebugKeyboard() {
         return;
       }
 
-      /* --- Ctrl+Alt+Q: close brand-design if open, otherwise exit debug mode --- */
+      /* --- Ctrl+Alt+Q: exit debug mode (with confirmation) --- */
       if (code === "KeyQ") {
         e.preventDefault();
-        const bd = useBrandDesignStore.getState();
-        if (bd.isOpen) {
-          bd.close();
-          return;
-        }
         const store = usePagesExplorerStore.getState();
         if (!store.isOpen) return;
         store.setExitConfirmOpen(true);
@@ -169,21 +147,16 @@ export function useDebugKeyboard() {
       /* --- Ctrl+Alt+H / Ctrl+Alt+H+H: commands panel / toggle hints --- */
       if (code === "KeyH") {
         e.preventDefault();
-
-        const bd = useBrandDesignStore.getState();
-        if (bd.isOpen) {
-          bd.toggleShortcuts();
-          return;
-        }
-
         const store = usePagesExplorerStore.getState();
         if (!store.isOpen) return;
         const now = Date.now();
         if (now - lastHTime < 400) {
+          /* double H — toggle shortcut hints only, don't open commands */
           if (store.commandsOpen) store.toggleCommands();
           store.toggleShortcutHints();
           lastHTime = 0;
         } else {
+          /* single H — toggle commands panel */
           store.toggleCommands();
           lastHTime = now;
         }

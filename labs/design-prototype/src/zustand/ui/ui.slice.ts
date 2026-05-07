@@ -8,9 +8,16 @@ import { SIDEBAR_DEFAULT_COLLAPSED } from "./ui.mock";
 interface UiState {
   sidebarCollapsed: boolean;
   darkMode: boolean;
+  compactHeader: boolean;
+  blindReady: boolean;
+  subcategoryModalIndex: number | null;
   toggleSidebar: () => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
   toggleDarkMode: () => void;
+  setCompactHeader: (compact: boolean) => void;
+  setBlindReady: (ready: boolean) => void;
+  openSubcategoryModal: (globalIndex: number) => void;
+  closeSubcategoryModal: () => void;
 }
 
 const getInitialDarkMode = () => {
@@ -21,6 +28,9 @@ const getInitialDarkMode = () => {
 export const useUiStore = create<UiState>((set) => ({
   sidebarCollapsed: SIDEBAR_DEFAULT_COLLAPSED,
   darkMode: getInitialDarkMode(),
+  compactHeader: false,
+  blindReady: false,
+  subcategoryModalIndex: null,
 
   //* Alterna el estado colapsado del sidebar.
   toggleSidebar: () => {
@@ -39,5 +49,25 @@ export const useUiStore = create<UiState>((set) => ({
       document.documentElement.classList.toggle("dark", next);
       return { darkMode: next };
     });
+  },
+
+  //* Activa o desactiva el modo compacto del header.
+  setCompactHeader: (compact: boolean) => {
+    set({ compactHeader: compact });
+  },
+
+  //* Marca la persiana como completada — habilita animaciones de entrada.
+  setBlindReady: (ready: boolean) => {
+    set({ blindReady: ready });
+  },
+
+  //* Abre el modal de detalle de subcategoría con el índice global.
+  openSubcategoryModal: (globalIndex: number) => {
+    set({ subcategoryModalIndex: globalIndex });
+  },
+
+  //* Cierra el modal de detalle de subcategoría.
+  closeSubcategoryModal: () => {
+    set({ subcategoryModalIndex: null });
   },
 }));

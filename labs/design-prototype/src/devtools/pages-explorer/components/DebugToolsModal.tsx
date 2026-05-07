@@ -2,13 +2,12 @@
 //* @context Debug Tools
 //* @utility Modal estilo app launcher centrado. Muestra tools disponibles con navegación por teclado.
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
-import { Layers, X, Palette, Blocks, Sparkles, Keyboard } from "lucide-react";
+import { Layers, X, Palette, Blocks } from "lucide-react";
 import { useDebugToolsStore, DEBUG_TOOLS } from "../../core/store/debug-tools.slice";
 import { usePagesExplorerStore } from "../store/pages-explorer.slice";
 import { useDesignTokensStore } from "../../design-tokens/store/design-tokens.slice";
-import { useBrandDesignStore } from "../../brand-design/store/brand-design.slice";
 
 function MagneticButton({ children, disabled }: { children: React.ReactNode; disabled?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -52,7 +51,6 @@ export default function DebugToolsModal() {
   const close = useDebugToolsStore((s) => s.close);
 
   const gridRef = useRef<HTMLDivElement>(null);
-  const [showShortcuts, setShowShortcuts] = useState(false);
 
   const activateTool = useCallback((toolId: string) => {
     const tool = DEBUG_TOOLS.find((t) => t.id === toolId);
@@ -62,9 +60,6 @@ export default function DebugToolsModal() {
     }
     if (toolId === "design-tokens") {
       useDesignTokensStore.getState().open();
-    }
-    if (toolId === "brand-design") {
-      useBrandDesignStore.getState().open();
     }
     close();
   }, [close]);
@@ -118,7 +113,6 @@ export default function DebugToolsModal() {
   const TOOL_ICONS: Record<string, React.ReactNode> = {
     layers: <Layers size={28} />,
     palette: <Palette size={28} />,
-    sparkles: <Sparkles size={28} />,
     blocks: <Blocks size={28} />,
   };
 
@@ -143,25 +137,12 @@ export default function DebugToolsModal() {
           <span className="text-sm font-semibold uppercase tracking-wider text-debug-text-muted dark:text-debug-text-muted-dark">
             Debug Tools
           </span>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => setShowShortcuts((v) => !v)}
-              className={`p-1.5 rounded-(--radius-debug-tab) transition-colors duration-150 ${
-                showShortcuts
-                  ? "bg-debug-primary/10 text-debug-primary"
-                  : "text-debug-text-muted dark:text-debug-text-muted-dark hover:bg-debug-surface-overlay dark:hover:bg-debug-surface-overlay-dark"
-              }`}
-              title="Keyboard shortcuts"
-            >
-              <Keyboard size={14} />
-            </button>
-            <button
-              onClick={close}
-              className="p-1.5 rounded-(--radius-debug-tab) text-debug-text-muted dark:text-debug-text-muted-dark hover:bg-debug-surface-overlay dark:hover:bg-debug-surface-overlay-dark transition-colors duration-150"
-            >
-              <X size={14} />
-            </button>
-          </div>
+          <button
+            onClick={close}
+            className="p-1 rounded-(--radius-debug-tab) text-debug-text-muted dark:text-debug-text-muted-dark hover:bg-debug-surface-overlay dark:hover:bg-debug-surface-overlay-dark transition-colors duration-150"
+          >
+            <X size={14} />
+          </button>
         </div>
 
         {/* ==========================================
@@ -239,31 +220,28 @@ export default function DebugToolsModal() {
         </div>
 
         {/* ==========================================
-            Keyboard Shortcuts (collapsible)
+            Footer Hint
            ========================================== */}
-        {showShortcuts && (
-          <div className="px-4 py-3 border-t border-debug-border dark:border-debug-border-dark">
-            <h4 className="text-[10px] font-semibold uppercase tracking-widest text-debug-text-muted dark:text-debug-text-muted-dark mb-2 flex items-center gap-2">
-              <span>Keyboard Shortcuts</span>
-              <span className="flex-1 h-px bg-debug-border dark:bg-debug-border-dark" />
-            </h4>
-            <div className="space-y-1.5">
-              {[
-                { keys: "←  →", label: "Navigate tools" },
-                { keys: "Enter / Space", label: "Open selected tool" },
-                { keys: "Ctrl+Alt+<", label: "Toggle this panel" },
-                { keys: "Esc", label: "Close" },
-              ].map((s) => (
-                <div key={s.label} className="flex items-center justify-between">
-                  <span className="text-[11px] text-debug-text dark:text-debug-text-dark">{s.label}</span>
-                  <kbd className="text-[10px] font-mono px-2 py-0.5 rounded-(--radius-debug-tab) bg-debug-primary/5 dark:bg-debug-primary/10 border border-debug-primary/15 dark:border-debug-primary/20 text-debug-primary">
-                    {s.keys}
-                  </kbd>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <div className="px-4 py-2 border-t border-debug-border dark:border-debug-border-dark flex items-center justify-center gap-3">
+          <span className="text-[11px] text-debug-text-muted dark:text-debug-text-muted-dark flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 rounded bg-debug-surface-overlay dark:bg-debug-surface-overlay-dark border border-debug-border dark:border-debug-border-dark text-[10px] font-mono">
+              ←→
+            </kbd>
+            navigate
+          </span>
+          <span className="text-[11px] text-debug-text-muted dark:text-debug-text-muted-dark flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 rounded bg-debug-surface-overlay dark:bg-debug-surface-overlay-dark border border-debug-border dark:border-debug-border-dark text-[10px] font-mono">
+              Enter/Space
+            </kbd>
+            select
+          </span>
+          <span className="text-[11px] text-debug-text-muted dark:text-debug-text-muted-dark flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 rounded bg-debug-surface-overlay dark:bg-debug-surface-overlay-dark border border-debug-border dark:border-debug-border-dark text-[10px] font-mono">
+              Esc
+            </kbd>
+            close
+          </span>
+        </div>
       </div>
     </div>
   );

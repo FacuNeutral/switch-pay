@@ -26,12 +26,6 @@ export const DEBUG_TOOLS: DebugTool[] = [
     icon: "palette",
   },
   {
-    id: "brand-design",
-    label: "Brand Design",
-    description: "Official SwitchPay brand manual: logo variants, color palette, typography scale, iconography set and app surfaces in one editorial view.",
-    icon: "sparkles",
-  },
-  {
     id: "components",
     label: "Components",
     description: "Browse the component library with live previews, prop tables, usage examples and variant playground.",

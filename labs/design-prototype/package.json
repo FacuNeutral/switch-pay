@@ -1,7 +1,7 @@
 {
   "name": "switchpay-design-prototype",
   "private": true,
-  "version": "1.1.0-alpha",
+  "version": "1.2.0-alpha",
   "description": "This project is a frontend foundation aimed at small- to medium-scale projects—SaaS, internal tools, or privately focused products. The environment is set up to enable fast iteration, whether working individually or with generative AI assistance, on an architecture that won’t need to be discarded as the project grows.",
   "license": "BSD-3-Clause",
   "type": "module",
@@ -54,6 +54,7 @@
     "lucide-react": "^1.7.0",
     "motion": "^12.38.0",
     "next-themes": "^0.4.6",
+    "openai": "^6.35.0",
     "react": "^19.2.4",
     "react-day-picker": "^9.14.0",
     "react-dom": "^19.2.4",

@@ -1,45 +1,75 @@
 @import "tailwindcss";
 @import "./constants.css";
-@import "./debug.css";
 
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
 
 /* ==========================================
-   Keyframes
+   Keyframes — editorial dark system
    ========================================== */
-@keyframes accordion-down {
-   from {
-      height: 0;
-   }
+@keyframes stack-reveal {
+   0%   { opacity: 0; transform: translateY(24px); }
+   100% { opacity: var(--stack-target, 1); transform: translateY(0); }
+}
 
-   to {
-      height: var(--radix-accordion-content-height);
-   }
+@keyframes section-rise {
+   0%   { opacity: 0; transform: translateY(40px); }
+   100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes breath {
+   0%, 100% { transform: scale(1);     filter: brightness(1); }
+   50%      { transform: scale(1.015); filter: brightness(1.08); }
+}
+
+@keyframes glow-pulse {
+   0%, 100% { opacity: 0.30; transform: scale(1); }
+   50%      { opacity: 0.55; transform: scale(1.10); }
+}
+
+@keyframes letter-shimmer {
+   0%   { background-position: 0% 50%; }
+   100% { background-position: 200% 50%; }
+}
+
+@keyframes dot-pulse {
+   0%, 100% { transform: scale(1);   opacity: 1; }
+   50%      { transform: scale(1.4); opacity: 0; }
+}
+
+@keyframes accordion-down {
+   from { height: 0; }
+   to   { height: var(--radix-accordion-content-height); }
 }
 
 @keyframes accordion-up {
-   from {
-      height: var(--radix-accordion-content-height);
-   }
-
-   to {
-      height: 0;
-   }
+   from { height: var(--radix-accordion-content-height); }
+   to   { height: 0; }
 }
 
 /* ==========================================
    Base Layer
    ========================================== */
 @layer base {
-   * {
-      @apply border-neutral dark:border-neutral-surface-dark;
-   }
+   * { @apply border-hairline; }
+
+   html, body, #root { @apply min-h-screen; }
+
+   html { color-scheme: dark; }
 
    body {
-      @apply bg-neutral dark:bg-neutral-dark text-neutral-dark dark:text-neutral font-primary;
+      background-color: var(--color-canvas);
+      color: var(--color-text-hi);
+      font-family: var(--font-primary);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
    }
+
+   .font-mono,
+   [data-numeric="true"] { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+   ::selection { background: var(--color-primary); color: var(--color-canvas); }
 }
 
 /* ==========================================
@@ -48,8 +78,110 @@
 @utility scrollbar-hide {
    -ms-overflow-style: none;
    scrollbar-width: none;
+   &::-webkit-scrollbar { display: none; }
+}
 
-   &::-webkit-scrollbar {
-      display: none;
+@utility safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
+@utility safe-top    { padding-top:    max(env(safe-area-inset-top),    0px); }
+
+@utility container-page {
+   width: 100%;
+   max-width: 1280px;
+   margin-inline: auto;
+   padding-inline: clamp(20px, 4vw, 64px);
+}
+
+@utility section-y {
+   padding-block: clamp(72px, 12vw, 192px);
+}
+
+/* Stack ghost typography (hero signature) */
+@utility text-display {
+   font-family: var(--font-primary);
+   font-weight: 300;
+   letter-spacing: -0.045em;
+   line-height: 0.95;
+}
+
+@utility text-eyebrow {
+   font-family: var(--font-mono);
+   font-size: 11px;
+   letter-spacing: 0.18em;
+   text-transform: uppercase;
+   color: var(--color-text-low);
+}
+
+@utility text-kicker {
+   font-family: var(--font-mono);
+   font-size: 13px;
+   color: var(--color-text-low);
+}
+
+/* Editorial cards */
+@utility card-editorial {
+   position: relative;
+   background: var(--color-surface-raised);
+   border: 1px solid var(--color-hairline);
+   transition:
+      border-color var(--dur-base) var(--ease-out),
+      box-shadow   var(--dur-base) var(--ease-out),
+      transform    var(--dur-base) var(--ease-out);
+}
+
+/* Hairline divider */
+@utility hr-hairline {
+   border: 0;
+   border-top: 1px solid var(--color-hairline);
+}
+
+/* Pill nav surface */
+@utility surface-pill-nav {
+   background: rgba(20,20,22,0.78);
+   backdrop-filter: blur(14px) saturate(140%);
+   -webkit-backdrop-filter: blur(14px) saturate(140%);
+   border: 1px solid var(--color-hairline);
+}
+
+/* Animation utilities */
+@utility anim-section-rise {
+   animation: section-rise var(--dur-slow) var(--ease-out) both;
+}
+
+@utility anim-breath {
+   animation: breath var(--dur-ambient) var(--ease-in-out) infinite alternate;
+}
+
+@utility anim-glow-pulse {
+   animation: glow-pulse var(--dur-ambient) var(--ease-in-out) infinite;
+}
+
+@utility anim-stack-reveal {
+   animation: stack-reveal var(--dur-slow) var(--ease-out) both;
+}
+
+@utility anim-dot-pulse {
+   animation: dot-pulse calc(var(--dur-ambient) / 3) ease-out infinite;
+}
+
+@utility text-shimmer {
+   background-image: linear-gradient(
+      90deg,
+      var(--color-primary) 0%,
+      var(--color-accent)  50%,
+      var(--color-primary) 100%
+   );
+   background-size: 200% 100%;
+   -webkit-background-clip: text;
+   background-clip: text;
+   color: transparent;
+   animation: letter-shimmer var(--dur-ambient) linear infinite;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+   *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
    }
 }

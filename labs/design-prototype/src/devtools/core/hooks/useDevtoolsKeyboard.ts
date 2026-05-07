@@ -7,10 +7,8 @@ import { useDebugToolsStore } from "../store/debug-tools.slice";
 import { useUiStore } from "@/zustand/ui/ui.slice";
 import { usePagesExplorerStore } from "../../pages-explorer/store/pages-explorer.slice";
 import { useDesignTokensStore } from "../../design-tokens/store/design-tokens.slice";
-import { useBrandDesignStore } from "../../brand-design/store/brand-design.slice";
 import type { ViewportMode } from "../../pages-explorer/store/pages-explorer.mock";
 import type { DesignTokensTab } from "../../design-tokens/store/design-tokens.mock";
-import { BRAND_SECTIONS } from "../../brand-design/store/brand-design.mock";
 
 /* ==========================================
    Pages Explorer Constants
@@ -27,6 +25,14 @@ const TAB_BY_DIGIT: Record<string, DesignTokensTab> = {
   Digit4: "palettes",
   Digit5: "backups",
 };
+
+/* ==========================================
+   Scroll Constants
+   ========================================== */
+const SCROLL_BASE = 200;
+const SCROLL_ACCEL = 80;
+const SCROLL_MAX = 1200;
+const SCROLL_DECAY_MS = 400;
 
 /* ==========================================
    Pages Explorer Handler
@@ -159,47 +165,6 @@ function handleDesignTokens(e: KeyboardEvent, code: string): boolean {
 }
 
 /* ==========================================
-   Brand Design Handler
-   ========================================== */
-function handleBrandDesign(e: KeyboardEvent, code: string): boolean {
-  const store = useBrandDesignStore.getState();
-  if (!store.isOpen) return false;
-
-  /* --- Ctrl+Alt+1..8: jump to section by index --- */
-  if (code.startsWith("Digit")) {
-    const idx = parseInt(code.replace("Digit", ""), 10) - 1;
-    if (idx >= 0 && idx < BRAND_SECTIONS.length) {
-      e.preventDefault();
-      store.setActiveSection(BRAND_SECTIONS[idx].id);
-      return true;
-    }
-  }
-
-  /* --- Ctrl+Alt+J: next section --- */
-  if (code === "KeyJ") {
-    e.preventDefault();
-    store.nextSection();
-    return true;
-  }
-
-  /* --- Ctrl+Alt+K: previous section --- */
-  if (code === "KeyK") {
-    e.preventDefault();
-    store.prevSection();
-    return true;
-  }
-
-  /* --- Ctrl+Alt+Q: close brand design panel --- */
-  if (code === "KeyQ") {
-    e.preventDefault();
-    store.close();
-    return true;
-  }
-
-  return false;
-}
-
-/* ==========================================
    Hook
    ========================================== */
 export function useDevtoolsKeyboard() {
@@ -208,11 +173,50 @@ export function useDevtoolsKeyboard() {
 
     const lastHTime = { v: 0 };
     const lastSTime = { v: 0 };
+    let scrollHits = 0;
+    let lastScrollTime = 0;
+    let scrolling = false;
 
     function handleKeyDown(e: KeyboardEvent) {
       const ctrl = e.ctrlKey;
       const alt = e.altKey;
+      const shift = e.shiftKey;
       const code = e.code;
+
+      /* --- Shift+ArrowUp/Down: scroll app viewport (pages-explorer only) --- */
+      if (shift && !ctrl && !alt && (code === "ArrowDown" || code === "ArrowUp")) {
+        const peStore = usePagesExplorerStore.getState();
+        if (!peStore.isOpen) return;
+
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        const now = Date.now();
+        if (now - lastScrollTime > SCROLL_DECAY_MS) scrollHits = 0;
+        scrollHits++;
+        lastScrollTime = now;
+        scrolling = true;
+
+        const step = Math.min(SCROLL_BASE + SCROLL_ACCEL * (scrollHits - 1), SCROLL_MAX);
+        const direction = code === "ArrowDown" ? 1 : -1;
+        const isRepeat = e.repeat;
+
+        if (peStore.viewportMode === "responsive") {
+          const el = document.querySelector<HTMLElement>("[data-debug-viewport-scroll]");
+          if (el) {
+            el.scrollBy({ top: step * direction, behavior: isRepeat ? "instant" : "smooth" });
+          }
+        } else {
+          const iframe = window.frames["__pages_explorer__" as any] as Window | undefined;
+          if (iframe) {
+            iframe.scrollBy({ top: step * direction, behavior: isRepeat ? "instant" : "smooth" });
+          }
+        }
+        return;
+      }
+
+      /* --- While scroll-holding, block all other shortcuts --- */
+      if (scrolling) return;
 
       if (!ctrl || !alt) return;
 
@@ -230,13 +234,23 @@ export function useDevtoolsKeyboard() {
         return;
       }
 
-      /* --- Dispatch to active tool (brand-design > design-tokens > pages-explorer) --- */
-      if (handleBrandDesign(e, code)) return;
+      /* --- Dispatch to active tool (design-tokens has priority over pages-explorer) --- */
       if (handleDesignTokens(e, code)) return;
       if (handlePagesExplorer(e, code, lastSTime, lastHTime)) return;
     }
 
+    function handleKeyUp(e: KeyboardEvent) {
+      if (scrolling && (e.code === "ArrowDown" || e.code === "ArrowUp" || e.key === "Shift")) {
+        scrolling = false;
+        scrollHits = 0;
+      }
+    }
+
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
   }, []);
 }

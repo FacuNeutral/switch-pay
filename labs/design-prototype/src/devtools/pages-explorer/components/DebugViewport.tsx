@@ -2,30 +2,11 @@
 //* @context Pages Explore
 //* @utility Contenedor iframe-like que envuelve el contenido de la app con viewport controlado.
 
-import { useRef, useEffect } from "react";
 import { usePagesExplorerStore } from "../store/pages-explorer.slice";
 import { VIEWPORT_MODE_WIDTHS } from "../store/pages-explorer.mock";
 import { useUiStore } from "@/zustand/ui/ui.slice";
 
 export default function DebugViewport({ children }: { children: React.ReactNode }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const commandsOpen = usePagesExplorerStore((s) => s.commandsOpen);
-  const galleryOpen = usePagesExplorerStore((s) => s.galleryOpen);
-  const exitConfirmOpen = usePagesExplorerStore((s) => s.exitConfirmOpen);
-  const searchFocused = usePagesExplorerStore((s) => s.searchFocused);
-
-  const hasOverlay = commandsOpen || galleryOpen || exitConfirmOpen || searchFocused;
-
-  useEffect(() => {
-    if (hasOverlay) return;
-    const focusViewport = () => scrollRef.current?.focus({ preventScroll: true });
-    const raf1 = requestAnimationFrame(() => {
-      requestAnimationFrame(focusViewport);
-    });
-    return () => cancelAnimationFrame(raf1);
-  }, [hasOverlay]);
-
   const state = usePagesExplorerStore();
   const activeRoute = usePagesExplorerStore((s) => s.activeRoute);
   const darkMode = useUiStore((s) => s.darkMode);
@@ -101,7 +82,7 @@ export default function DebugViewport({ children }: { children: React.ReactNode 
       {/* ==========================================
           Viewport Container
          ========================================== */}
-      <div ref={scrollRef} tabIndex={-1} className="flex-1 flex justify-center overflow-auto p-4 scrollbar-debug outline-none">
+      <div className="flex-1 flex justify-center overflow-auto p-4 scrollbar-debug">
         <div
           className="relative bg-neutral dark:bg-neutral-dark rounded-(--radius-debug-panel) overflow-hidden shadow-lg shadow-black/20 transition-all duration-300 border border-debug-border dark:border-debug-border-dark"
           style={{
@@ -119,7 +100,7 @@ export default function DebugViewport({ children }: { children: React.ReactNode 
               title="Page Explorer Preview"
             />
           ) : (
-            <div className="w-full h-full overflow-auto scrollbar-debug">
+            <div data-debug-viewport-scroll className="w-full h-full overflow-auto scrollbar-debug">
               {children}
             </div>
           )}

@@ -2,13 +2,6 @@
 //* @context Pages Explore
 //* @utility Datos, constantes y tipos para el panel de pages-explorer.
 
-import homeDoc from "@/devtools/pages-explorer/docs/pages/home.json";
-import searchDoc from "@/devtools/pages-explorer/docs/pages/search.json";
-import watchDoc from "@/devtools/pages-explorer/docs/pages/watch.json";
-import shortsDoc from "@/devtools/pages-explorer/docs/pages/shorts.json";
-import loginDoc from "@/devtools/pages-explorer/docs/pages/login.json";
-import registerDoc from "@/devtools/pages-explorer/docs/pages/register.json";
-import notFoundDoc from "@/devtools/pages-explorer/docs/pages/not-found.json";
 
 /* ==========================================
    Types
@@ -83,13 +76,6 @@ export type DetailTab = "description" | "structure";
    ========================================== */
 
 export const PAGE_DOCS: PageDoc[] = [
-  homeDoc,
-  searchDoc,
-  watchDoc,
-  shortsDoc,
-  loginDoc,
-  registerDoc,
-  notFoundDoc,
 ] as PageDoc[];
 
 /* ==========================================
@@ -105,11 +91,4 @@ export interface RouteEntry {
 }
 
 export const ROUTE_MAP: RouteEntry[] = [
-  { path: "/", label: "Home", navigateTo: "/", nested: false, layout: "MainLayout" },
-  { path: "/shorts", label: "Shorts", navigateTo: "/shorts", nested: false, layout: "MainLayout" },
-  { path: "/watch/:id", label: "Watch", navigateTo: "/watch/video-1", nested: true, layout: "MainLayout" },
-  { path: "/search?q=", label: "Search", navigateTo: "/search?q=music", nested: false, layout: "MainLayout" },
-  { path: "/login", label: "Login", navigateTo: "/login", nested: false, layout: "standalone" },
-  { path: "/register", label: "Register", navigateTo: "/register", nested: false, layout: "standalone" },
-  { path: "*", label: "404", navigateTo: "/this-does-not-exist", nested: false, layout: "standalone" },
 ];
