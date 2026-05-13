@@ -26,15 +26,21 @@ export default function LandingNav() {
    }, []);
 
    return (
-      <header className="pointer-events-none fixed inset-x-0 top-3 z-[var(--z-header)] flex justify-center px-4 sm:top-4">
+      <header
+         className={cn(
+            "pointer-events-none fixed inset-x-0 z-[var(--z-header)] flex justify-center",
+            "transition-[top,padding] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
+            scrolled ? "top-3 px-4 sm:top-4" : "top-0 px-0",
+         )}
+      >
          <nav
             className={cn(
-               "pointer-events-auto surface-pill-nav rounded-pill",
-               "flex w-full max-w-[1100px] items-center justify-between gap-3",
-               "transition-[padding,background-color] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
+               "pointer-events-auto",
+               "flex w-full items-center justify-between gap-3",
+               "transition-[padding,background-color,border-color,border-radius,max-width,backdrop-filter] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
                scrolled
-                  ? "py-2 pl-4 pr-2 sm:py-2 sm:pl-5 sm:pr-2"
-                  : "py-2.5 pl-4 pr-2 sm:py-3 sm:pl-6 sm:pr-2.5",
+                  ? "surface-pill-nav rounded-pill max-w-[1100px] py-2 pl-4 pr-2 sm:py-2 sm:pl-5 sm:pr-2"
+                  : "max-w-[1280px] rounded-none border-transparent bg-transparent py-3 pl-[clamp(20px,4vw,64px)] pr-[clamp(20px,4vw,64px)] sm:py-4",
             )}
             aria-label="Navegacion principal"
          >

@@ -18,7 +18,7 @@ export default function SolutionSection() {
          <div className="container-page relative flex flex-col items-center gap-10 text-center">
             <Eyebrow align="center">La solución</Eyebrow>
 
-            <h2 className="text-display text-[clamp(48px,8vw,120px)] text-text-hi">
+            <h2 className="text-display text-4xl leading-tight tracking-tight text-text-hi lg:text-5xl">
                Una webapp.
                <span className="block" style={{ color: "rgba(244,248,247,0.30)" }}>
                   Mil <span className="text-shimmer">elecciones</span>.

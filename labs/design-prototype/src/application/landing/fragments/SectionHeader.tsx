@@ -8,54 +8,63 @@ import Eyebrow from "./Eyebrow";
 interface SectionHeaderProps {
    eyebrow?: string;
    title: React.ReactNode;
+   titleLines?: string[];
    ghostLines?: string[];
    lead?: React.ReactNode;
    align?: "left" | "center";
    className?: string;
    size?: "md" | "lg";
+   as?: "h1" | "h2";
 }
 
 export default function SectionHeader({
    eyebrow,
    title,
+   titleLines,
    ghostLines,
    lead,
    align = "left",
    size = "md",
+   as: Heading = "h2",
    className,
 }: SectionHeaderProps) {
    const display =
       size === "lg"
-         ? "text-display text-[clamp(48px,8vw,112px)]"
-         : "text-display text-[clamp(36px,5.5vw,72px)]";
+         ? "text-display text-5xl leading-tight tracking-tight lg:text-6xl"
+         : "text-display text-4xl leading-tight tracking-tight lg:text-5xl";
 
    return (
       <header
          className={cn(
-            "flex flex-col gap-6",
+            "flex flex-col gap-7",
             align === "center" && "items-center text-center",
             className,
          )}
       >
          {eyebrow && <Eyebrow align={align}>{eyebrow}</Eyebrow>}
 
-         <h2 className={cn(display, "text-text-hi")}>
+         <Heading className={cn(display, "w-full text-text-hi")}>
             {title}
+            {titleLines?.map((line, i) => (
+               <span key={line + i} className="block">
+                  {line}
+               </span>
+            ))}
             {ghostLines?.map((line, i) => (
                <span
                   key={line + i}
                   className="block"
-                  style={{ color: i === 0 ? "rgba(244,248,247,0.30)" : "rgba(244,248,247,0.12)" }}
+                  style={{ color: i === 0 ? "rgba(244,248,247,0.50)" : "rgba(244,248,247,0.40)" }}
                >
                   {line}
                </span>
             ))}
-         </h2>
+         </Heading>
 
          {lead && (
             <p
                className={cn(
-                  "max-w-[52ch] text-base text-text-mid sm:text-lg",
+                  "max-w-[80ch] text-base text-text-mid sm:text-lg",
                   align === "center" && "mx-auto",
                )}
             >

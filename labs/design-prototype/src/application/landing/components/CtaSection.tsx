@@ -15,7 +15,7 @@ export default function CtaSection() {
                   Onboarding en 7 días
                </span>
 
-               <h2 className="text-display text-[clamp(40px,6vw,80px)] text-text-hi">
+               <h2 className="text-display text-4xl leading-tight tracking-tight text-text-hi lg:text-5xl">
                   Listo para que tu equipo
                   <span className="block text-shimmer">elija de verdad.</span>
                </h2>
