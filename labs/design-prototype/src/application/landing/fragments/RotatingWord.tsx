@@ -3,13 +3,15 @@
 //* @utility Palabra animada que rota entre opciones con fade+slide. Color primario con pulso de opacidad.
 
 import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface RotatingWordProps {
    words: string[];
    interval?: number;
+   className?: string;
 }
 
-export default function RotatingWord({ words, interval = 3000 }: RotatingWordProps) {
+export default function RotatingWord({ words, interval = 3000, className }: RotatingWordProps) {
    const [index, setIndex] = useState(0);
    const [visible, setVisible] = useState(true);
    const swapRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -39,7 +41,7 @@ export default function RotatingWord({ words, interval = 3000 }: RotatingWordPro
             transition: "opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), filter var(--dur-base) var(--ease-out)",
          }}
       >
-         <span className="anim-word-glow text-primary">{words[index]}</span>
+         <span className={cn("anim-word-glow", className ?? "text-primary-hover")}>{words[index]}</span>
       </span>
    );
 }

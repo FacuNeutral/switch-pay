@@ -3,6 +3,7 @@
 //* @utility Footer editorial con logo, columnas de links y meta legal.
 
 import BrandLogo from "@/components/core/BrandLogo";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 const COLS = [
    {
@@ -21,7 +22,8 @@ const COLS = [
 
 export default function LandingFooter() {
    return (
-      <footer className="border-t border-hairline">
+      <footer className="relative border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page py-16 sm:py-20">
             <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-12">
                <div className="flex flex-col gap-5 lg:col-span-4">

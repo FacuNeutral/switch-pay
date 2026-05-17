@@ -11,7 +11,7 @@
 @theme inline {
    /* ============== Brand color (SwitchPay) ============== */
    --color-primary: #15B981;
-   --color-primary-hover: #0FA571;
+   --color-primary-hover: #18c489;
    --color-primary-soft: #DCF6E7;
    --color-primary-foreground: #F4F8F7;
    --color-primary-glow: rgba(21, 185, 129, 0.35);
@@ -79,6 +79,7 @@
 
    /* ============== Radius ============== */
    --radius-none: 0px;
+   --radius-min: 0.225rem;   /* 2px — mínimo sistémico */
    --radius-xs: 0.125rem;
    --radius-sm: 0.25rem;
    --radius-md: 0.5rem;

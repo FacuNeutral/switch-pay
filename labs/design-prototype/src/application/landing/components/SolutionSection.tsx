@@ -4,10 +4,12 @@
 
 import Eyebrow from "../fragments/Eyebrow";
 import ImagePlaceholder from "../fragments/ImagePlaceholder";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 export default function SolutionSection() {
    return (
       <section id="solucion" className="section-y relative overflow-hidden border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          {/* Glow ambient */}
          <div
             className="pointer-events-none absolute left-1/2 top-1/4 h-[600px] w-[600px] -translate-x-1/2 rounded-full opacity-40 blur-[120px]"

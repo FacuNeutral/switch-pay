@@ -5,6 +5,7 @@
 import SectionHeader from "../fragments/SectionHeader";
 import StatBlock from "../fragments/StatBlock";
 import ImagePlaceholder from "../fragments/ImagePlaceholder";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 const KPIS = [
    { value: "3x", label: "más adopción que un beneficio fijo" },
@@ -14,7 +15,8 @@ const KPIS = [
 
 export default function ForCompaniesSection() {
    return (
-      <section id="para-empresas" className="section-y border-t border-hairline">
+      <section id="para-empresas" className="relative section-y border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="order-2 lg:order-1 lg:col-span-5">
                <ImagePlaceholder

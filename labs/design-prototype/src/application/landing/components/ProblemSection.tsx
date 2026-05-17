@@ -4,10 +4,12 @@
 
 import SectionHeader from "../fragments/SectionHeader";
 import NumberedCard from "../fragments/NumberedCard";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 export default function ProblemSection() {
    return (
-      <section id="problema" className="section-y border-t border-hairline">
+      <section id="problema" className="relative section-y border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page flex flex-col gap-14 lg:gap-20">
             <SectionHeader
                eyebrow="El problema"

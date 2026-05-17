@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import SectionHeader from "../fragments/SectionHeader";
 import IconCard from "../fragments/IconCard";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 const FEATURES = [
    {
@@ -60,7 +61,8 @@ const FEATURES = [
 
 export default function FeaturesSection() {
    return (
-      <section id="features" className="section-y border-t border-hairline">
+      <section id="features" className="relative section-y border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page flex flex-col gap-14 lg:gap-20">
             <SectionHeader
                eyebrow="La webapp"

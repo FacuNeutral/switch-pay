@@ -15,6 +15,7 @@ interface SectionHeaderProps {
    className?: string;
    size?: "md" | "lg";
    as?: "h1" | "h2";
+   inverted?: boolean;
 }
 
 export default function SectionHeader({
@@ -27,11 +28,12 @@ export default function SectionHeader({
    size = "md",
    as: Heading = "h2",
    className,
+   inverted = false,
 }: SectionHeaderProps) {
    const display =
       size === "lg"
-         ? "text-display text-5xl leading-tight tracking-tight lg:text-6xl"
-         : "text-display text-4xl leading-tight tracking-tight lg:text-5xl";
+         ? "text-display text-4xl leading-tight tracking-tight lg:text-5xl"
+         : "text-display text-3xl leading-tight tracking-tight lg:text-4xl";
 
    return (
       <header
@@ -43,10 +45,10 @@ export default function SectionHeader({
       >
          {eyebrow && <Eyebrow align={align}>{eyebrow}</Eyebrow>}
 
-         <Heading className={cn(display, "w-full text-text-hi")}>
+         <Heading className={cn(display, "w-full", inverted ? "text-black" : "text-text-hi")}>
             {title}
             {titleLines?.map((line, i) => (
-               <span key={line + i} className="block">
+               <span key={line + i} className="block mt-3">
                   {line}
                </span>
             ))}
@@ -64,7 +66,8 @@ export default function SectionHeader({
          {lead && (
             <p
                className={cn(
-                  "max-w-[80ch] text-base text-text-mid sm:text-lg",
+                  "max-w-[85ch] text-base sm:text-sm leading-relaxed",
+                  inverted ? "text-neutral-card-dark" : "text-text-mid",
                   align === "center" && "mx-auto",
                )}
             >

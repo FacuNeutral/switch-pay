@@ -23,13 +23,13 @@ export default function PillButton({
 }: PillButtonProps) {
    const styles =
       variant === "white"
-         ? "bg-text-hi text-canvas hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-12px_rgba(244,248,247,0.45)]"
+         ? "bg-text-hi/80 text-canvas hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-12px_rgba(244,248,247,0.45)]"
       : variant === "primary"
-         ? "bg-primary text-canvas hover:bg-primary-hover hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-12px_var(--color-primary-glow)]"
+         ? "bg-primary text-neutral-dark hover:bg-primary-hover hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-12px_var(--color-primary-glow)]"
       : "bg-transparent text-text-hi border border-hairline hover:border-hairline-strong";
 
    const base = cn(
-      "inline-flex items-center gap-2 rounded-pill px-5 py-2.5 text-sm font-medium",
+      "inline-flex items-center gap-2 rounded-min px-5 py-2.5 text-sm font-medium",
       "transition-[transform,background-color,border-color,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-out)]",
       "active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-canvas",
       styles,

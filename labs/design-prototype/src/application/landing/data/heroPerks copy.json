@@ -1,0 +1,48 @@
+{
+   "baseSalary": 230,
+   "currency": "USD",
+   "currencyLabel": "$",
+   "budgetLabel": "Presupuesto Brindado",
+   "perks": [
+      {
+         "id": "salud",
+         "name": "Salud y bienestar",
+         "description": "Cobertura médica premium",
+         "price": 48,
+         "icon": "Heart",
+         "active": true
+      },
+      {
+         "id": "desarrollo",
+         "name": "Desarrollo profesional",
+         "description": "Cursos y certificaciones",
+         "price": 34,
+         "icon": "GraduationCap",
+         "active": true
+      },
+      {
+         "id": "financiero",
+         "name": "Apoyo financiero",
+         "description": "Asesoría y bonos",
+         "price": 60,
+         "icon": "PiggyBank",
+         "active": false
+      },
+      {
+         "id": "familia",
+         "name": "Tiempo para tu familia",
+         "description": "Días libres adicionales",
+         "price": 28,
+         "icon": "Users",
+         "active": false
+      },
+      {
+         "id": "flexible",
+         "name": "Trabajo flexible",
+         "description": "Home office y horarios",
+         "price": 20,
+         "icon": "Laptop",
+         "active": true
+      }
+   ]
+}

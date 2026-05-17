@@ -9,6 +9,7 @@ import {
    AccordionTrigger,
 } from "@/components/ui/accordion";
 import SectionHeader from "../fragments/SectionHeader";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 const FAQS = [
    {
@@ -35,7 +36,8 @@ const FAQS = [
 
 export default function FaqSection() {
    return (
-      <section id="faq" className="section-y border-t border-hairline">
+      <section id="faq" className="relative section-y border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-5">
                <SectionHeader

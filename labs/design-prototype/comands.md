@@ -1,0 +1,1 @@
+conectate al ssh de la pc local y ejecuta npm run dev

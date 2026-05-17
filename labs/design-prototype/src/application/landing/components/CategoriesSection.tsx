@@ -4,6 +4,7 @@
 
 import SectionHeader from "../fragments/SectionHeader";
 import TechChip from "../fragments/TechChip";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 const CATEGORIES = [
    "Bienestar mental",
@@ -26,7 +27,8 @@ const CATEGORIES = [
 
 export default function CategoriesSection() {
    return (
-      <section id="categorias" className="section-y border-t border-hairline">
+      <section id="categorias" className="relative section-y border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page flex flex-col gap-12">
             <SectionHeader
                eyebrow="Catálogo"

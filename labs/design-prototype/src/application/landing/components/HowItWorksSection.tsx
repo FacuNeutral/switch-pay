@@ -4,6 +4,7 @@
 
 import SectionHeader from "../fragments/SectionHeader";
 import NumberedCard from "../fragments/NumberedCard";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 const STEPS = [
    {
@@ -32,7 +33,8 @@ const STEPS = [
 
 export default function HowItWorksSection() {
    return (
-      <section id="como-funciona" className="section-y border-t border-hairline">
+      <section id="como-funciona" className="relative section-y border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page flex flex-col gap-14 lg:gap-20">
             <SectionHeader
                eyebrow="Cómo funciona"

@@ -3,10 +3,12 @@
 //* @utility CTA final centrado con card destacada y badge pill.
 
 import PillButton from "../fragments/PillButton";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 export default function CtaSection() {
    return (
-      <section id="cta" className="section-y border-t border-hairline">
+      <section id="cta" className="relative section-y border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page">
             <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-8 rounded-md border border-hairline-strong bg-surface-elevated px-6 py-14 text-center sm:px-12 sm:py-20"
                  style={{ boxShadow: "var(--shadow-lift)" }}
@@ -27,7 +29,7 @@ export default function CtaSection() {
                </p>
 
                <div className="flex flex-wrap items-center justify-center gap-3">
-                  <PillButton trailingIcon>Pedir demo</PillButton>
+                  <PillButton variant="primary" trailingIcon>Pedir demo</PillButton>
                   <PillButton variant="ghost" asLink href="#faq">
                      Resolver dudas
                   </PillButton>

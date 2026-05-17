@@ -69,6 +69,15 @@ Cargar la skill `illustration-generator` cuando la tarea involucre generar ilust
 - Flujo guiado de 6 pasos: fondo base, paleta, entorno, acciones, logos/iconos y confirmacion.
 - Mantener estilo coherente con las referencias en `.github/skills/illustration-generator/assets/`.
 
+### Img Generate
+
+Cargar la skill `img-generate` cuando la tarea involucre analizar una imagen de referencia y devolver un prompt para recrearla:
+
+- El usuario adjunta o referencia una imagen y pide reproducirla, clonar su estilo o generar un prompt.
+- Triggers: `analizar imagen`, `image-to-prompt`, `recrear diseno`, `prompt desde imagen`, `copiar estilo visual`.
+- Salida obligatoria en espanol con tres bloques: `Sistema` (≤100 palabras), `Usuario` (≤60 palabras), `Negativo` (≤20 palabras).
+- No usar para generar ilustraciones de marca SwitchPay (esa es `illustration-generator`).
+
 ### SSH Node Exec
 
 Cargar la skill `ssh-node-exec` cuando la tarea requiera ejecutar comandos en el proyecto montado via SSH:

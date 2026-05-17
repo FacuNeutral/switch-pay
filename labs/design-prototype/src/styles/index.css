@@ -53,6 +53,40 @@
    50%       { opacity: 0.75; }
 }
 
+@keyframes btn-sweep {
+   0%   { transform: translateX(-5rem) skewX(-18deg); }
+   25%  { transform: translateX(-5rem) skewX(-18deg); animation-timing-function: ease-in; }
+   75%  { transform: translateX(32rem) skewX(-18deg); }
+   100% { transform: translateX(32rem) skewX(-18deg); }
+}
+
+@keyframes logo-float {
+   0%, 100% { transform: translate(-50%, 0); }
+   50%      { transform: translate(-50%, -10px); }
+}
+
+@keyframes logo-halo {
+   0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+   50%      { opacity: 0.85; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+@keyframes scroll-bounce {
+   0%, 100% { transform: translateY(0); opacity: 0.85; }
+   50%      { transform: translateY(8px); opacity: 1; }
+}
+
+@keyframes coin-flip {
+   0%   { transform: rotateY(0deg); }
+   100% { transform: rotateY(360deg); }
+}
+
+@keyframes icon-perspective-pop {
+   0%   { transform: perspective(120px) scale(1)    rotateX(0deg); }
+   12%  { transform: perspective(120px) scale(1.12) rotateX(10deg); }
+   25%  { transform: perspective(120px) scale(1)    rotateX(0deg); }
+   100% { transform: perspective(120px) scale(1)    rotateX(0deg); }
+}
+
 /* ==========================================
    Base Layer
    ========================================== */
@@ -103,7 +137,7 @@
 /* Stack ghost typography (hero signature) */
 @utility text-display {
    font-family: var(--font-primary);
-   font-weight: 300;
+   font-weight: 600;
    letter-spacing: -0.045em;
    line-height: 0.95;
 }
@@ -170,6 +204,29 @@
 
 @utility anim-word-glow {
    animation: word-glow 2.4s var(--ease-in-out) infinite;
+}
+
+@utility anim-logo-float {
+   animation: logo-float 5s var(--ease-in-out) infinite;
+}
+
+@utility anim-logo-halo {
+   animation: logo-halo 5s var(--ease-in-out) infinite;
+}
+
+@utility anim-scroll-bounce {
+   animation: scroll-bounce 1.8s var(--ease-in-out) infinite;
+}
+
+@utility anim-coin-flip {
+   animation: coin-flip 2s linear infinite;
+   transform-style: preserve-3d;
+   backface-visibility: visible;
+}
+
+@utility anim-icon-pop {
+   animation: icon-perspective-pop 2s ease-in-out infinite;
+   transform-style: preserve-3d;
 }
 
 @utility text-shimmer {

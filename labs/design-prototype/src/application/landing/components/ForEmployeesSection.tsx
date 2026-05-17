@@ -5,6 +5,7 @@
 import { Check } from "lucide-react";
 import SectionHeader from "../fragments/SectionHeader";
 import ImagePlaceholder from "../fragments/ImagePlaceholder";
+import GrainOverlay from "../fragments/GrainOverlay";
 
 const BULLETS = [
    "Elegís el beneficio que de verdad usás, no el que vino por defecto.",
@@ -15,7 +16,8 @@ const BULLETS = [
 
 export default function ForEmployeesSection() {
    return (
-      <section id="para-empleados" className="section-y border-t border-hairline">
+      <section id="para-empleados" className="relative section-y border-t border-hairline">
+         <GrainOverlay opacity={0.06} />
          <div className="container-page grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="flex flex-col gap-8 lg:col-span-7">
                <SectionHeader
